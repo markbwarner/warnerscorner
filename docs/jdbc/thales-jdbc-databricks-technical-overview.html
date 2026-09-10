@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thales Databricks JDBC Developer Preview/Beta</title>
+  <style>
+    :root {
+      --ink: #16253a;
+      --muted: #55657b;
+      --brand: #0b5cab;
+      --brand-dark: #083d73;
+      --accent: #ef6a2e;
+      --surface: #f5f8fc;
+      --line: #d8e1ec;
+      --page-width: 8.5in;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #dce5f0;
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .page {
+      width: var(--page-width);
+      min-height: 11in;
+      margin: 0 auto 18px;
+      background: #fff;
+      padding: 0.72in;
+      position: relative;
+      box-shadow: 0 8px 28px rgba(20, 35, 58, 0.14);
+      overflow: hidden;
+    }
+
+    .hero {
+      background:
+        radial-gradient(circle at top right, rgba(239, 106, 46, 0.10), transparent 26%),
+        radial-gradient(circle at left 10% top 8%, rgba(11, 92, 171, 0.12), transparent 24%),
+        linear-gradient(180deg, #fbfdff 0%, #f1f6fb 100%);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(11, 92, 171, 0.10);
+      color: var(--brand-dark);
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3 { margin: 0; line-height: 1.1; }
+    h1 { font-size: 31px; margin-bottom: 14px; max-width: 6.9in; }
+    h2 { font-size: 22px; margin-bottom: 12px; }
+    h3 { font-size: 15px; margin-bottom: 8px; }
+
+    p {
+      margin: 0 0 12px;
+      font-size: 13.2px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .lede {
+      font-size: 15px;
+      color: #2f3f55;
+      max-width: 6.9in;
+      margin-bottom: 22px;
+    }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.95fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel, .card, .stack, .step {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+    }
+
+    .panel {
+      padding: 16px 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #f9fbfd 100%);
+    }
+
+    .stack {
+      overflow: hidden;
+    }
+
+    .stack .row {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stack .row:last-child { border-bottom: 0; }
+
+    .row-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--brand-dark);
+      margin-bottom: 6px;
+    }
+
+    ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    li { margin-bottom: 7px; }
+
+    .metric-band {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 20px 0 10px;
+    }
+
+    .metric {
+      background: #13243b;
+      color: #fff;
+      border-radius: 15px;
+      padding: 13px 12px;
+    }
+
+    .metric .num {
+      display: block;
+      font-size: 25px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .metric .cap {
+      display: block;
+      font-size: 11px;
+      line-height: 1.35;
+      color: rgba(255,255,255,0.80);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .callout {
+      margin-top: 18px;
+      border-left: 4px solid var(--accent);
+      background: #fff7f2;
+      color: #39495d;
+      padding: 14px 16px;
+      border-radius: 0 14px 14px 0;
+    }
+
+    .flow-wrap {
+      margin-top: 12px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(180deg, #f8fbfe 0%, #eef4fa 100%);
+    }
+
+    svg { width: 100%; height: auto; display: block; }
+
+    .step-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .step {
+      padding: 15px 16px;
+      background: linear-gradient(180deg, #fff 0%, #fafcfe 100%);
+    }
+
+    .stepnum {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--brand) 100%);
+      color: #fff;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    .card {
+      padding: 16px;
+      min-height: 134px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
+    }
+
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 12px;
+      background: #f3f6fa;
+      padding: 1px 4px;
+      border-radius: 4px;
+      color: #314157;
+      word-break: break-word;
+    }
+
+    .footer {
+      position: absolute;
+      left: 0.72in;
+      right: 0.72in;
+      bottom: 0.48in;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10.5px;
+      color: #708198;
+    }
+
+    .small { font-size: 11.5px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <section class="page hero">
+    <div class="eyebrow">Databricks JDBC Developer Preview/Beta</div>
+    <h1>How the Thales Databricks JDBC solution works</h1>
+    <p class="lede">
+      The Thales Databricks implementation adds a policy-aware wrapper around the standard Databricks JDBC driver.
+      Applications and BI tools continue to issue normal SQL, while the wrapper identifies configured protected fields
+      and applies Thales policy before result values are returned to the client.
+    </p>
+
+    <div class="section-grid">
+      <div class="panel">
+        <h2>Core pattern</h2>
+        <p>
+          This is a wrapper-plus-delegate-driver design. The Databricks JDBC driver still handles the actual connection to
+          Databricks SQL Warehouses. The Thales layer sits in front of it and adds config resolution, protected-field detection,
+          runtime identity evaluation, and policy enforcement.
+        </p>
+        <ul>
+          <li><strong>Standard Databricks driver remains required.</strong> The Thales driver delegates to the vendor driver rather than replacing it.</li>
+          <li><strong>Ordinary SQL still works.</strong> Existing query logic, dashboard access, and JDBC workflows continue using standard statements.</li>
+          <li><strong>Protection is config-driven.</strong> Object mappings and tag aliases determine which fields participate in reveal behavior.</li>
+          <li><strong>Read-time outcomes are policy-driven.</strong> Returned values may be ciphertext, masked data, or cleartext depending on user and policy.</li>
+        </ul>
+      </div>
+
+      <div class="stack">
+        <div class="row">
+          <div class="row-title">Typical clients</div>
+          <p>DbVisualizer, BI tools, custom Java applications, JDBC-based services, validation jobs.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Key config</div>
+          <p><code>protect.object.my_catalog.my_schema.table</code>, <code>TAG.*</code>, <code>MODE</code>, <code>BATCHMODE</code>, <code>BATCHSIZE</code>.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Identity model</div>
+          <p>For token-based Databricks connections, the wrapper can use captured SQL session identity instead of the literal JDBC username.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Policy engines</div>
+          <p>CRDP for REST-based protect/reveal flows, or CADP Centralized for centrally managed protection policy behavior.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="metric-band">
+      <div class="metric"><span class="num">0</span><span class="cap">SQL rewrites required for standard query access</span></div>
+      <div class="metric"><span class="num">1</span><span class="cap">Thales wrapper in front of the Databricks JDBC driver</span></div>
+      <div class="metric"><span class="num">2</span><span class="cap">Protection modes with Thales CRDP and CADP Centralized</span></div>
+      <div class="metric"><span class="num">3</span><span class="cap">Possible read-time outcomes: ciphertext, masked, cleartext</span></div>
+
+    </div>
+
+    <div class="callout">
+      <strong>Takeaway:</strong> teams keep the Databricks JDBC driver and familiar SQL behavior, while Thales adds a configurable result-set control layer that applies reveal policy only where protected fields are present.
+    </div>
+
+    <div class="footer">
+      <span>Thales Databricks JDBC Technical Overview</span>
+      <span>1</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">Architecture Flow</div>
+    <h2>Runtime sequence</h2>
+    <p>
+      The wrapper inspects result metadata and configured field mappings, then routes only protected values through Thales enforcement services.
+    </p>
+
+    <div class="flow-wrap">
+      <svg viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Databricks JDBC technical architecture diagram">
+        <defs>
+          <linearGradient id="stepgrad" x1="0" x2="1">
+            <stop offset="0%" stop-color="#ef6a2e"/>
+            <stop offset="100%" stop-color="#0b5cab"/>
+          </linearGradient>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#61758f" />
+          </marker>
+        </defs>
+
+        <rect x="26" y="36" width="176" height="78" rx="18" fill="#ffffff" stroke="#d8e1ec"/>
+        <text x="114" y="66" text-anchor="middle" font-size="18" font-weight="700" fill="#16253a">Client</text>
+        <text x="114" y="89" text-anchor="middle" font-size="13" fill="#55657b">BI tool, JDBC app,</text>
+        <text x="114" y="106" text-anchor="middle" font-size="13" fill="#55657b">SQL editor or service</text>
+
+        <rect x="252" y="36" width="196" height="78" rx="18" fill="#ffffff" stroke="#d8e1ec"/>
+        <text x="350" y="66" text-anchor="middle" font-size="18" font-weight="700" fill="#16253a">Thales Databricks JDBC</text>
+        <text x="350" y="89" text-anchor="middle" font-size="13" fill="#55657b">wrapper, config lookup,</text>
+        <text x="350" y="106" text-anchor="middle" font-size="13" fill="#55657b">result-set interception</text>
+
+        <rect x="496" y="36" width="176" height="78" rx="18" fill="#ffffff" stroke="#d8e1ec"/>
+        <text x="584" y="66" text-anchor="middle" font-size="18" font-weight="700" fill="#16253a">Databricks JDBC</text>
+        <text x="584" y="89" text-anchor="middle" font-size="13" fill="#55657b">delegate driver</text>
+        <text x="584" y="106" text-anchor="middle" font-size="13" fill="#55657b">real DB connection path</text>
+
+        <rect x="234" y="170" width="232" height="88" rx="20" fill="#f8fbfe" stroke="#d8e1ec"/>
+        <text x="350" y="199" text-anchor="middle" font-size="18" font-weight="700" fill="#16253a">Databricks SQL Warehouse</text>
+        <text x="350" y="223" text-anchor="middle" font-size="13" fill="#55657b">SQL executes normally against</text>
+        <text x="350" y="240" text-anchor="middle" font-size="13" fill="#55657b">catalog.schema.table objects</text>
+
+        <rect x="70" y="322" width="250" height="112" rx="20" fill="#ffffff" stroke="#d8e1ec"/>
+        <text x="195" y="351" text-anchor="middle" font-size="18" font-weight="700" fill="#16253a">Mapping and identity resolution</text>
+        <text x="195" y="376" text-anchor="middle" font-size="13" fill="#55657b">protect.object, TAG aliases,</text>
+        <text x="195" y="394" text-anchor="middle" font-size="13" fill="#55657b">MODE, policyType, allowlist,</text>
+        <text x="195" y="412" text-anchor="middle" font-size="13" fill="#55657b">session user</text>
+
+        <rect x="380" y="322" width="250" height="112" rx="20" fill="#ffffff" stroke="#d8e1ec"/>
+        <text x="505" y="351" text-anchor="middle" font-size="18" font-weight="700" fill="#16253a">Thales enforcement path</text>
+        <text x="505" y="376" text-anchor="middle" font-size="13" fill="#55657b">CRDP protect/reveal APIs</text>
+        <text x="505" y="394" text-anchor="middle" font-size="13" fill="#55657b">or CADP Centralized</text>
+        <text x="505" y="412" text-anchor="middle" font-size="13" fill="#55657b">returns final visible value</text>
+
+        <path d="M202 75 L252 75" stroke="#61758f" stroke-width="2.2" fill="none" marker-end="url(#arrow)"/>
+        <path d="M448 75 L496 75" stroke="#61758f" stroke-width="2.2" fill="none" marker-end="url(#arrow)"/>
+        <path d="M350 114 L350 170" stroke="#61758f" stroke-width="2.2" fill="none" marker-end="url(#arrow)"/>
+        <path d="M300 258 L228 322" stroke="#61758f" stroke-width="2.2" fill="none" marker-end="url(#arrow)"/>
+        <path d="M400 258 L472 322" stroke="#61758f" stroke-width="2.2" fill="none" marker-end="url(#arrow)"/>
+
+        <circle cx="226" cy="140" r="16" fill="url(#stepgrad)"/>
+        <text x="226" y="145" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">1</text>
+        <circle cx="474" cy="140" r="16" fill="url(#stepgrad)"/>
+        <text x="474" y="145" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">2</text>
+        <circle cx="350" cy="294" r="16" fill="url(#stepgrad)"/>
+        <text x="350" y="299" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">3</text>
+        <circle cx="350" cy="456" r="16" fill="url(#stepgrad)"/>
+        <text x="350" y="461" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">4</text>
+      </svg>
+    </div>
+
+    <div class="step-grid">
+      <div class="step">
+        <div class="stepnum">1</div>
+        <h3>Connect through the wrapper</h3>
+        <p>The application uses the Thales Databricks JDBC entry point. The wrapper loads configuration, prepares runtime properties, and opens the actual connection through the Databricks JDBC driver.</p>
+      </div>
+      <div class="step">
+        <div class="stepnum">2</div>
+        <h3>Execute SQL normally</h3>
+        <p>Standard Databricks SQL continues to run against the SQL Warehouse. The wrapper does not require broad query rewrites for normal read access.</p>
+      </div>
+      <div class="step">
+        <div class="stepnum">3</div>
+        <h3>Resolve protected columns</h3>
+        <p>The wrapper matches returned columns against object-scoped mappings such as <code>protect.object.my_catalog.my_schema.customer_table</code> and the related <code>TAG.*</code> aliases.</p>
+      </div>
+      <div class="step">
+        <div class="stepnum">4</div>
+        <h3>Apply Thales policy</h3>
+        <p>Only protected fields are sent through CRDP or CADP Centralized, which decide whether the caller should receive ciphertext, masked data, or cleartext.</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Thales Databricks JDBC Technical Overview</span>
+      <span>2</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">Implementation Notes</div>
+    <h2>Configuration and operational guidance</h2>
+    <div class="two-col">
+      <div class="card">
+        <h3>Config model</h3>
+        <p>
+          Use object-scoped mappings wherever possible. A typical pattern is <code>protect.object.my_catalog.my_schema.customer_table=email|tag.char.internal</code> with separate <code>TAG.*</code> alias definitions for policy name and policy type.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Runtime overrides</h3>
+        <p>
+          Connection-level overrides are useful for testing, but wrapper-only properties should stay internal to the Thales layer and should not be passed through to the Databricks JDBC driver as database configuration.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Identity behavior</h3>
+        <p>
+          For token-based connections, the JDBC username may be the literal value <code>token</code>. The wrapper can instead capture the Databricks SQL session identity and use that for allowlist and reveal decisions.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Utility jobs</h3>
+        <p>
+          Backend protect, unprotect, and reprotect utilities should use a raw Databricks connection for table scan and update paths so values are not auto-revealed before explicit service operations run.
+        </p>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top: 18px;">
+      <h3>Summary</h3>
+      <p>
+        The Databricks solution is best described as a policy-aware JDBC wrapper around the standard Databricks JDBC driver. Applications keep ordinary SQL behavior, while the Thales layer applies protected-field detection, user-aware reveal logic, and service-based enforcement when results are read.
+      </p>
+      <p class="small">
+        This project is currently in [Developer Preview/Beta]. It is provided "as is" without warranty of any kind. Features and performance characteristics are subject to change prior to the general release. We do not recommend use in production environments at this stage.
+      </p>
+    </div>
+
+    <div class="footer">
+      <span>Thales Databricks JDBC Technical Overview</span>
+      <span>3</span>
+    </div>
+  </section>
+</body>
+</html>

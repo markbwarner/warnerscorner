@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thales JDBC Protection for Snowflake</title>
+  <style>
+    :root { --ink:#12263d; --muted:#52677f; --brand:#0866ae; --brand-dark:#084477; --accent:#ef6b2e; --surface:#f4f8fc; --line:#d5e1ec; --deep:#102941; --page-width:8.5in; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#dce6f1; color:var(--ink); font-family:"Segoe UI", Arial, sans-serif; }
+    .page { width:var(--page-width); min-height:11in; margin:0 auto 18px; padding:.7in; background:#fff; position:relative; overflow:hidden; box-shadow:0 8px 28px rgba(16,41,65,.14); page-break-after:always; }
+    .page:last-child { page-break-after:auto; }
+    .hero { background:radial-gradient(circle at top right,rgba(239,107,46,.12),transparent 27%),radial-gradient(circle at left top,rgba(8,102,174,.13),transparent 25%),linear-gradient(180deg,#fbfdff 0%,#eff6fc 100%); }
+    .eyebrow { display:inline-block; padding:7px 12px; margin-bottom:16px; border-radius:999px; background:rgba(8,102,174,.1); color:var(--brand-dark); font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    h1,h2,h3 { margin:0; line-height:1.12; } h1 { max-width:6.8in; margin-bottom:14px; font-size:30px; } h2 { margin-bottom:12px; font-size:22px; } h3 { margin-bottom:8px; font-size:15px; }
+    p { margin:0 0 11px; color:var(--muted); font-size:13.2px; line-height:1.55; } .lede { max-width:6.9in; margin-bottom:20px; color:#30445b; font-size:15px; }
+    .grid-2,.grid-3,.metrics,.benefits,.architecture { display:grid; gap:14px; } .grid-2 { grid-template-columns:1.25fr .95fr; } .grid-3 { grid-template-columns:repeat(3,1fr); } .metrics { grid-template-columns:repeat(4,1fr); margin-top:18px; } .benefits { grid-template-columns:repeat(2,1fr); } .architecture { grid-template-columns:1.05fr .95fr; align-items:start; }
+    .panel,.card,.stack,.callout,.flow { border:1px solid var(--line); border-radius:18px; background:#fff; } .panel,.card,.callout { padding:16px; } .panel,.card { background:linear-gradient(180deg,#fff 0%,#f8fbfe 100%); } .card { min-height:142px; } .stack { overflow:hidden; } .stack .row { padding:14px 16px; border-bottom:1px solid var(--line); } .stack .row:last-child { border-bottom:0; }
+    .row-title { margin-bottom:6px; color:var(--brand-dark); font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; } ul { margin:9px 0 0 18px; padding:0; color:var(--muted); font-size:13px; line-height:1.5; } li { margin-bottom:6px; }
+    .metric { padding:13px 12px; border-radius:15px; background:var(--deep); color:#fff; } .metric .num { display:block; margin-bottom:4px; font-size:24px; font-weight:800; } .metric .cap { display:block; color:rgba(255,255,255,.8); font-size:11px; line-height:1.35; letter-spacing:.05em; text-transform:uppercase; }
+    .accent { width:62px; height:6px; margin-bottom:12px; border-radius:999px; background:linear-gradient(90deg,var(--accent),var(--brand)); } .callout { margin-top:18px; border-left:4px solid var(--accent); border-radius:0 14px 14px 0; background:#fff6f1; color:#3b4d61; }
+    .flow { padding:16px; background:linear-gradient(180deg,#f8fbfe 0%,#edf5fb 100%); } .flow-step { display:grid; grid-template-columns:38px 1fr; gap:12px; margin-bottom:14px; } .flow-step:last-child { margin-bottom:0; } .step { width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--brand)); color:#fff; font-size:13px; font-weight:800; }
+    .arch-node { position:relative; padding:14px 16px; border:1px solid var(--line); border-radius:16px; background:#fff; } .arch-node:not(:last-child):after { content:""; position:absolute; bottom:-11px; left:50%; width:2px; height:10px; background:#91a5ba; } .arch-label { margin-bottom:5px; color:var(--brand-dark); font-size:10.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    code { padding:2px 5px; border-radius:5px; background:#edf4fa; color:var(--brand-dark); font-family:Consolas,"Courier New",monospace; font-size:11.5px; } .footer { position:absolute; right:.7in; bottom:.45in; left:.7in; display:flex; justify-content:space-between; color:#73869b; font-size:10.5px; }
+    @media print { body { background:#fff; } .page { margin:0; box-shadow:none; } }
+  </style>
+</head>
+<body>
+  <section class="page hero">
+    <div class="eyebrow">Thales JDBC for Snowflake</div>
+    <h1>Bring policy-aware protection and reveal controls to Snowflake JDBC workflows</h1>
+    <p class="lede">The Thales Snowflake JDBC wrapper lets applications, SQL tools, and BI clients keep using familiar Snowflake SQL while configured protected fields are evaluated through Thales at read time.</p>
+    <div class="grid-2">
+      <div class="panel">
+        <div class="accent"></div>
+        <h2>Why customers care</h2>
+        <p>Snowflake enables high-value analytics and collaboration. Teams also need a practical way to keep policy decisions around sensitive values consistent across developer tools, analyst workflows, reporting, and custom JDBC applications.</p>
+        <ul>
+          <li>Keep JDBC-based workflows familiar for analysts and developers.</li>
+          <li>Apply Thales policy to configured PII and sensitive fields at read time.</li>
+          <li>Support CRDP REST or CADP Centralized policy paths.</li>
+          <li>Use the connected database identity for user-aware policy outcomes.</li>
+        </ul>
+      </div>
+      <div class="stack">
+        <div class="row"><div class="row-title">Typical clients</div><p>DbVisualizer, JDBC applications, ETL validation jobs, reporting tools, SQL editors, and services that use the Snowflake JDBC driver.</p></div>
+        <div class="row"><div class="row-title">What stays the same</div><p>Snowflake continues to own connectivity, authentication, session state, SQL execution, metadata, and warehouse processing.</p></div>
+        <div class="row"><div class="row-title">What Thales adds</div><p>Protected-field detection, user normalization, policy-aware reveal calls, batching, and optional CipherTrust userset checks.</p></div>
+        <div class="row"><div class="row-title">Data protection model</div><p>Use internal policies, external policies with stored metadata headers, or a static metadata fallback when appropriate.</p></div>
+      </div>
+    </div>
+    <div class="metrics">
+	  <div class="metric"><span class="num">0</span><span class="cap">Need to replace existing End User JDBC client tooling</span></div>
+      <div class="metric"><span class="num">1</span><span class="cap">Protection policy platform for both client and server based protection</span></div>
+      <div class="metric"><span class="num">2</span><span class="cap">Thales policy paths: CRDP and CADP Centralized</span></div>
+      <div class="metric"><span class="num">100%</span><span class="cap">Key and policy control retained in Thales CipherTrust Manager</span></div>
+
+    </div>
+    <div class="footer"><span>Thales Snowflake JDBC Business Overview</span><span>1</span></div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">Business Value</div>
+    <h2>Extend data-centric controls into common Snowflake access paths</h2>
+    <p class="lede" style="font-size:14px;max-width:none">The value is not a replacement for Snowflake security. The value is a reusable client-side pattern for applying Thales data-protection policy to fields returned through JDBC.</p>
+    <div class="benefits">
+      <div class="card"><h3>Protect once, govern consistently</h3><p>Protect sensitive values before broad consumption, then use the JDBC layer to invoke reveal policy for configured result-set fields.</p></div>
+      <div class="card"><h3>Preserve familiar tools</h3><p>Teams continue with normal Snowflake JDBC connections and SQL rather than embedding a custom Thales integration in every consumer.</p></div>
+      <div class="card"><h3>Add or adjust data sources without rebuilding</h3><p>GUI tool and JDBC connection properties can override Thales settings for a datasource, helping teams test policies and introduce new connections without recompiling the wrapper.</p></div>
+      <div class="card"><h3>Configure protection at the right scope</h3><p>Define common protected fields globally with <code>app.fieldstoprotect</code>, then use <code>protect.object.&lt;table&gt;</code> for table- or view-specific mappings.</p></div>
+      <div class="card"><h3>Fail closed with allowlist control</h3><p>Allowlist mode restricts reveal to explicitly authorized CipherTrust userset members. A missing or failed lookup skips reveal, making it a practical emergency containment control.</p></div>
+      <div class="card"><h3>Use enterprise-friendly authentication</h3><p>CipherTrust Manager authentication supports password and client-credential modes, with credentials sourced from configuration, environment variables, or Akeyless.</p></div>
+    </div>
+    <div class="callout"><strong>Executive message:</strong> the Snowflake JDBC wrapper lets organizations extend Thales policy-based data handling into everyday SQL and JDBC workflows without replacing Snowflake or forcing every consuming team to write its own reveal integration.</div>
+    <div class="footer"><span>Thales Snowflake JDBC Business Overview</span><span>2</span></div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">Architecture Snapshot</div>
+    <h2>Snowflake executes SQL; the wrapper controls protected values on return</h2>
+    <p class="lede" style="font-size:14px;max-width:none">The wrapper delegates to the standard Snowflake JDBC driver. It intercepts JDBC results, matches configured protected fields, and invokes Thales only for those returned values.</p>
+    <div class="architecture">
+      <div class="flow">
+        <div class="flow-step"><div class="step">1</div><div><h3>Connect through the wrapper</h3><p>The application uses <code>com.thales.snowflake.wrapper.ThalesSnowflakeDriver</code>, which delegates connection handling to the Snowflake JDBC driver.</p></div></div>
+        <div class="flow-step"><div class="step">2</div><div><h3>Run Snowflake SQL normally</h3><p>Snowflake manages the session, role, warehouse, database, schema, query execution, and underlying result set.</p></div></div>
+        <div class="flow-step"><div class="step">3</div><div><h3>Resolve protected fields</h3><p>Object-scoped mappings such as <code>protect.object.EMPLOYEES_EXTERNAL</code> determine which returned columns are sent to Thales.</p></div></div>
+        <div class="flow-step"><div class="step">4</div><div><h3>Apply Thales reveal policy</h3><p>The wrapper supplies the normalized database user and, for external fields, per-row metadata headers when the result includes them.</p></div></div>
+      </div>
+      <div style="display:grid;gap:10px">
+        <div class="arch-node"><div class="arch-label">Client layer</div><h3>Applications and JDBC tools</h3><p>DbVisualizer, BI clients, Java applications, and services.</p></div>
+        <div class="arch-node"><div class="arch-label">Thales layer</div><h3>Snowflake JDBC wrapper</h3><p>Connection, statement, result-set, mapping, and batching interception.</p></div>
+        <div class="arch-node"><div class="arch-label">Vendor layer</div><h3>Snowflake JDBC driver</h3><p>Authentication, session context, SQL, and data transport.</p></div>
+        <div class="arch-node"><div class="arch-label">Data platform</div><h3>Snowflake</h3><p>Warehouses, tables, views, roles, and governed data.</p></div>
+        <div class="arch-node"><div class="arch-label">Policy service</div><h3>CRDP or CADP Centralized</h3><p>Protect and reveal outcomes according to Thales policy.</p></div>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:18px">
+      <div class="panel"><h3>For security teams</h3><p>Centralize policy behavior and identity-aware controls while retaining a clear split between Snowflake operations and Thales data protection.</p></div>
+      <div class="panel"><h3>For analytics teams</h3><p>Continue using familiar SQL and JDBC tools while datasource-specific GUI properties let teams add, test, and tune protected connections without recompiling the driver.</p></div>
+      <div class="panel"><h3>For platform teams</h3><p>Deploy the thin wrapper plus all jars in <code>target/dbvisualizer-libs/</code> for DbVisualizer and other configured driver tools.</p></div>
+    </div>
+    <div class="footer"><span>Thales Snowflake JDBC Business Overview</span><span>3</span></div>
+  </section>
+</body>
+</html>

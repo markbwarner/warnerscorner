@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thales JDBC Protection for Cloud Databases</title>
+  <style>
+    :root {
+      --ink: #132238;
+      --muted: #58677d;
+      --brand: #005bbb;
+      --brand-dark: #003f82;
+      --accent: #00a8a8;
+      --surface: #f6f8fb;
+      --line: #d9e1ec;
+      --page-width: 8.5in;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: #dfe7f2;
+    }
+
+    .page {
+      width: var(--page-width);
+      min-height: 11in;
+      margin: 0 auto 18px;
+      background: white;
+      padding: 0.72in;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(17, 32, 56, 0.12);
+    }
+
+    .hero {
+      background:
+        radial-gradient(circle at top right, rgba(0, 168, 168, 0.16), transparent 28%),
+        radial-gradient(circle at left 20% top 10%, rgba(0, 91, 187, 0.13), transparent 24%),
+        linear-gradient(135deg, #f8fbff 0%, #edf4fb 100%);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--brand-dark);
+      background: rgba(0, 91, 187, 0.1);
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    h1 {
+      font-size: 30px;
+      max-width: 6.5in;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 0 0 12px;
+      line-height: 1.5;
+      font-size: 13.2px;
+      color: var(--muted);
+    }
+
+    .lede {
+      font-size: 15px;
+      max-width: 6.7in;
+      color: #314157;
+      margin-bottom: 22px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .card,
+    .panel,
+    .stack {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: white;
+    }
+
+    .card {
+      padding: 16px;
+      min-height: 138px;
+    }
+
+    .card strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .panel {
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbfe 100%);
+    }
+
+    .stack {
+      overflow: hidden;
+    }
+
+    .stack .row {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stack .row:last-child {
+      border-bottom: 0;
+    }
+
+    .row-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    li {
+      margin-bottom: 7px;
+    }
+
+    .metric-band {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 22px 0 10px;
+    }
+
+    .metric {
+      padding: 14px 12px;
+      border-radius: 16px;
+      background: #0f2036;
+      color: white;
+    }
+
+    .metric .num {
+      display: block;
+      font-size: 25px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .metric .cap {
+      font-size: 11px;
+      line-height: 1.35;
+      color: rgba(255, 255, 255, 0.78);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .platform {
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .platform .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--brand);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .callout {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-left: 5px solid var(--accent);
+      background: #effbfb;
+      border-radius: 0 16px 16px 0;
+      color: #244049;
+    }
+
+    .flow-wrap {
+      margin-top: 12px;
+      padding: 16px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #f7fbff 0%, #edf5fb 100%);
+      border: 1px solid var(--line);
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .small {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .footer {
+      position: absolute;
+      left: 0.72in;
+      right: 0.72in;
+      bottom: 0.48in;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10.5px;
+      color: #71839a;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 16px 0 18px;
+    }
+
+    .page-break {
+      page-break-after: always;
+    }
+
+    @page {
+      size: letter;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .page {
+        margin: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="page hero page-break">
+    <div class="eyebrow">Thales CipherTrust + JDBC Drivers</div>
+    <h1>Bring Thales data protection to cloud databases without changing analytics workflows</h1>
+    <p class="lede">
+      Purpose-built JDBC drivers let security and data teams protect sensitive fields in PostgreSQL, MySQL, and MariaDB
+      across AWS, Google Cloud, and Microsoft Azure while continuing to use familiar SQL tools, BI platforms, and JDBC-based applications.
+    </p>
+
+    <div class="metric-band">
+      <div class="metric">
+		  <span class="num">0</span>
+		  <span class="cap">Application changes to standard SQL queries and dashboards</span>
+		</div>
+		<div class="metric">
+        <span class="num">1</span>
+        <span class="cap">Driver strategy across AWS RDS, GCP Cloud SQL, and Azure database services</span>
+      </div>
+      <div class="metric">
+        <span class="num">2</span>
+        <span class="cap">Protection modes with Thales CRDP and CADP Centralized</span>
+      </div>
+      <div class="metric">
+        <span class="num">100%</span>
+        <span class="cap">Key and policy control retained in Thales CipherTrust Manager</span>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top: 8px;">
+      <div>
+        <h2>Why this matters</h2>
+        <p>
+          JDBC drivers are the software layer that lets Java and JDBC-based tools communicate with databases. By enhancing
+          that layer, organizations can apply protection and reveal logic close to the data-access path instead of rewriting
+          every analytics application or dashboard.
+        </p>
+        <p>
+          The result is a practical pattern for cloud modernization: sensitive data stays protected at rest, yet authorized
+          users can still work through familiar tools such as DbVisualizer, BI platforms, report builders, ETL utilities,
+          and custom JDBC applications.
+        </p>
+
+        <div class="card-grid">
+          <div class="card">
+            <strong>Protect PII where it lives</strong>
+            Apply field-level protection to values such as email, address, SSN, phone, and credit card data.
+          </div>
+          <div class="card">
+            <strong>Keep keys and policy external</strong>
+            Thales CipherTrust Manager remains the system of record for policy and key governance.
+          </div>
+          <div class="card">
+            <strong>Preserve tool choice</strong>
+            Support JDBC-capable admin, developer, and analytics tools without requiring SQL rewrites.
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Supported cloud database path</h2>
+        <div class="platform-grid">
+          <div class="platform">
+            <div class="label">AWS</div>
+            <h3>Amazon RDS</h3>
+            <p>PostgreSQL, MySQL, and MariaDB through the AWS Advanced JDBC Wrapper pattern.</p>
+          </div>
+          <div class="platform">
+            <div class="label">Google Cloud</div>
+            <h3>Cloud SQL</h3>
+            <p>PostgreSQL and MySQL with the same protected-field model and Thales policy enforcement.</p>
+          </div>
+          <div class="platform">
+            <div class="label">Microsoft Azure</div>
+            <h3>Azure Database</h3>
+            <p>Azure Database for PostgreSQL and Azure Database for MySQL using the same JDBC integration approach.</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          Snowflake & Databricks follows a similar value proposition but uses a different driver path.
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Thales JDBC Protection for Cloud Databases</span>
+      <span>Page 1</span>
+    </div>
+  </section>
+
+  <section class="page page-break">
+    <h2>How the drivers work</h2>
+    <p>
+      The driver sits between the JDBC client and the target cloud database. SQL flows normally to the database. As result sets
+      are read back, the Thales-aware driver inspects configured protected columns and invokes the correct Thales service only
+      when needed.
+    </p>
+
+    <div class="flow-wrap">
+      <svg viewBox="0 0 980 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Architecture flow">
+        <defs>
+          <linearGradient id="navyGrad" x1="0" x2="1">
+            <stop offset="0%" stop-color="#2e327a"/>
+            <stop offset="100%" stop-color="#4957a7"/>
+          </linearGradient>
+          <linearGradient id="lightPanel" x1="0" x2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#eef4fb"/>
+          </linearGradient>
+          <linearGradient id="dbGrad" x1="0" x2="1">
+            <stop offset="0%" stop-color="#6c6fb1"/>
+            <stop offset="100%" stop-color="#50538f"/>
+          </linearGradient>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#b12b7f"/>
+          </marker>
+        </defs>
+
+        <rect x="22" y="20" width="250" height="92" rx="24" fill="url(#lightPanel)" stroke="#305c9a" stroke-width="2.5"/>
+        <rect x="60" y="40" width="175" height="24" rx="4" fill="url(#navyGrad)"/>
+        <text x="147" y="57" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">THALES</text>
+        <rect x="32" y="70" width="230" height="24" rx="5" fill="#5f99df"/>
+        <text x="147" y="87" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">CipherTrust Manager</text>
+
+        <line x1="147" y1="112" x2="147" y2="148" stroke="#305c9a" stroke-width="2"/>
+        <text x="98" y="130" font-size="10" fill="#305c9a">Keys</text>
+        <text x="160" y="130" font-size="10" fill="#305c9a">Configuration</text>
+        <text x="220" y="130" font-size="10" fill="#305c9a">Policies</text>
+
+        <rect x="58" y="150" width="190" height="146" rx="18" fill="url(#lightPanel)" stroke="#305c9a" stroke-width="2"/>
+        <text x="148" y="196" text-anchor="middle" font-size="15" font-weight="700" fill="#132238">CRDP</text>
+        <rect x="70" y="214" width="166" height="22" rx="5" fill="#4f8bd5"/>
+        <text x="153" y="229" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">CRDP</text>
+        <text x="153" y="250" text-anchor="middle" font-size="10" fill="#43536b">CRDP caches keys, policies, and config</text>
+        <text x="153" y="264" text-anchor="middle" font-size="10" fill="#43536b">from CipherTrust Manager.</text>
+        <text x="153" y="278" text-anchor="middle" font-size="10" fill="#43536b">CRDP updates cache on heartbeat</text>
+        <text x="153" y="292" text-anchor="middle" font-size="10" fill="#43536b">notifications of changes.</text>
+
+        <rect x="34" y="494" width="190" height="40" rx="10" fill="url(#navyGrad)"/>
+        <text x="129" y="520" text-anchor="middle" font-size="15" fill="#ffffff">JDBC BI Tool</text>
+
+        <rect x="46" y="440" width="170" height="30" rx="9" fill="#ebedf0" stroke="#c9d1dc"/>
+        <text x="131" y="460" text-anchor="middle" font-size="14" fill="#1b2738">Thales JDBC Driver</text>
+
+        <rect x="48" y="372" width="165" height="48" rx="9" fill="url(#lightPanel)" stroke="#b4c7e2"/>
+        <rect x="59" y="382" width="67" height="12" rx="4" fill="#4d8bd5"/>
+        <rect x="136" y="382" width="67" height="12" rx="4" fill="#4d8bd5"/>
+        <rect x="59" y="399" width="67" height="12" rx="4" fill="#4d8bd5"/>
+        <rect x="136" y="399" width="67" height="12" rx="4" fill="#4d8bd5"/>
+        <text x="92" y="391" text-anchor="middle" font-size="8.7" fill="#ffffff">Protect API</text>
+        <text x="169" y="391" text-anchor="middle" font-size="8.7" fill="#ffffff">Reveal API</text>
+        <text x="92" y="408" text-anchor="middle" font-size="8.7" fill="#ffffff">Bulk protect API</text>
+        <text x="169" y="408" text-anchor="middle" font-size="8.7" fill="#ffffff">Bulk reveal API</text>
+
+        <line x1="105" y1="440" x2="105" y2="296" stroke="#b12b7f" stroke-width="3" marker-end="url(#arrow)"/>
+        <line x1="516" y1="456" x2="216" y2="456" stroke="#b12b7f" stroke-width="3" marker-end="url(#arrow)"/>
+        <line x1="242" y1="382" x2="682" y2="194" stroke="#b12b7f" stroke-width="3" marker-end="url(#arrow)"/>
+        <line x1="252" y1="308" x2="192" y2="440" stroke="#b12b7f" stroke-width="3" marker-end="url(#arrow)"/>
+
+        <rect x="64" y="462" width="28" height="18" rx="3" fill="#ffffff" stroke="#bfc7d4"/>
+        <text x="78" y="475" text-anchor="middle" font-size="10" fill="#3e4a59">1</text>
+        <text x="104" y="474" font-size="11" font-weight="700" fill="#1b2738">Step 1</text>
+
+        <rect x="390" y="468" width="28" height="18" rx="3" fill="#ffffff" stroke="#bfc7d4"/>
+        <text x="404" y="481" text-anchor="middle" font-size="10" fill="#3e4a59">2</text>
+        <text x="426" y="480" font-size="11" font-weight="700" fill="#1b2738">Step 2</text>
+
+        <rect x="538" y="392" width="28" height="18" rx="3" fill="#ffffff" stroke="#bfc7d4"/>
+        <text x="552" y="405" text-anchor="middle" font-size="10" fill="#3e4a59">2</text>
+        <text x="572" y="404" font-size="11" font-weight="700" fill="#1b2738">Step 2</text>
+
+        <rect x="82" y="304" width="28" height="18" rx="3" fill="#ffffff" stroke="#bfc7d4"/>
+        <text x="96" y="317" text-anchor="middle" font-size="10" fill="#3e4a59">3</text>
+        <text x="116" y="316" font-size="11" font-weight="700" fill="#1b2738">Step 3</text>
+
+        <rect x="248" y="286" width="28" height="18" rx="3" fill="#ffffff" stroke="#bfc7d4"/>
+        <text x="262" y="299" text-anchor="middle" font-size="10" fill="#3e4a59">4</text>
+        <text x="284" y="298" font-size="11" font-weight="700" fill="#1b2738">Step 4</text>
+
+        <rect x="44" y="10" width="32" height="20" rx="3" fill="#2c2c2c" stroke="#111111"/>
+        <text x="60" y="24" text-anchor="middle" font-size="10" fill="#ffffff">0</text>
+
+        <rect x="430" y="10" width="32" height="20" rx="3" fill="#2c2c2c" stroke="#111111"/>
+        <text x="446" y="24" text-anchor="middle" font-size="10" fill="#ffffff">1</text>
+
+        <rect x="842" y="10" width="32" height="20" rx="3" fill="#2c2c2c" stroke="#111111"/>
+        <text x="858" y="24" text-anchor="middle" font-size="10" fill="#ffffff">2</text>
+
+        <text x="300" y="408" font-size="12" fill="#2a37ff" font-family="Consolas, monospace">SELECT email, address,</text>
+        <text x="300" y="432" font-size="12" fill="#2a37ff" font-family="Consolas, monospace">creditcard FROM</text>
+        <text x="300" y="456" font-size="12" fill="#2a37ff" font-family="Consolas, monospace">plaintext_protected</text>
+
+        <rect x="262" y="16" width="370" height="200" rx="6" fill="#ffffff" stroke="#d8e1eb"/>
+        <rect x="262" y="16" width="370" height="24" fill="#f2f5f9"/>
+        <line x1="316" y1="40" x2="316" y2="216" stroke="#d8e1eb"/>
+        <line x1="470" y1="40" x2="470" y2="216" stroke="#d8e1eb"/>
+        <text x="330" y="32" font-size="11" font-weight="700" fill="#52647c">email</text>
+        <text x="480" y="32" font-size="11" font-weight="700" fill="#52647c">address</text>
+        <g font-size="10.5" fill="#3c4a5f">
+          <text x="330" y="58">XXXXXXX@XXXXXXXXXXs.com</text>
+          <text x="480" y="58">XXXXX XXXXXkway</text>
+          <text x="330" y="76">XXXXXX@XXXXXXr.org</text>
+          <text x="480" y="76">XXXX XXXsing</text>
+          <text x="330" y="94">XXXXXXX@XXXXXXl.com</text>
+          <text x="480" y="94">XXXXXXX Pass</text>
+          <text x="330" y="112">XXXXX.XXXXX@XXXXXXl.com</text>
+          <text x="480" y="112">XXXXXX XXrcle</text>
+          <text x="330" y="130">XXXXXXX.XXXXX@XXXXo.com</text>
+          <text x="480" y="130">XXXXXXX XXXXsing</text>
+          <text x="330" y="148">XXXXXXXX@XXXXXXXXXXXXn.com</text>
+          <text x="480" y="148">XXXXXXXX XXXtion</text>
+          <text x="330" y="166">XXXXXXX@XXXXXXXXXXXe.com</text>
+          <text x="480" y="166">XXXXXXXX XXxlage</text>
+          <text x="330" y="184">XXXXX.XXXXX@XXXXXXXXXXn.net</text>
+          <text x="480" y="184">XXXXXXXXX XXyway</text>
+        </g>
+
+        <rect x="725" y="110" width="214" height="140" rx="30" fill="url(#dbGrad)"/>
+        <text x="832" y="166" text-anchor="middle" font-size="19" fill="#ffffff">Cloud or On Prem</text>
+        <text x="832" y="196" text-anchor="middle" font-size="19" fill="#ffffff">Database</text>
+
+        <rect x="560" y="336" width="372" height="192" rx="6" fill="#ffffff" stroke="#d8e1eb"/>
+        <rect x="560" y="336" width="372" height="50" fill="#f6f7fb"/>
+        <text x="578" y="355" font-size="10" fill="#4d6079">Database Connection</text>
+        <text x="578" y="373" font-size="10.5" fill="#1d2c40">AkeylessMySQLDynamicSecret</text>
+        <text x="578" y="392" font-size="9.5" fill="#2a37ff" font-family="Consolas, monospace">select email,address from plaintext_protected limit 10</text>
+        <line x1="612" y1="406" x2="612" y2="528" stroke="#d8e1eb"/>
+        <line x1="770" y1="406" x2="770" y2="528" stroke="#d8e1eb"/>
+        <text x="626" y="420" font-size="11" font-weight="700" fill="#52647c">email</text>
+        <text x="780" y="420" font-size="11" font-weight="700" fill="#52647c">address</text>
+        <g font-size="10.2" fill="#3c4a5f">
+          <text x="626" y="442">1005000cz2GcLZ@Lpr8eGBO0gB.XNN</text>
+          <text x="780" y="442">1005000lmlvc ml3tj3N</text>
+          <text x="626" y="458">1005000O1xzmOT@0prm99.Wxp</text>
+          <text x="780" y="458">1005000yL6V YDr7aVc8</text>
+          <text x="626" y="474">1005000hGm37w7@b9vHFIM.utl</text>
+          <text x="780" y="474">1005000vPAzGW m22y</text>
+          <text x="626" y="490">1005000G88pNT.j49Th@cvcjZtU.EpQ</text>
+          <text x="780" y="490">10050009dwRSq fD9x2c</text>
+          <text x="626" y="506">1005000xhWuus8.FpyI6oPH0I1.Hnt</text>
+          <text x="780" y="506">1005000KezgnFT cBYve3Ji</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="grid-2" style="margin-top: 22px;">
+      <div class="stack">
+        <div class="row">
+          <div class="row-title">Step 1</div>
+          <h3>Application or BI tool connects over JDBC</h3>
+          <p>The client uses a Thales-enabled JDBC driver instead of a standard vendor driver.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Step 2</div>
+          <h3>SQL is sent normally to the target database</h3>
+          <p>No application rewrite is required for ordinary query execution, inserts, or dashboard access.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Step 3</div>
+          <h3>Protected fields are identified in the result set</h3>
+          <p>Configured fields such as `email|tag.char` or `creditcard|tag.nbr` drive the reveal behavior.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Step 4</div>
+          <h3>Thales services enforce policy at read time</h3>
+          <p>CRDP and CADP Centralized determine whether the user receives ciphertext, masked data, or revealed values.</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel">
+          <h3>Two operating models</h3>
+          <ul>
+            <li><strong>Thales CRDP</strong> uses REST-based protect and reveal APIs, including bulk operations for high-volume paths.</li>
+            <li><strong>Thales CADP Centralized</strong> supports centralized protection controls and policy enforcement with Thales key management.</li>
+          </ul>
+        </div>
+
+        <div class="panel" style="margin-top: 14px;">
+          <h3>Performance-aware controls</h3>
+          <ul>
+            <li>Batch mode can group result-set values into chunked CRDP bulk calls.</li>
+            <li>Allowlist logic can skip reveal requests entirely for users outside a licensed or authorized userset.</li>
+            <li>Chunking, debug controls, and profile-based field mapping help tailor performance to each tool.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Thales JDBC Protection for Cloud Databases</span>
+      <span>Page 2</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>Business value for cloud analytics and operations</h2>
+    <p>
+      The solution is designed for organizations that want to move analytics, reporting, and operational access to the cloud
+      without giving up policy-based control of sensitive data. It combines database portability with centralized protection.
+    </p>
+
+    <div class="divider"></div>
+
+    <div class="grid-2">
+      <div>
+        <h3>Where it fits well</h3>
+        <ul>
+          <li>Developer and DBA access through JDBC tools.</li>
+          <li>BI and reporting workloads that need controlled visibility into sensitive fields.</li>
+          <li>Cloud migration projects moving from on-premises databases to managed services.</li>
+          <li>Shared data environments where different users may require ciphertext, masked data, or plaintext outcomes.</li>
+        </ul>
+
+        <h3 style="margin-top: 18px;">Why Thales matters here</h3>
+        <ul>
+          <li>CipherTrust Manager acts as the keeper of keys, protection policies, and access decision logic.</li>
+          <li>CRDP and CADP Centralized provide a consistent protection model that travels with the data-access workflow.</li>
+          <li>Security policy remains externalized from the application and database schema design.</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>Benefits</h3>
+        <ul>
+          <li>Protect sensitive cloud database fields without changing how analysts query data.</li>
+          <li>Use the same driver strategy across AWS RDS, GCP Cloud SQL, and Azure database services.</li>
+          <li>Keep Thales at the center of key custody and policy governance.</li>
+          <li>Scale higher-volume read paths with CRDP bulk APIs while keeping a consistent user experience.</li>
+          <li>Platforms such as Snowflake and Databricks with platform-specific drivers are also available.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-grid" style="margin-top: 20px;">
+      <div class="card">
+        <strong>For security teams</strong>
+        Drive policy centrally, reduce exposure of sensitive fields, and avoid hard-coding reveal logic in every application.
+      </div>
+      <div class="card">
+        <strong>For data platform teams</strong>
+        Standardize one JDBC-based approach across managed cloud databases and JDBC-capable tools.
+      </div>
+      <div class="card">
+        <strong>For business users</strong>
+        Keep familiar SQL and dashboard workflows while applying role-appropriate visibility controls to protected data.
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 22px;">
+      Similar support is also available for Snowflake and Databricks using the direct-driver pattern.
+    </div>
+
+    <p class="small" style="margin-top: 22px;">
+      Note: Microsoft's equivalent managed services are typically Azure Database for PostgreSQL and Azure Database for MySQL.
+    </p>
+
+    <div class="footer">
+      <span>Thales JDBC Protection for Cloud Databases</span>
+      <span>Page 3</span>
+    </div>
+  </section>
+</body>
+</html>
+

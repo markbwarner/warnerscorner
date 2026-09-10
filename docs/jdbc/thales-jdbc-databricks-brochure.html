@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thales JDBC Protection for Databricks</title>
+  <style>
+    :root {
+      --ink: #10233a;
+      --muted: #52657d;
+      --brand: #005bbb;
+      --brand-dark: #003f82;
+      --accent: #ff6f2c;
+      --accent-dark: #d65218;
+      --surface: #f4f8fc;
+      --surface-2: #eef4fb;
+      --line: #d7e1ec;
+      --page-width: 8.5in;
+      --shadow: 0 10px 28px rgba(16, 35, 58, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: #dfe8f2;
+    }
+
+    .page {
+      width: var(--page-width);
+      min-height: 11in;
+      margin: 0 auto 18px;
+      padding: 0.62in;
+      background: white;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page.hero {
+      background:
+        radial-gradient(circle at top right, rgba(255, 111, 44, 0.14), transparent 24%),
+        radial-gradient(circle at left top, rgba(0, 91, 187, 0.12), transparent 28%),
+        linear-gradient(180deg, #fbfdff 0%, #f3f8fd 100%);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand-dark);
+      background: rgba(0, 91, 187, 0.1);
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3 { margin: 0; line-height: 1.12; }
+    h1 { font-size: 30px; margin-bottom: 14px; max-width: 6.7in; }
+    h2 { font-size: 23px; margin-bottom: 12px; }
+    h3 { font-size: 15px; margin-bottom: 8px; }
+
+    p {
+      margin: 0 0 11px;
+      font-size: 13.2px;
+      line-height: 1.52;
+      color: var(--muted);
+    }
+
+    .lede {
+      font-size: 15px;
+      color: #31445b;
+      max-width: 6.9in;
+      margin-bottom: 20px;
+    }
+
+    .hero-grid,
+    .grid-2,
+    .grid-3,
+    .card-grid,
+    .metric-band,
+    .arch-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero-grid { grid-template-columns: 1.28fr 0.92fr; align-items: start; }
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .card-grid { grid-template-columns: repeat(2, 1fr); }
+    .metric-band { grid-template-columns: repeat(4, 1fr); margin: 18px 0 0; }
+    .arch-grid { grid-template-columns: 1.15fr 0.85fr; align-items: start; }
+
+    .panel,
+    .card,
+    .tile,
+    .list-block,
+    .timeline,
+    .arch-box,
+    .callout {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: white;
+    }
+
+    .panel { padding: 18px; background: linear-gradient(180deg, #ffffff 0%, #f8fbfe 100%); }
+    .card { padding: 16px; min-height: 140px; }
+    .tile { padding: 16px; background: var(--surface); }
+    .list-block { padding: 17px; }
+    .callout { padding: 16px 18px; background: #eef8ff; }
+
+    .card strong,
+    .tile strong,
+    .list-block strong {
+      display: block;
+      font-size: 14px;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    li { margin-bottom: 6px; }
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 12px;
+      color: var(--brand-dark);
+      background: rgba(0, 91, 187, 0.08);
+      padding: 2px 5px;
+      border-radius: 6px;
+    }
+
+    .metric {
+      padding: 14px 12px;
+      border-radius: 16px;
+      background: #11243b;
+      color: white;
+    }
+
+    .metric .num {
+      display: block;
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .metric .cap {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1.35;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .problem-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .problem-strip .tile {
+      min-height: 155px;
+      background: linear-gradient(180deg, #ffffff 0%, #f6f9fd 100%);
+    }
+
+    .accent-bar {
+      height: 6px;
+      width: 64px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--brand) 100%);
+      margin-bottom: 12px;
+    }
+
+    .section-gap { margin-top: 18px; }
+
+    .benefit-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .benefit {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #fff 0%, #f9fbfd 100%);
+      padding: 14px;
+    }
+
+    .benefit .title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 7px;
+    }
+
+    .timeline {
+      padding: 18px;
+      background: linear-gradient(180deg, #f8fbff 0%, #edf5fb 100%);
+    }
+
+    .step-row {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .step-row:last-child { margin-bottom: 0; }
+
+    .step-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: white;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--brand) 100%);
+      margin-top: 2px;
+    }
+
+    .step-copy strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: var(--ink);
+    }
+
+    .arch-flow {
+      display: grid;
+      gap: 10px;
+    }
+
+    .arch-box {
+      padding: 14px 16px;
+      background: linear-gradient(180deg, #fff 0%, #f8fbfd 100%);
+      position: relative;
+    }
+
+    .arch-box:after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      width: 2px;
+      height: 10px;
+      background: #8fa1b8;
+      transform: translateX(-50%);
+    }
+
+    .arch-box:last-child:after { display: none; }
+
+    .arch-box .label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--brand-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .arch-box .title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .small { font-size: 11.5px; color: var(--muted); }
+
+    .footer {
+      position: absolute;
+      left: 0.62in;
+      right: 0.62in;
+      bottom: 0.4in;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10.5px;
+      color: #73859b;
+    }
+  </style>
+</head>
+<body>
+  <section class="page hero">
+    <div class="eyebrow">Thales JDBC for Databricks</div>
+    <h1>Bring policy-based protect and reveal controls to Databricks without forcing teams to redesign how they query data</h1>
+    <p class="lede">
+      Managed cloud data platforms make analytics easier to operate, but they also limit backend customization. The Thales Databricks JDBC solution closes that gap by moving policy-aware protect and reveal behavior to the client side so applications, BI tools, and JDBC-based workflows can continue using familiar SQL.
+    </p>
+
+    <div class="hero-grid">
+      <div class="panel">
+        <div class="accent-bar"></div>
+        <h2>Why customers care</h2>
+        <p>
+          Organizations want the operational simplicity of Databricks and other managed cloud data services, but still need practical ways to protect, reveal, and govern sensitive fields such as PII, payment data, healthcare data, and regulated identifiers.
+        </p>
+        <ul>
+          <li>Managed platforms simplify infrastructure, scaling, and operations.</li>
+          <li>Thales Batch Data Transformation can already protect sensitive fields before or during data loading.</li>
+          <li>The hard part is dynamic reveal for analytics, reporting, JDBC tools, and shared data access workflows.</li>
+          <li>Teams need a solution that works with normal SQL instead of requiring every tool or application to embed custom security code.</li>
+        </ul>
+      </div>
+
+      <div class="list-block">
+        <strong>Positioning summary</strong>
+        <p>
+          This is a business-focused solution for customers who want to preserve the usability of Databricks while extending Thales policy controls into JDBC-based access paths.
+        </p>
+        <ul>
+          <li>Keep standard BI and JDBC workflows intact.</li>
+          <li>Apply policy and user-based outcomes outside the managed database service.</li>
+          <li>Return ciphertext, masked values, or cleartext based on policy.</li>
+          <li>Reduce dependency on one-off custom application integrations.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="problem-strip">
+      <div class="tile">
+        <strong>Problem</strong>
+        <ul>
+          <li>Managed cloud databases simplify operations but limit backend customization.</li>
+          <li>Examples include Amazon RDS, Google Cloud SQL, Azure managed databases, and Databricks SQL environments.</li>
+          <li>Customers can protect data, but dynamic reveal remains difficult.</li>
+        </ul>
+      </div>
+      <div class="tile">
+        <strong>Current limitation</strong>
+        <ul>
+          <li>Managed services typically do not allow customer-controlled backend reveal logic such as UDF-based approaches.</li>
+          <li>Customers are often pushed toward custom application code to handle reveal decisions.</li>
+          <li>That approach does not scale well across BI, reporting, admin, and analyst workflows.</li>
+        </ul>
+      </div>
+      <div class="tile">
+        <strong>Why that matters</strong>
+        <ul>
+          <li>Custom code is harder to scale, test, and maintain.</li>
+          <li>It does not work well with JDBC-based tools and shared analytics platforms.</li>
+          <li>This creates a gap in delivering a complete protect-and-reveal solution for modern cloud data estates.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="metric-band">
+	  <div class="metric"><span class="num">0</span><span class="cap">Need to redesign normal SQL access patterns for supported use cases</span></div>
+      <div class="metric"><span class="num">1</span><span class="cap">Protection policy platform for both client and server based protection</span></div>
+      <div class="metric"><span class="num">2</span><span class="cap">Thales policy paths: CRDP or CADP Centralized</span></div>
+	  <div class="metric"><span class="num">3</span><span class="cap">Read-time outcomes: ciphertext, masked, or cleartext</span></div>
+
+    </div>
+
+    <div class="footer">
+      <span>Thales - Databricks JDBC Business Overview</span>
+      <span>1</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">Business Value</div>
+    <h2>What the Thales JDBC solution changes for Databricks customers</h2>
+    <p class="lede" style="font-size:14px; max-width:none; margin-bottom:16px;">
+      The value is not just technical integration. The value is that customers can extend Thales data protection into JDBC-based analytics and application access without waiting for custom backend database functions or rewriting every consumer of the data.
+    </p>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="accent-bar"></div>
+        <h3>Thales JDBC driver solution</h3>
+        <ul>
+          <li>Moves protect and reveal transformation to the client side.</li>
+          <li>Allows applications and JDBC tools to continue using normal SQL.</li>
+          <li>Applies policy- and user-based handling outside the managed database service.</li>
+          <li>Brings governed access to Databricks query workflows without forcing teams into custom code for every use case.</li>
+        </ul>
+
+        <div class="section-gap"></div>
+        <h3>Business outcome</h3>
+        <ul>
+          <li>Enables ciphertext, masked, or cleartext results based on policy.</li>
+          <li>Extends protection and reveal to JDBC-based applications and tools.</li>
+          <li>Provides a more complete solution for managed cloud database environments.</li>
+          <li>Supports collaboration between security, analytics, and engineering teams without changing how each group works day to day.</li>
+        </ul>
+      </div>
+
+      <div class="timeline">
+        <h3>Typical customer journey</h3>
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-copy">
+            <strong>Protect the data once</strong>
+            <p>Use Thales Batch Data Transformation, ETL workflows, or existing data onboarding processes to protect sensitive fields before they are broadly consumed.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-copy">
+            <strong>Define policy and user outcomes</strong>
+            <p>Security teams decide who should see ciphertext, masked values, or cleartext and manage those decisions centrally in Thales policy tooling.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-copy">
+            <strong>Let applications and BI tools use JDBC normally</strong>
+            <p>Analysts, developers, and reporting tools continue to query Databricks through standard JDBC patterns.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">4</div>
+          <div class="step-copy">
+            <strong>Apply Thales outcomes at read time</strong>
+            <p>The wrapper evaluates the configured field mappings, user context, and policy path and returns the right form of the data for the requesting user.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-gap"></div>
+    <h2 style="font-size:21px; margin-bottom:12px;">Key benefits and capabilities</h2>
+    <div class="benefit-list">
+      <div class="benefit">
+        <div class="title">Leverages Thales CRDP bulk processing</div>
+        <p>Uses existing Thales CRDP bulk capabilities to support higher-volume protect and reveal flows where the policy path allows it.</p>
+      </div>
+      <div class="benefit">
+        <div class="title">Easy overrides for new protected columns</div>
+        <p>New field mappings can be introduced through configuration and runtime properties for many use cases, reducing the need to rebuild or redeploy the driver jar.</p>
+      </div>
+      <div class="benefit">
+        <div class="title">Kill switch available</div>
+        <p>Operational teams can disable wrapper behavior quickly when troubleshooting, validating, or isolating issues in shared environments.</p>
+      </div>
+      <div class="benefit">
+        <div class="title">Detailed logging for supportability</div>
+        <p>Verbose logging helps customers and support teams understand policy path selection, field handling, and reveal decisions during rollout and troubleshooting.</p>
+      </div>
+      <div class="benefit">
+        <div class="title">Sample utilities included</div>
+        <p>Sample data-load and transformation utilities help teams validate policies, load test data, and debug field mappings faster during implementation.</p>
+      </div>
+      <div class="benefit">
+        <div class="title">Supports JDBC-based ecosystems</div>
+        <p>Extends Thales protection into BI clients, admin tools, SQL editors, application services, and reporting workflows that depend on JDBC access.</p>
+      </div>
+    </div>
+
+    <div class="callout section-gap">
+      <strong>Executive message:</strong> the Databricks JDBC solution helps customers move from raw protection building blocks to a more complete protect-and-reveal operating model for managed cloud data platforms.
+    </div>
+
+    <div class="footer">
+      <span>Thales - Databricks JDBC Business Overview</span>
+      <span>2</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">Architecture Snapshot</div>
+    <h2>Simple view of how the Databricks JDBC solution works</h2>
+    <p class="lede" style="font-size:14px; max-width:none; margin-bottom:16px;">
+      This architecture view is intentionally high level. The important point is that Databricks continues to run the SQL workload, while the Thales wrapper adds policy-aware transformation around JDBC access.
+    </p>
+
+    <div class="arch-grid">
+      <div class="timeline">
+        <h3>Process summary</h3>
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-copy">
+            <strong>Application or BI tool connects over JDBC</strong>
+            <p>The client connects through the Thales-enabled Databricks JDBC entry point while the standard Databricks JDBC driver remains the underlying delegate driver.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-copy">
+            <strong>SQL continues to run normally</strong>
+            <p>Existing query patterns remain familiar for analysts, applications, and reporting platforms using supported JDBC workflows.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-copy">
+            <strong>Protected fields are resolved from policy-driven config</strong>
+            <p>Configured object mappings determine which returned fields require Thales evaluation and which policy path applies.</p>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">4</div>
+          <div class="step-copy">
+            <strong>Thales applies the correct outcome at read time</strong>
+            <p>Based on policy and user context, the solution returns ciphertext, masked values, or cleartext without requiring backend database UDF customization.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-flow">
+        <div class="arch-box">
+          <div class="label">Client layer</div>
+          <div class="title">Applications, BI tools, JDBC workloads</div>
+          <p>DbVisualizer, analytics clients, reporting tools, notebooks, and custom JDBC applications.</p>
+        </div>
+        <div class="arch-box">
+          <div class="label">Thales layer</div>
+          <div class="title">Thales Databricks JDBC wrapper</div>
+          <p>Resolves protected columns, applies runtime controls, and orchestrates policy-aware transform behavior.</p>
+        </div>
+        <div class="arch-box">
+          <div class="label">Vendor layer</div>
+          <div class="title">Standard Databricks JDBC driver</div>
+          <p>The Databricks driver still handles the database connectivity path and remains part of the runtime design.</p>
+        </div>
+        <div class="arch-box">
+          <div class="label">Data platform</div>
+          <div class="title">Databricks SQL and governed data</div>
+          <p>Queries continue to run against Databricks while Thales extends policy-aware data handling around JDBC access.</p>
+        </div>
+        <div class="arch-box">
+          <div class="label">Policy services</div>
+          <div class="title">CRDP or CADP Centralized</div>
+          <p>Thales services drive the final data handling outcome according to policy, user access, and configured operating mode.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-3 section-gap">
+      <div class="tile">
+        <strong>For security teams</strong>
+        <p>Centralizes data handling decisions without forcing every consuming team to build its own reveal logic.</p>
+      </div>
+      <div class="tile">
+        <strong>For analytics teams</strong>
+        <p>Keeps Databricks and JDBC access patterns familiar so teams can focus on insights instead of bespoke security integration work.</p>
+      </div>
+      <div class="tile">
+        <strong>For engineering teams</strong>
+        <p>Provides a reusable client-side pattern for managed cloud data environments where backend customization is limited or unavailable.</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Thales - Databricks JDBC Business Overview</span>
+      <span>3</span>
+    </div>
+  </section>
+</body>
+</html>
