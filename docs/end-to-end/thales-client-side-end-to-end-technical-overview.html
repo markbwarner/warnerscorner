@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thales Client-Side End-to-End Protection - Technical Overview</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #eef2f5;
+      --paper: #ffffff;
+      --ink: #202a33;
+      --muted: #5c6872;
+      --line: #cdd8df;
+      --accent: #264f67;
+      --accent-soft: #e5eef3;
+      --code: #f2f6f8;
+      --green: #176b52;
+      --amber: #8a6221;
+      --amber-soft: #f7edda;
+      --red-soft: #f8e8e5;
+      --shadow: rgba(26, 47, 62, 0.14);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.58;
+      color: var(--ink);
+      background: linear-gradient(180deg, #dfeaf0 0%, var(--bg) 360px);
+    }
+    .page {
+      max-width: 1180px;
+      margin: 32px auto;
+      padding: 42px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 52px var(--shadow);
+    }
+    h1, h2, h3 {
+      font-family: Cambria, Georgia, serif;
+      color: #173a4d;
+      line-height: 1.18;
+    }
+    h1 { margin: 0 0 0.5rem; font-size: clamp(2rem, 4vw, 3rem); }
+    h2 {
+      margin: 2.25rem 0 0.8rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 2px solid var(--accent-soft);
+      font-size: 1.45rem;
+    }
+    h3 { margin: 1.35rem 0 0.45rem; font-size: 1.13rem; }
+    p { margin: 0.65rem 0; }
+    ul, ol { margin-top: 0.45rem; padding-left: 1.35rem; }
+    li { margin: 0.28rem 0; }
+    code {
+      background: var(--code);
+      border: 1px solid #dbe5ea;
+      border-radius: 3px;
+      padding: 0.08rem 0.32rem;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.93em;
+    }
+    pre {
+      overflow: auto;
+      background: #172632;
+      color: #eef6fa;
+      padding: 16px;
+      border-radius: 4px;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+    pre code {
+      display: block;
+      background: transparent;
+      border: 0;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+    }
+    .eyebrow {
+      color: var(--amber);
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .subtitle {
+      max-width: 960px;
+      color: var(--muted);
+      font-size: 1.12rem;
+      margin-bottom: 1.5rem;
+    }
+    .callout {
+      border-left: 5px solid var(--accent);
+      background: var(--accent-soft);
+      padding: 15px 18px;
+      margin: 1rem 0 1.4rem;
+    }
+    .callout.amber {
+      border-left-color: var(--amber);
+      background: var(--amber-soft);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+      gap: 15px;
+      margin: 1rem 0 1.4rem;
+    }
+    .card {
+      border: 1px solid var(--line);
+      background: #fbfdfe;
+      padding: 16px;
+    }
+    .card h3 { margin-top: 0; }
+    .card strong {
+      display: block;
+      color: var(--green);
+      margin-bottom: 0.25rem;
+    }
+    figure {
+      margin: 1rem 0 1.8rem;
+      border: 1px solid var(--line);
+      background: #f8fbfc;
+      padding: 12px;
+    }
+    figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid #dce6ec;
+      background: white;
+    }
+    figcaption {
+      color: var(--muted);
+      font-size: 0.94rem;
+      margin-top: 0.7rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.4rem;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--accent-soft); color: #173a4d; }
+    .flow {
+      counter-reset: step;
+      list-style: none;
+      padding-left: 0;
+    }
+    .flow li {
+      counter-increment: step;
+      border: 1px solid var(--line);
+      background: #fbfdfe;
+      margin: 0.6rem 0;
+      padding: 12px 14px 12px 52px;
+      position: relative;
+    }
+    .flow li::before {
+      content: counter(step);
+      position: absolute;
+      left: 14px;
+      top: 12px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .note {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+    @media (max-width: 860px) {
+      .page { margin: 0; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="eyebrow">Technical Architecture</div>
+    <h1>Thales Client-Side End-to-End Protection</h1>
+    <p class="subtitle">
+      This technical overview explains how the prototype protects sensitive fields in the browser, transports an encrypted payload to Spring Boot, unwraps the one-time AES key through Thales CipherTrust Manager, and then applies CRDP protection for downstream use.
+    </p>
+
+    <div class="callout">
+      <strong>Architecture goal.</strong> Move field-level encryption to the capture point while keeping private-key access, unwrap operations, CRDP policies, audit, and operational control in trusted backend infrastructure.
+    </div>
+
+    <figure>
+      <img src="thales-end-to-end.png" alt="Thales client-side end-to-end technical architecture diagram" />
+      <figcaption>
+        Technical lifecycle: public-key retrieval, client-side AES-GCM encryption, RSA-OAEP wrapping of the AES key, backend unwrap through REST or CADP, and CRDP protect/reveal for downstream workflows.
+      </figcaption>
+    </figure>
+
+    <h2>Current Prototype Components</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Role</th>
+          <th>Project Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>React frontend</td>
+          <td>Captures user input, requests the public key, encrypts sensitive fields, wraps the AES key, and submits the protected payload.</td>
+          <td><code>frontend/src</code></td>
+        </tr>
+        <tr>
+          <td>Web Crypto API</td>
+          <td>Generates the one-time AES key, encrypts fields with AES-GCM, and wraps the AES key using RSA-OAEP.</td>
+          <td><code>frontend/src/crypto.ts</code></td>
+        </tr>
+        <tr>
+          <td>Spring Boot backend</td>
+          <td>Exposes public-key, secure-submit, and backend-processing endpoints.</td>
+          <td><code>backend/src/main/java</code></td>
+        </tr>
+        <tr>
+          <td>CipherTrust REST path</td>
+          <td>Exports public key material and unwraps the AES key through CipherTrust REST APIs.</td>
+          <td><code>CipherTrustRestService.java</code></td>
+        </tr>
+        <tr>
+          <td>CADP path</td>
+          <td>Uses CADP for Java to export public key material and perform private-key unwrap operations.</td>
+          <td><code>CadpBrowserKeyProvider.java</code>, <code>CadpAesKeyUnwrapProvider.java</code></td>
+        </tr>
+        <tr>
+          <td>CRDP backend process</td>
+          <td>Applies policy-based protection and reveal operations to the reconstructed payload.</td>
+          <td><code>ThalesCrdpService.java</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>End-to-End Flow</h2>
+    <ol class="flow">
+      <li><strong>Public key retrieval.</strong> The browser calls <code>GET /api/crypto/public-key</code>. The backend obtains public-key material from the selected path: REST, CADP, or mock mode.</li>
+      <li><strong>Client key generation.</strong> The browser generates a one-time AES key for the submission using Web Crypto.</li>
+      <li><strong>Field encryption.</strong> Sensitive fields are encrypted with AES-GCM. Each encrypted field carries its own ciphertext and IV.</li>
+      <li><strong>AES key wrapping.</strong> The browser exports the AES key bytes and wraps them with the Thales-managed RSA public key using RSA-OAEP.</li>
+      <li><strong>Wire submission.</strong> The browser posts the non-sensitive fields, encrypted sensitive fields, IV values, key metadata, crypto mode, and wrapped AES key to <code>POST /api/secure/submit</code>.</li>
+      <li><strong>Trusted unwrap.</strong> The backend unwraps the AES key through CipherTrust REST or CADP. Private-key operations stay on the backend and in Thales-managed infrastructure.</li>
+      <li><strong>Transient field decrypt.</strong> The backend decrypts sensitive fields in memory to reconstruct the trusted processing payload.</li>
+      <li><strong>Policy protection.</strong> The downstream processing step calls CRDP <code>protectbulk</code> to convert values into durable protected data.</li>
+      <li><strong>Controlled reveal.</strong> When authorized, CRDP <code>revealbulk</code> can recover original values using policy, identity, and audit controls.</li>
+    </ol>
+
+    <h2>Wire Payload Shape</h2>
+    <p>
+      The current prototype uses one AES key per submission and a different IV per sensitive field. The IV is not secret and must travel with each ciphertext so the backend can decrypt correctly after it recovers the AES key.
+    </p>
+    <pre><code>{
+  "requestId": "3dc8bc31-232a-4a05-8cc3-f5128fda3a92",
+  "keyId": "rsakey1",
+  "keyVersion": 0,
+  "cryptoMode": "REST",
+  "nonSensitive": {
+    "userid": "bob",
+    "favoriteColor": "Blue",
+    "comments": "Hi"
+  },
+  "sensitive": {
+    "name": {
+      "ciphertext": "...",
+      "iv": "..."
+    },
+    "address": {
+      "ciphertext": "...",
+      "iv": "..."
+    },
+    "creditCardNumber": {
+      "ciphertext": "...",
+      "iv": "..."
+    }
+  },
+  "wrappedAesKey": "..."
+}</code></pre>
+
+    <h2>Cryptographic Model</h2>
+    <div class="grid">
+      <div class="card">
+        <strong>Data encryption</strong>
+        Sensitive field values are encrypted with AES-GCM on the client. AES-GCM provides confidentiality and integrity for each protected field.
+      </div>
+      <div class="card">
+        <strong>Key wrapping</strong>
+        The one-time AES key is wrapped with a Thales-managed public key. The current browser flow uses RSA-OAEP.
+      </div>
+      <div class="card">
+        <strong>Private-key control</strong>
+        The private key is never sent to the browser. REST or CADP performs the unwrap operation from trusted backend infrastructure.
+      </div>
+      <div class="card">
+        <strong>Durable protection</strong>
+        After the trusted backend transition, CRDP protects values for storage, queueing, analytics, or downstream processing.
+      </div>
+    </div>
+
+    <h2>REST vs CADP Private-Key Path</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Path</th>
+          <th>When It Helps</th>
+          <th>Operational Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>REST</code></td>
+          <td>Useful when the application can reach CipherTrust Manager over HTTPS but cannot use CADP or NAE connectivity.</td>
+          <td>Simple deployment model. Remote REST private-key operations are generally slower than locally cached CADP operations and require JWT token lifecycle handling.</td>
+        </tr>
+        <tr>
+          <td><code>CADP</code></td>
+          <td>Useful when the CADP SDK and required ports/connectivity are available and higher private-key processing performance is desired.</td>
+          <td>Can support key and cipher caching depending on CADP configuration. Requires CADP library setup and operational familiarity.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Production Public-Key Caching Pattern</h2>
+    <p>
+      Public keys are not secret, but they are still operationally important because they carry key identity, version, algorithm, and rotation semantics. A production deployment can place Redis or another low-latency cache behind the backend public-key endpoint.
+    </p>
+    <ul>
+      <li>The backend periodically fetches public-key metadata from CipherTrust Manager.</li>
+      <li>Redis stores public-key PEM, key name or ID, key version, algorithm, and expiry metadata.</li>
+      <li>Browsers call the application backend, not CipherTrust Manager, to retrieve the current public key.</li>
+      <li>Cache expiry and refresh policy should align with key rotation and incident-response requirements.</li>
+      <li>The backend should allow active key rollover so old submissions can still be unwrapped while new submissions use the latest public key.</li>
+    </ul>
+    <div class="callout amber">
+      <strong>Current demo note.</strong> This prototype demonstrates the public-key retrieval flow, but Redis is a recommended production scaling layer rather than the core requirement for proving the encryption pattern.
+    </div>
+
+    <h2>Backend Endpoints Used By The Demo</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Endpoint</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>GET /api/crypto/public-key</code></td>
+          <td>Returns key ID, key version, algorithm, crypto mode, and PEM public key for browser encryption.</td>
+        </tr>
+        <tr>
+          <td><code>POST /api/secure/submit</code></td>
+          <td>Accepts the protected browser payload, unwraps the AES key, decrypts sensitive fields, and reconstructs the trusted processing payload.</td>
+        </tr>
+        <tr>
+          <td><code>GET /api/process/latest</code></td>
+          <td>Returns the latest submission and backend processing state for the demo UI.</td>
+        </tr>
+        <tr>
+          <td><code>POST /api/process/policy-protect</code></td>
+          <td>Applies CRDP <code>protectbulk</code> to sensitive fields for downstream storage or processing.</td>
+        </tr>
+        <tr>
+          <td><code>POST /api/process/reveal</code></td>
+          <td>Applies CRDP <code>revealbulk</code> to show controlled recovery of protected values.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Security Boundaries</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Boundary</th>
+          <th>Protected By</th>
+          <th>Important Production Controls</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Client capture</td>
+          <td>Web Crypto AES-GCM field encryption and RSA-OAEP key wrap.</td>
+          <td>Content Security Policy, dependency control, XSS prevention, secure iframe-based inputs for high-risk fields, and browser hardening.</td>
+        </tr>
+        <tr>
+          <td>Browser to backend</td>
+          <td>Application-layer encrypted payload plus HTTPS transport.</td>
+          <td>Enable TLS on Spring Boot or the fronting gateway, validate certificates, enforce HSTS, and restrict CORS.</td>
+        </tr>
+        <tr>
+          <td>Backend unwrap</td>
+          <td>CipherTrust REST or CADP private-key operation.</td>
+          <td>Backend-only credentials, short-lived tokens, secure secret storage, audit, and no cleartext logging.</td>
+        </tr>
+        <tr>
+          <td>Backend to CRDP</td>
+          <td>CRDP policy-based protect/reveal calls.</td>
+          <td>Policy governance, identity mapping, TLS validation, service-account controls, and audit monitoring.</td>
+        </tr>
+        <tr>
+          <td>Durable storage</td>
+          <td>CRDP-protected values, including FPE or policy-selected formats where appropriate.</td>
+          <td>Schema review, searchable/indexed field strategy, access control, backup protection, and reveal authorization.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Operational Considerations</h2>
+    <ul>
+      <li><strong>Token lifecycle:</strong> REST integrations should cache CipherTrust JWTs and refresh before expiry, with retry-on-unauthorized logic for long-running jobs.</li>
+      <li><strong>Key versioning:</strong> The browser should echo the key version returned by the public-key endpoint so the backend can decrypt with the matching key version.</li>
+      <li><strong>Logging:</strong> Avoid logging plaintext, AES key material, wrapped key material, raw ciphertext, or CRDP reveal results outside controlled troubleshooting windows.</li>
+      <li><strong>Performance:</strong> CADP with caching may outperform REST for high-volume private-key operations. REST remains useful when HTTPS is the only available path.</li>
+      <li><strong>Failure handling:</strong> Treat unwrap, decrypt, and CRDP protect failures as controlled rejects. Preserve request IDs for audit and support without exposing sensitive values.</li>
+      <li><strong>Memory hygiene:</strong> Keep cleartext lifetime short and avoid unnecessary object copies where practical. Java and browser runtimes cannot provide perfect memory erasure guarantees, so architecture should minimize exposure.</li>
+    </ul>
+
+    <h2>Prototype vs Production</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Area</th>
+          <th>Prototype</th>
+          <th>Production Direction</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>TLS</td>
+          <td>May use trusted-mode or relaxed certificate validation for lab testing.</td>
+          <td>Use real certificates, hostname validation, TLS 1.3 where supported, and hardened gateway configuration.</td>
+        </tr>
+        <tr>
+          <td>Secrets</td>
+          <td>Credentials may be configured in local YAML for demonstration.</td>
+          <td>Use a secret manager, environment-based injection, rotation, and least-privilege service accounts.</td>
+        </tr>
+        <tr>
+          <td>Public-key scale</td>
+          <td>Backend retrieves public-key metadata for the demo flow.</td>
+          <td>Add Redis or equivalent public-key cache if the application serves high browser traffic.</td>
+        </tr>
+        <tr>
+          <td>Client hardening</td>
+          <td>Standard React input fields demonstrate the crypto pattern.</td>
+          <td>For high-risk fields, consider isolated iframe capture, strict CSP, script integrity controls, and stronger anti-tamper monitoring.</td>
+        </tr>
+        <tr>
+          <td>Data durability</td>
+          <td>Demo state is held in memory.</td>
+          <td>Persist only CRDP-protected values and avoid durable plaintext in logs, queues, databases, and object stores.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Recommended Implementation Roadmap</h2>
+    <ol>
+      <li>Confirm sensitive field inventory, regulatory scope, and which values require FPE, tokenization, or irreversible protection.</li>
+      <li>Define the key hierarchy: client wrapping keys, rotation model, key versions, CRDP policies, and reveal authorization.</li>
+      <li>Harden the browser application: CSP, dependency governance, XSS controls, and secure input strategy for highest-risk fields.</li>
+      <li>Harden Spring Boot transport: HTTPS, certificate validation, CORS, authentication, request limits, and structured error handling.</li>
+      <li>Add production public-key caching if user concurrency requires it.</li>
+      <li>Choose REST or CADP based on connectivity, performance, deployment model, and operational skill set.</li>
+      <li>Instrument metrics for public-key lookup, unwrap latency, decrypt latency, CRDP protect latency, failures, and token refresh behavior.</li>
+      <li>Run volume tests that match the target use case: end-user synchronous flows, backend batch flows, or Kafka-style consumer workloads.</li>
+    </ol>
+
+    <p class="note">
+      Document location: <code>backend/docs/thales-client-side-end-to-end-technical-overview.html</code>. Diagram source: <code>backend/docs/thales-end-to-end.png</code>.
+    </p>
+  </main>
+</body>
+</html>

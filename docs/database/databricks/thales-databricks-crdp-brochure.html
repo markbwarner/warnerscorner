@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thales CRDP for Databricks</title>
+  <style>
+    :root {
+      --ink: #132238;
+      --muted: #58677d;
+      --brand: #005bbb;
+      --brand-dark: #003f82;
+      --accent: #00a8a8;
+      --surface: #f6f8fb;
+      --line: #d9e1ec;
+      --page-width: 8.5in;
+      --deep: #0f2036;
+      --green: #dff2df;
+      --blue-soft: #e8f2fb;
+      --purple-soft: #f3efff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: #dfe7f2;
+    }
+
+    .page {
+      width: var(--page-width);
+      min-height: 11in;
+      margin: 0 auto 18px;
+      background: white;
+      padding: 0.72in;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(17, 32, 56, 0.12);
+    }
+
+    .hero {
+      background:
+        radial-gradient(circle at top right, rgba(0, 168, 168, 0.16), transparent 28%),
+        radial-gradient(circle at left 20% top 10%, rgba(0, 91, 187, 0.13), transparent 24%),
+        linear-gradient(135deg, #f8fbff 0%, #edf4fb 100%);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--brand-dark);
+      background: rgba(0, 91, 187, 0.1);
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    h1 {
+      font-size: 31px;
+      max-width: 6.7in;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 14px;
+    }
+
+    h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 0 0 12px;
+      line-height: 1.5;
+      font-size: 13.2px;
+      color: var(--muted);
+    }
+
+    .lede {
+      font-size: 15px;
+      max-width: 6.9in;
+      color: #314157;
+      margin-bottom: 22px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .metric-band {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 22px 0 10px;
+    }
+
+    .metric {
+      padding: 14px 12px;
+      border-radius: 16px;
+      background: var(--deep);
+      color: white;
+    }
+
+    .metric .num {
+      display: block;
+      font-size: 23px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .metric .cap {
+      font-size: 11px;
+      line-height: 1.35;
+      color: rgba(255, 255, 255, 0.78);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .card,
+    .panel,
+    .stack,
+    .platform,
+    .tile {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: white;
+    }
+
+    .card,
+    .platform,
+    .tile {
+      padding: 16px;
+    }
+
+    .card strong,
+    .tile strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .panel {
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbfe 100%);
+    }
+
+    .stack {
+      overflow: hidden;
+    }
+
+    .stack .row {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stack .row:last-child {
+      border-bottom: 0;
+    }
+
+    .row-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .platform {
+      background: var(--surface);
+    }
+
+    .metric,
+    .card,
+    .panel,
+    .platform,
+    .tile,
+    .stack .row,
+    p,
+    li {
+      overflow-wrap: anywhere;
+      word-break: normal;
+    }
+
+    .platform .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--brand);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .callout {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-left: 5px solid var(--accent);
+      background: #effbfb;
+      border-radius: 0 16px 16px 0;
+      color: #244049;
+    }
+
+    .highlight {
+      background: var(--blue-soft);
+    }
+
+    .soft-purple {
+      background: var(--purple-soft);
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 16px 0 18px;
+    }
+
+    .art {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 20px;
+      background: linear-gradient(180deg, #f7fbff 0%, #edf5fb 100%);
+      border: 1px solid var(--line);
+    }
+
+    .art img {
+      width: 100%;
+      display: block;
+      border-radius: 14px;
+    }
+
+    .small {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    li {
+      margin-bottom: 7px;
+    }
+
+    .footer {
+      position: absolute;
+      left: 0.72in;
+      right: 0.72in;
+      bottom: 0.48in;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10.5px;
+      color: #71839a;
+    }
+
+    .page-break {
+      page-break-after: always;
+    }
+
+    @page {
+      size: letter;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .page {
+        margin: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="page hero page-break">
+    <div class="eyebrow">Thales CipherTrust + Databricks</div>
+    <h1>Governed data protection for Databricks analytics, pipelines, streaming, and AI-era data platforms</h1>
+    <p class="lede">
+      Thales CRDP and CipherTrust Manager extend Databricks with governed protection and reveal capabilities across SQL Warehouse,
+      compute clusters, Structured Streaming, Lakeflow Declarative Pipelines, and reusable Python packaging. The result is a flexible
+      platform pattern that helps organizations protect sensitive data without breaking the way data teams already work.
+    </p>
+
+    <div class="metric-band">
+      <div class="metric">
+        <span class="num">1</span>
+        <span class="cap">Governed protection model spanning SQL, Spark, streaming, and pipeline workloads</span>
+      </div>
+      <div class="metric">
+        <span class="num">2</span>
+        <span class="cap">Primary integration paths: compute-cluster Java UDFs, the Python Helper API, and Unity Catalog Python functions</span>
+      </div>
+      <div class="metric">
+        <span class="num">3</span>
+        <span class="cap">Built-in optimization levers: bulk APIs, batching, partitioning, auto-tuning, and executor parallelism</span>
+      </div>
+      <div class="metric">
+        <span class="num">24x7</span>
+        <span class="cap">Centralized Thales control for policy, key governance, user sets, and reveal decisions</span>
+      </div>
+    </div>
+
+    <div style="margin-top: 8px;">
+      <h2>What organizations gain</h2>
+      <p>
+        Databricks teams want to keep moving quickly without forcing every notebook, SQL model, BI dashboard, streaming job, and
+        production pipeline to implement custom protection logic. Thales brings a governed control layer that lets organizations
+        protect, tokenize, reveal, and control access through repeatable patterns instead of one-off code.
+      </p>
+      <p>
+        This allows security and data teams to work together: Thales keeps control of keys and policy, while Databricks users
+        continue to work in familiar SQL, Spark, Python, and pipeline environments.
+      </p>
+
+      <div class="grid-3" style="margin-top: 18px;">
+        <div class="card">
+          <strong>Preserve familiar Databricks workflows</strong>
+          Support SQL Warehouse, Spark jobs, BI tools, notebooks, streaming jobs, and orchestrated pipelines without inventing a separate security stack for each one.
+        </div>
+        <div class="card">
+          <strong>Scale for real enterprise workloads</strong>
+          Use bulk APIs, Spark executor parallelism, flexible grouping controls, and deployment tuning to support high-volume analytics and ETL patterns.
+        </div>
+        <div class="card">
+          <strong>Keep security policy centralized</strong>
+          CipherTrust Manager remains the policy and key control plane while Databricks becomes the governed execution and analytics plane.
+        </div>
+      </div>
+
+      <div class="callout">
+        CipherTrust Manager is the centralized control plane for policies, keys, and security ownership, while Thales CRDP provides the runtime protect and reveal services that Databricks workloads call through the current integration surfaces. This preserves separation of duties, improves crypto agility, and gives customers a developer-friendly integration model across SQL, Spark, streaming, and Lakeflow.
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Thales CRDP for Databricks</span>
+      <span>Page 1</span>
+    </div>
+  </section>
+
+  <section class="page page-break">
+    <h2>Capabilities customers can use today</h2>
+    <div class="panel" style="margin-bottom: 18px;">
+      <h3>Full platform coverage</h3>
+      <div class="platform-grid">
+        <div class="platform">
+          <div class="label">SQL</div>
+          <h3>SQL Warehouse</h3>
+          <p>Unity Catalog Python functions plus secure views for analysts, reporting teams, and BI workloads.</p>
+        </div>
+        <div class="platform">
+          <div class="label">Compute</div>
+          <h3>Spark clusters</h3>
+          <p>Java UDFs, the Python Helper API, and Pandas APIs for notebook-driven engineering, ETL, and high-throughput parallel workloads.</p>
+        </div>
+        <div class="platform">
+          <div class="label">Pipelines</div>
+          <h3>Streaming and orchestration</h3>
+          <p>Structured Streaming and Lakeflow support using the same governed protection and reveal patterns.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="stack">
+        <div class="row">
+          <div class="row-title">Governed SQL access</div>
+          <p>Expose protected and revealed fields through Unity Catalog Python functions and secure views that fit naturally into Databricks SQL and BI consumption patterns.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Spark integration</div>
+          <p>Use Java UDFs on compute clusters for parallel protect and reveal operations where Spark executor throughput and ETL control matter most.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Streaming support</div>
+          <p>Reuse governed function patterns in Structured Streaming pipelines so streaming workloads can follow the same protection model as batch and interactive SQL.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Lakeflow readiness</div>
+          <p>Fit protection and reveal into managed pipeline patterns, including SQL and Python Lakeflow implementations where governed Unity Catalog functions and secure views are preferred.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Python packaging</div>
+          <p>Deploy Python logic through a reusable wheel so SQL Warehouse and related Python-based patterns do not depend on copy-pasted notebook code.</p>
+        </div>
+      </div>
+
+      <div>
+        <div class="tile highlight">
+          <strong>Designed for mixed workloads</strong>
+          The same overall protection model can support analyst-facing SQL, Spark engineering jobs, scheduled workflows, near-real-time streaming, and governed reveal access.
+        </div>
+
+        <div class="tile soft-purple" style="margin-top: 14px;">
+          <strong>Supports multiple operating styles</strong>
+          Customers can start with a functional proof of concept, move to performance benchmarking, and later expand into production AKS-backed CRDP services and multi-job ingestion patterns.
+        </div>
+
+        <div class="panel" style="margin-top: 14px;">
+          <h3>Key customer benefits</h3>
+          <ul>
+            <li>Centralized policy and key governance through CipherTrust Manager.</li>
+            <li>Runtime data-protection services through Thales CRDP without rewriting every downstream workload.</li>
+            <li>Separation of duties between security teams and Databricks engineering teams.</li>
+            <li>Crypto agility through centralized Thales policy rather than one-off pipeline rewrites.</li>
+            <li>Developer-friendly integration with Java UDFs, the Thales Python Helper API, Pandas APIs, Unity Catalog Python functions, and secure views.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Thales CRDP for Databricks</span>
+      <span>Page 2</span>
+    </div>
+  </section>
+
+  <section class="page page-break">
+    <h2>How the Databricks architecture works</h2>
+    <p>
+      Databricks workloads call a governed function layer. That function layer invokes Thales CRDP for protect and reveal operations,
+      while CipherTrust Manager remains the policy and key control plane.
+    </p>
+
+    <div class="art">
+      <img src="CUSTOMER_ARCHITECTURE.png" alt="Databricks and Thales CRDP architecture" />
+    </div>
+
+    <div class="grid-2" style="margin-top: 18px;">
+      <div class="stack">
+        <div class="row">
+          <div class="row-title">Access model</div>
+          <p>Analysts, BI tools, notebooks, pipelines, and engineering jobs all enter through a governed Databricks access layer rather than embedding custom security logic in every workload.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Execution choices</div>
+          <p>Unity Catalog SQL/Python functions support SQL Warehouse and governed query use cases, while Java Spark UDFs support compute-cluster ETL and notebook-oriented Spark execution.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Control plane separation</div>
+          <p>CRDP performs runtime protect and reveal operations, while CipherTrust Manager remains the authority for keys, policies, user sets, and reveal rules.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Why this architecture is attractive</h3>
+        <ul>
+          <li>Lets data teams keep using Databricks-native tools and query patterns.</li>
+          <li>Lets security teams retain centralized Thales governance over reveal behavior.</li>
+          <li>Provides one practical architecture that can cover analytics, ETL, streaming, and governed access.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>Thales CRDP for Databricks</span>
+      <span>Page 3</span>
+    </div>
+  </section>
+
+  <section class="page page-break">
+    <h2>Optimization and scale options</h2>
+    <p>
+      The solution is not limited to a single execution pattern. It includes several optimization levers so organizations can tune for throughput, efficiency, and operational simplicity based on workload type.
+    </p>
+
+    <div class="grid-3" style="margin-top: 14px;">
+      <div class="card">
+        <strong>Bulk API leverage</strong>
+        Use bulk protect and reveal patterns where the source data shape supports them. This reduces request overhead and improves throughput for high-volume workloads.
+      </div>
+      <div class="card">
+        <strong>Flexible tuning controls</strong>
+        Shape grouped request size, CRDP request size, and Spark work distribution using grouping controls, partition counts, and batch-size settings.
+      </div>
+      <div class="card">
+        <strong>Spark executor parallelism</strong>
+        Take advantage of multiple executors and partitioned work so Databricks can keep more independent CRDP operations in flight.
+      </div>
+      <div class="card">
+        <strong>Multiple compute-cluster execution surfaces</strong>
+        Support Java UDFs for SQL-shaped Spark ETL, the Python Helper API for DataFrame-first execution, and Pandas APIs when teams explicitly want Pandas semantics.
+      </div>
+      <div class="card">
+        <strong>Deployment tuning</strong>
+        Scale CRDP vertically or horizontally depending on whether the goal is a simple benchmark baseline or a more resilient production architecture.
+      </div>
+      <div class="card">
+        <strong>Shared service model</strong>
+        Support a shared CRDP environment that can serve multiple Databricks jobs when aggregate concurrency and autoscaling behavior have been validated.
+      </div>
+    </div>
+
+    <div class="callout">
+      A strong production pattern is to combine Databricks executor parallelism, bulk API usage where applicable, and a right-sized CRDP deployment backed by observability and autoscaling.
+    </div>
+
+    <div class="art" style="margin-top: 12px; padding: 10px;">
+      <img src="execution-model-matrix.png" alt="Databricks execution model matrix" style="max-height: 190px; object-fit: contain;" />
+    </div>
+
+    <div class="footer">
+      <span>Thales CRDP for Databricks</span>
+      <span>Page 4</span>
+    </div>
+  </section>
+
+  <section class="page">
+    <h2>Production direction and business value</h2>
+    <div class="grid-2">
+      <div class="stack">
+        <div class="row">
+          <div class="row-title">Start where the value is clearest</div>
+          <p>Begin with the access path that matters most, such as governed SQL for BI and analysts, or Spark-based ETL for engineering-heavy workflows.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Expand without changing the model</div>
+          <p>Reuse the same protection approach across SQL Warehouse, compute clusters, Structured Streaming, and Lakeflow rather than inventing separate security code paths.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Scale with operational maturity</div>
+          <p>Move from simple proof-of-concept deployments toward AKS-backed CRDP services, warm replicas, and autoscaling as production demands increase.</p>
+        </div>
+        <div class="row">
+          <div class="row-title">Support phased rollout</div>
+          <p>Different teams and systems can adopt protection at different times while still working within one governed Databricks and Thales integration model.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>What customers gain</h3>
+        <ul>
+          <li>Governed protection for analytics, engineering, and pipeline workloads.</li>
+          <li>Support for SQL Warehouse, Spark clusters, streaming, and Lakeflow.</li>
+          <li>Deployment flexibility with Java UDFs, Unity Catalog Python functions, and a reusable Python wheel.</li>
+          <li>Performance options that include bulk APIs, executor parallelism, auto-tuning, and flexible tuning controls.</li>
+          <li>Centralized Thales control for policies, keys, access rules, and reveal decisions.</li>
+        </ul>
+
+        <div class="callout" style="margin-top: 20px;">
+          Thales provides the governed security control plane. Databricks provides the analytics and execution plane. Together they enable scalable, governed protection for modern data, analytics, streaming, and AI-adjacent workflows.
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="small">
+      This brochure highlights the supported Databricks integration patterns for SQL Warehouse, compute clusters, secure views, Structured Streaming, Lakeflow, reusable Python packaging, and performance tuning options such as bulk APIs, auto-tuning, and partition-aware parallel execution.
+    </div>
+
+    <div class="footer">
+      <span>Thales CRDP for Databricks</span>
+      <span>Page 5</span>
+    </div>
+  </section>
+</body>
+</html>
+
+
+
+

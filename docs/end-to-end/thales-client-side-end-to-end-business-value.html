@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thales Client-Side End-to-End Protection - Business Value</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #eef3f5;
+      --paper: #ffffff;
+      --ink: #1f2a33;
+      --muted: #5f6b75;
+      --line: #ccd8df;
+      --accent: #245b73;
+      --accent-dark: #173d4f;
+      --accent-soft: #e3eff4;
+      --green: #1f7257;
+      --gold: #9a6a21;
+      --gold-soft: #f5ead8;
+      --red-soft: #fae8e4;
+      --shadow: rgba(28, 47, 66, 0.14);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.58;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, rgba(36, 91, 115, 0.16), rgba(238, 243, 245, 0.96) 320px),
+        var(--bg);
+    }
+    .page {
+      max-width: 1160px;
+      margin: 32px auto;
+      padding: 42px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 52px var(--shadow);
+    }
+    h1, h2, h3 {
+      font-family: Cambria, Georgia, serif;
+      color: var(--accent-dark);
+      line-height: 1.18;
+    }
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(2rem, 4vw, 3.1rem);
+    }
+    h2 {
+      margin: 2.25rem 0 0.75rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 2px solid var(--accent-soft);
+      font-size: 1.45rem;
+    }
+    h3 {
+      margin: 1.4rem 0 0.45rem;
+      font-size: 1.12rem;
+    }
+    p { margin: 0.65rem 0; }
+    ul { margin-top: 0.45rem; padding-left: 1.35rem; }
+    li { margin: 0.28rem 0; }
+    code {
+      background: var(--accent-soft);
+      border-radius: 3px;
+      padding: 0.08rem 0.32rem;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.93em;
+    }
+    .eyebrow {
+      color: var(--gold);
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .subtitle {
+      max-width: 920px;
+      color: var(--muted);
+      font-size: 1.14rem;
+      margin-bottom: 1.5rem;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 28px;
+      align-items: start;
+      margin-top: 1.4rem;
+    }
+    .callout {
+      border-left: 5px solid var(--accent);
+      background: var(--accent-soft);
+      padding: 15px 18px;
+      margin: 1rem 0 1.4rem;
+    }
+    .warning {
+      border-left-color: var(--gold);
+      background: var(--gold-soft);
+    }
+    .summary-card {
+      border: 1px solid var(--line);
+      background: #f8fbfc;
+      padding: 18px;
+    }
+    .summary-card strong {
+      display: block;
+      color: var(--green);
+      font-size: 1.35rem;
+      margin-bottom: 0.25rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 15px;
+      margin: 1rem 0 1.4rem;
+    }
+    .card {
+      border: 1px solid var(--line);
+      background: #fbfdfe;
+      padding: 16px;
+    }
+    .card h3 { margin-top: 0; }
+    .value-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 1rem 0 1.6rem;
+    }
+    .metric {
+      border: 1px solid var(--line);
+      background: #f8fbfc;
+      padding: 14px;
+    }
+    .metric strong {
+      display: block;
+      color: var(--accent);
+      font-size: 1.2rem;
+      margin-bottom: 0.2rem;
+    }
+    figure {
+      margin: 1rem 0 1.8rem;
+      border: 1px solid var(--line);
+      background: #f8fbfc;
+      padding: 12px;
+    }
+    figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid #dce6ec;
+      background: white;
+    }
+    figcaption {
+      color: var(--muted);
+      font-size: 0.94rem;
+      margin-top: 0.7rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.4rem;
+      font-size: 0.96rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--accent-soft); color: var(--accent-dark); }
+    .note {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    @media (max-width: 860px) {
+      .page { margin: 0; padding: 24px; }
+      .hero { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="eyebrow">Thales Client-Side End-to-End Protection</div>
+    <h1>Protect Sensitive Data Where It Is Captured</h1>
+    <p class="subtitle">
+      This document describes a Thales CipherTrust design pattern for protecting sensitive data directly on the client device: browser, mobile app, kiosk, or IoT capture point. The goal is to reduce exposure before data crosses the network, before backend middleware handles it, and before downstream systems persist it.
+    </p>
+
+    <div class="hero">
+      <div>
+        <div class="callout">
+          <strong>Plain-language summary.</strong> Sensitive values are encrypted at the source using a one-time browser-generated AES key. That AES key is wrapped with a Thales-managed public key, sent to the backend with the encrypted fields, unwrapped by a trusted backend service, and then re-protected with Thales CRDP before storage or downstream processing.
+        </div>
+        <p>
+          A common way to describe this is <strong>"at the glass"</strong>: securing sensitive data where the user's fingertips touch the screen. In a web application, that means encryption happens inside the browser interface before the data is sent to the server. In a mobile, kiosk, or IoT design, the same idea applies at the capture application.
+        </p>
+      </div>
+      <aside class="summary-card">
+        <strong>Business outcome</strong>
+        Keep plaintext out of more places: browser-to-server transit, reverse proxies, middleware logs, message queues, temporary files, and databases. The design narrows where sensitive data can exist in clear form and gives the organization a controlled re-protection point on the backend.
+      </aside>
+    </div>
+
+    <figure>
+      <img src="thales-end-to-end.png" alt="Thales client-side end-to-end protection lifecycle diagram" />
+      <figcaption>
+        End-to-end lifecycle: client-side field encryption, public-key wrapping of the one-time AES key, trusted backend unwrap, and downstream CRDP protection for durable storage or business processing.
+      </figcaption>
+    </figure>
+
+    <h2>Why This Matters</h2>
+    <div class="value-strip">
+      <div class="metric"><strong>Earlier Protection</strong>Sensitive values are protected before they leave the client.</div>
+      <div class="metric"><strong>Smaller Exposure</strong>Plaintext exists in fewer infrastructure layers.</div>
+      <div class="metric"><strong>Backend Control</strong>Private-key operations stay in trusted backend infrastructure.</div>
+      <div class="metric"><strong>Storage Ready</strong>CRDP can convert data into protected values suitable for databases, files, queues, and analytics.</div>
+    </div>
+
+    <h2>How It Works</h2>
+    <h3>1. Security at the Source</h3>
+    <p>
+      The client application creates a single-use symmetric key using platform cryptography such as the browser Web Crypto API. Sensitive fields such as name, address, account number, payment card number, national ID, or health data are encrypted immediately on the client.
+    </p>
+    <ul>
+      <li>The client generates one AES key for the submission.</li>
+      <li>Each sensitive field is encrypted separately, usually with its own initialization vector.</li>
+      <li>The AES key is wrapped with a Thales-managed public key.</li>
+      <li>The private key is never exposed to the browser or client application.</li>
+    </ul>
+
+    <h3>2. Scaling the Front Door</h3>
+    <p>
+      In a production design, the public key can be served from a fast backend cache such as Redis. The backend can pre-fetch public-key material from CipherTrust Manager and serve it to thousands of users without making the browser contact the key manager directly.
+    </p>
+    <ul>
+      <li>Public keys are safe to distribute, but should still be versioned and governed.</li>
+      <li>Redis or another low-latency cache removes public-key lookup pressure from CipherTrust Manager.</li>
+      <li>The browser receives the public key quickly without learning backend credentials.</li>
+      <li>Key rotation can be managed by cache expiry, key version metadata, and controlled backend refresh.</li>
+    </ul>
+
+    <h3>3. Trusted Backend Transition</h3>
+    <p>
+      The backend receives the encrypted payload and the wrapped AES key. It authenticates to Thales CipherTrust Manager using backend-only credentials, unwraps the AES key through REST or CADP, decrypts the field values in memory, and then immediately applies durable protection.
+    </p>
+    <ul>
+      <li>The backend should avoid logging cleartext or writing it to temporary storage.</li>
+      <li>The plaintext window is intentionally brief and limited to the trusted processing boundary.</li>
+      <li>CRDP can re-protect values using format-preserving or tokenization-style policies.</li>
+      <li>Protected values can preserve database shape, indexing strategy, and downstream application compatibility.</li>
+    </ul>
+
+    <h2>Business Benefits</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Benefit</th>
+          <th>What It Means</th>
+          <th>Why Application Teams Care</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Reduced attack surface</td>
+          <td>Sensitive data is protected before normal backend routing, logging, and persistence.</td>
+          <td>Fewer systems need to be treated as places where cleartext may appear.</td>
+        </tr>
+        <tr>
+          <td>Separation of duties</td>
+          <td>The browser can encrypt with a public key, but only trusted backend services can unwrap.</td>
+          <td>Frontend teams do not need private keys or key-manager credentials.</td>
+        </tr>
+        <tr>
+          <td>High-scale public-key distribution</td>
+          <td>Public key retrieval can be cached behind the application backend.</td>
+          <td>Large retail or consumer workloads do not need each browser to call the KMS.</td>
+        </tr>
+        <tr>
+          <td>Storage and analytics compatibility</td>
+          <td>CRDP can protect fields into values that preserve useful formats.</td>
+          <td>Applications can keep existing schemas, indexes, file layouts, and many downstream integrations.</td>
+        </tr>
+        <tr>
+          <td>Consistent enterprise controls</td>
+          <td>Keys, policies, audit, and administrative control remain in Thales infrastructure.</td>
+          <td>Security teams retain centralized governance while application teams keep familiar development patterns.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Common Use Cases</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Retail and Payment Capture</h3>
+        <p>Protect payment card, loyalty, address, and order data before it reaches ecommerce middleware or order-management systems.</p>
+      </div>
+      <div class="card">
+        <h3>Financial Services Onboarding</h3>
+        <p>Protect account applications, tax identifiers, bank details, beneficiary data, and identity attributes at capture time.</p>
+      </div>
+      <div class="card">
+        <h3>Healthcare Portals</h3>
+        <p>Encrypt patient attributes, insurance details, intake forms, and sensitive comments before portal traffic reaches backend systems.</p>
+      </div>
+      <div class="card">
+        <h3>Call Center and Kiosk Entry</h3>
+        <p>Limit exposure in assisted channels where sensitive data may pass through browser sessions, desktop tools, or kiosk workflows.</p>
+      </div>
+      <div class="card">
+        <h3>Mobile and Field Apps</h3>
+        <p>Use the same envelope-protection pattern in mobile apps, handheld devices, and field data collection workflows.</p>
+      </div>
+      <div class="card">
+        <h3>IoT and Edge Capture</h3>
+        <p>Protect sensitive measurements, device identifiers, or regulated data before transmission from edge devices.</p>
+      </div>
+    </div>
+
+    <h2>What This Demo Shows</h2>
+    <p>
+      The current prototype demonstrates the core browser-to-backend lifecycle:
+    </p>
+    <ul>
+      <li>Browser-side field encryption with a one-time AES key.</li>
+      <li>Public-key wrapping of that AES key using a Thales-managed RSA public key.</li>
+      <li>Backend unwrap using either CipherTrust REST or CADP.</li>
+      <li>Backend reconstruction of the original payload for the trusted processing step.</li>
+      <li>Backend CRDP protect and reveal operations for downstream policy-based protection.</li>
+    </ul>
+
+    <div class="callout warning">
+      <strong>Prototype note.</strong> This demo proves the pattern, but a production deployment should add hardened TLS, certificate validation, strict logging controls, secure credential management, Redis or equivalent key caching if needed, operational monitoring, and formal threat-model review.
+    </div>
+
+    <h2>Positioning Statement</h2>
+    <p>
+      Thales Client-Side End-to-End Protection helps organizations move sensitive-data protection closer to the moment of capture while still using enterprise-grade Thales key management and CRDP policy enforcement on the backend. It gives application teams a practical way to reduce plaintext exposure without requiring every downstream system to become a cryptographic system.
+    </p>
+
+    <p class="note">
+      Document location: <code>backend/docs/thales-client-side-end-to-end-business-value.html</code>. Diagram source: <code>backend/docs/thales-end-to-end.png</code>.
+    </p>
+  </main>
+</body>
+</html>
