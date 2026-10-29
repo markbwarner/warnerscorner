@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PQC Key Wrapping: Project Manager Briefing</title>
+    <style>
+        :root {
+            --ink: #12233d;
+            --muted: #50647e;
+            --canvas: #f3f1e9;
+            --paper: #fffdf8;
+            --line: #d5d9d5;
+            --navy: #17385e;
+            --teal: #0f766e;
+            --orange: #c96e2d;
+            --soft-teal: #e3f4f0;
+            --soft-orange: #fff0e2;
+            --soft-blue: #eaf1fb;
+            --shadow: 0 18px 42px rgba(18, 35, 61, 0.11);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 10% 5%, rgba(15, 118, 110, 0.14), transparent 24rem),
+                radial-gradient(circle at 90% 10%, rgba(201, 110, 45, 0.13), transparent 22rem),
+                var(--canvas);
+            font-family: "Aptos", "Segoe UI", sans-serif;
+            line-height: 1.6;
+        }
+
+        .shell { width: min(1120px, calc(100% - 36px)); margin: 0 auto; }
+        .hero { padding: 72px 0 42px; }
+        .eyebrow {
+            color: var(--teal); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; line-height: 1.06; }
+        h1 { max-width: 920px; font-size: clamp(2.6rem, 6vw, 5.4rem); letter-spacing: -0.05em; margin: 12px 0 18px; }
+        h2 { font-size: clamp(1.8rem, 3vw, 2.7rem); letter-spacing: -0.035em; margin: 0 0 16px; }
+        h3 { font-size: 1.22rem; margin: 0 0 8px; }
+        p { margin: 0 0 16px; }
+        .lede { max-width: 780px; color: #29415f; font-size: 1.2rem; }
+        .top-nav { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px 0 0; }
+        .top-nav a, .tag {
+            display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px;
+            color: var(--navy); background: rgba(255,255,255,0.65); font-size: 0.86rem; font-weight: 600;
+            text-decoration: none;
+        }
+        .top-nav a:hover { background: var(--soft-blue); }
+        .section { padding: 60px 0; border-top: 1px solid rgba(18, 35, 61, 0.1); }
+        .panel { background: var(--paper); border: 1px solid rgba(18, 35, 61, 0.1); border-radius: 22px; box-shadow: var(--shadow); padding: 28px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+        .card { padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,0.72); }
+        .card.teal { background: var(--soft-teal); border-color: #b7ddd6; }
+        .card.orange { background: var(--soft-orange); border-color: #f0cda9; }
+        .card.blue { background: var(--soft-blue); border-color: #c6d8ef; }
+        .label { display: block; color: var(--muted); font-size: 0.76rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+        .flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 10px; margin-top: 20px; }
+        .node { min-height: 132px; padding: 16px; border-radius: 16px; background: var(--paper); border: 1px solid var(--line); }
+        .node strong { display: block; margin-bottom: 6px; }
+        .arrow { color: var(--orange); font-size: 2rem; text-align: center; }
+        .decision-table { width: 100%; border-collapse: collapse; overflow: hidden; }
+        .decision-table th, .decision-table td { padding: 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+        .decision-table th { color: var(--muted); font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; }
+        .decision-table tr:last-child td { border-bottom: 0; }
+        .callout { border-left: 5px solid var(--teal); background: var(--soft-teal); padding: 18px 20px; border-radius: 0 14px 14px 0; }
+        .warning { border-left-color: var(--orange); background: var(--soft-orange); }
+        .code-ref { font-family: Consolas, "Courier New", monospace; color: var(--navy); background: #eef3f8; padding: 1px 5px; border-radius: 4px; font-size: .9em; }
+        figure { margin: 24px 0 0; }
+        figure img { width: 100%; display: block; border: 1px solid var(--line); border-radius: 18px; background: white; }
+        figcaption { color: var(--muted); font-size: .92rem; margin-top: 9px; }
+        ul { padding-left: 20px; margin: 10px 0 0; }
+        li { margin: 7px 0; }
+        .phase { position: relative; padding-left: 34px; }
+        .phase::before { content: ""; position: absolute; left: 9px; top: 7px; width: 10px; height: 10px; border-radius: 50%; background: var(--teal); }
+        .phase::after { content: ""; position: absolute; left: 13px; top: 22px; width: 2px; height: calc(100% - 6px); background: #a9d7cf; }
+        .phase:last-child::after { display: none; }
+        .footer { color: var(--muted); font-size: .9rem; padding: 32px 0 50px; }
+        @media (max-width: 760px) {
+            .hero { padding-top: 48px; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .flow { grid-template-columns: 1fr; gap: 8px; }
+            .arrow { transform: rotate(90deg); }
+            .decision-table { font-size: .9rem; }
+            .decision-table th, .decision-table td { padding: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <section class="hero">
+            <div class="eyebrow">Decision briefing</div>
+            <h1>Protect the key that protects the data.</h1>
+            <p class="lede">This briefing explains the business and delivery impact of moving from Luna-native RSA key wrapping to Luna-native ML-KEM key establishment, while retaining AES-256-GCM for content encryption. It is written for a project manager who needs enough technical detail to scope work, assess dependencies, and communicate the change accurately.</p>
+            <nav class="top-nav" aria-label="Page sections">
+                <a href="#problem">The problem</a>
+                <a href="#comparison">What changes</a>
+                <a href="#luna">Luna delivery model</a>
+                <a href="#plan">Delivery plan</a>
+                <a href="https://github.com/markbwarner/warnerscorner/blob/master/docs/scanner/pqc/ml-kem-wrap-blog.html">ML-KEM wrap blog</a>
+                <a href="ml-kem-luna-implementation-guide.html">Implementation guide</a>
+            </nav>
+        </section>
+
+        <section class="section" id="problem">
+            <div class="grid-2">
+                <div>
+                    <div class="eyebrow">The business problem</div>
+                    <h2>Most systems already use a two-layer encryption model.</h2>
+                    <p>AES-256-GCM encrypts the business content because symmetric encryption is fast and well suited to large amounts of data. The AES key then needs its own protection when it crosses a service, partner, or trust boundary.</p>
+                    <p>That second layer is key wrapping, often called envelope encryption. It is the layer most affected by the move to post-quantum cryptography.</p>
+                </div>
+                <div class="panel">
+                    <span class="label">The core separation</span>
+                    <div class="grid-2">
+                        <div class="card blue"><h3>Content protection</h3><p><strong>AES-256-GCM</strong></p><p>Encrypts sensitive JSON fields such as name, address, and card number.</p></div>
+                        <div class="card teal"><h3>Key protection</h3><p><strong>RSA or ML-KEM</strong></p><p>Protects or establishes the AES key needed to decrypt those fields.</p></div>
+                    </div>
+                </div>
+            </div>
+            <figure>
+                <img src="../blog/images/aes-key-protection-rsa-vs-mlkem.png" alt="Diagram comparing RSA-wrapped AES key protection with ML-KEM encapsulation">
+                <figcaption>The existing project diagram: AES continues to protect the payload; RSA and ML-KEM differ in how the AES key is protected or established.</figcaption>
+            </figure>
+        </section>
+
+        <section class="section" id="comparison">
+            <div class="eyebrow">What changes</div>
+            <h2>RSA transports a chosen AES key. ML-KEM establishes one.</h2>
+            <div class="flow" aria-label="RSA key wrapping flow">
+                <div class="node"><span class="label">1. Create</span><strong>Create AES-256 key</strong>A new independent content-encryption key is generated.</div>
+                <div class="arrow" aria-hidden="true">→</div>
+                <div class="node"><span class="label">2. Encrypt</span><strong>Encrypt JSON with AES-GCM</strong>The sensitive fields become ciphertext.</div>
+                <div class="arrow" aria-hidden="true">→</div>
+                <div class="node"><span class="label">3. Wrap</span><strong>Wrap AES key with RSA public key</strong>The receiver later unwraps it with the RSA private key.</div>
+            </div>
+            <div class="flow" aria-label="ML-KEM key establishment flow" style="margin-top:18px;">
+                <div class="node"><span class="label">1. Encapsulate</span><strong>Use ML-KEM public key</strong>The KEM operation produces a secret key plus encapsulation bytes.</div>
+                <div class="arrow" aria-hidden="true">→</div>
+                <div class="node"><span class="label">2. Encrypt</span><strong>Encrypt JSON with the derived AES key</strong>The sender uses the secret-key part immediately.</div>
+                <div class="arrow" aria-hidden="true">→</div>
+                <div class="node"><span class="label">3. Decapsulate</span><strong>Receiver uses private key plus encapsulation</strong>The receiver derives the matching AES key.</div>
+            </div>
+            <div class="callout" style="margin-top:24px;"><strong>Project-manager takeaway:</strong> ML-KEM does not replace AES. It replaces the public-key mechanism that protects or establishes the AES key. Existing AES-GCM payload formats and field-level encryption designs can often remain largely intact.</div>
+        </section>
+
+        <section class="section" id="why">
+            <div class="eyebrow">Why the change matters</div>
+            <h2>The concern is long-lived confidentiality, not that AES suddenly becomes obsolete.</h2>
+            <div class="grid-3">
+                <div class="card orange"><h3>Legacy risk</h3><p>RSA relies on integer factorization. A sufficiently capable quantum computer running Shor's algorithm would threaten that assumption.</p></div>
+                <div class="card blue"><h3>Harvest now, decrypt later</h3><p>An attacker can retain encrypted traffic or wrapped keys today and attempt recovery later if the public-key protection becomes vulnerable.</p></div>
+                <div class="card teal"><h3>Post-quantum response</h3><p>ML-KEM, standardized in FIPS 203, uses different mathematics designed to avoid RSA's factoring-based quantum weakness.</p></div>
+            </div>
+        </section>
+
+        <section class="section" id="luna">
+            <div class="eyebrow">Luna delivery model</div>
+            <h2>HSM integration changes where key operations run, not the envelope-encryption goal.</h2>
+            <div class="grid-2">
+                <div class="panel">
+                    <span class="label">RSA with a standard AES key</span>
+                    <p>The application first has an AES key. In the current Luna comparison, <span class="code-ref">generateDemoAesKey(...)</span> creates it, then the RSA public key wraps it. The RSA private key operation is performed through Luna.</p>
+                    <ul>
+                        <li>AES key exists before the RSA operation.</li>
+                        <li>Wrapped AES bytes are the network transport artifact.</li>
+                        <li>The RSA private key can remain HSM-resident.</li>
+                    </ul>
+                </div>
+                <div class="panel">
+                    <span class="label">Native Luna ML-KEM</span>
+                    <p>The Luna KEM operation produces two outputs: a secret key and ML-KEM encapsulation bytes. The receiver uses the HSM-backed ML-KEM private key plus those bytes to decapsulate.</p>
+                    <ul>
+                        <li>No separately chosen AES key is required for the native KEM flow.</li>
+                        <li>The encapsulation, not raw key bytes, is sent to the receiver.</li>
+                        <li>The returned secret key may be provider-backed, depending on the client/provider combination.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="callout" style="margin-top:22px;"><strong>Start with discovery:</strong> before assigning migration work, identify where RSA, ECC, certificates, and key transport are actually present across the application estate. A scanner-led inventory turns a broad PQC goal into prioritized remediation work. See the <a href="https://markbwarner.github.io/warnerscorner/scanner/pqc/pqc-scanner-customer-positioning-handout.html">PQC scanner customer-positioning handout</a> and <a href="https://markbwarner.github.io/warnerscorner/scanner/pqc/how-the-pqc-scanner-works.html">how the PQC scanner works</a>.</div>
+        </section>
+
+        <section class="section" id="decisions">
+            <div class="eyebrow">Planning decisions</div>
+            <h2>What a project needs to decide.</h2>
+            <div class="panel">
+                <table class="decision-table">
+                    <thead><tr><th>Decision</th><th>Why it matters</th><th>Typical answer for this project</th></tr></thead>
+                    <tbody>
+                        <tr><td>What encrypts the content?</td><td>Defines payload performance and compatibility.</td><td>Keep AES-256-GCM.</td></tr>
+                        <tr><td>How is the AES key protected?</td><td>Defines long-term public-key risk.</td><td>Move from RSA-OAEP toward ML-KEM; use hybrid migration where required.</td></tr>
+                        <tr><td>Where do private keys live?</td><td>Defines custody, audit, and operational controls.</td><td>Use Luna provider-backed keys when HSM controls are required.</td></tr>
+                        <tr><td>Can services consume provider-backed AES keys?</td><td>Determines whether data encryption can remain inside the HSM provider boundary.</td><td>Validate per provider, JDK, and cipher implementation.</td></tr>
+                        <tr><td>What legacy clients remain?</td><td>Determines hybrid duration and rollout order.</td><td>Inventory RSA consumers before removing legacy key wrapping.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="section" id="plan">
+            <div class="eyebrow">Suggested delivery plan</div>
+            <h2>Stage the migration around evidence, not just algorithms.</h2>
+            <div class="grid-2">
+                <div>
+                    <div class="phase"><h3>Baseline the envelope</h3><p>Document which fields use AES-GCM, where the AES key travels, and how recipients identify the correct key version.</p></div>
+                    <div class="phase"><h3>Prove the Luna RSA path</h3><p>Validate AES-GCM payload recovery when a standard AES key is wrapped and unwrapped by Luna-native RSA-OAEP operations.</p></div>
+                    <div class="phase"><h3>Validate the Luna ML-KEM path</h3><p>Test Luna-generated keys, private-key residency, provider behavior, and the exact result type returned by native decapsulation.</p></div>
+                    <div class="phase"><h3>Plan legacy coexistence</h3><p>Keep RSA only where legacy consumers still need it, and retire it when recipients can consume the ML-KEM envelope format.</p></div>
+                </div>
+                <div class="panel">
+                    <span class="label">Success criteria</span>
+                    <ul>
+                        <li>The receiver can recover the same AES key and decrypt expected fields.</li>
+                        <li>Private-key operations are demonstrably provider-backed where HSM custody is required.</li>
+                        <li>Transport fields, key IDs, and algorithm labels are versioned and documented.</li>
+                        <li>Performance measurements are labeled by Luna-native operation: RSA-OAEP wrapping or ML-KEM encapsulation/decapsulation.</li>
+                        <li>Provider-backed secret-key handling is tested with the final data-encryption provider.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            Companion materials: <a href="ml-kem-luna-implementation-guide.html">implementation guide</a>, <a href="../keystore/luna-key-persistence-patterns.md">Luna key persistence patterns</a>, and <a href="https://github.com/markbwarner/warnerscorner/blob/master/docs/scanner/pqc/ml-kem-wrap-blog.html">ML-KEM wrap blog</a>.
+        </footer>
+    </main>
+</body>
+</html>
