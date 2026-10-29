@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defense in Depth: Protecting Keys Beyond the File System</title>
+    <style>
+        :root {
+            --ink: #10233f;
+            --muted: #53647a;
+            --paper: #f8f4ea;
+            --navy: #102b4e;
+            --teal: #087f82;
+            --amber: #ec9b3e;
+            --coral: #d9604c;
+            --line: rgba(16, 35, 63, 0.14);
+            --card: rgba(255, 255, 255, 0.86);
+            --shadow: 0 20px 52px rgba(16, 35, 63, 0.12);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 6% 8%, rgba(236, 155, 62, 0.20), transparent 24%),
+                radial-gradient(circle at 93% 15%, rgba(8, 127, 130, 0.16), transparent 26%),
+                linear-gradient(180deg, #fffdf8 0%, var(--paper) 52%, #f4eee2 100%);
+            font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+            line-height: 1.58;
+        }
+        a { color: #075f77; font-weight: 700; }
+        .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+        .hero { padding: 54px 0 26px; display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 36px; align-items: center; }
+        .eyebrow { color: var(--teal); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+        h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; line-height: 1.04; margin: 0 0 15px; }
+        h1 { font-size: clamp(2.8rem, 6vw, 5.15rem); letter-spacing: -0.045em; }
+        h2 { font-size: clamp(2rem, 4vw, 3.1rem); letter-spacing: -0.035em; }
+        h3 { font-size: 1.38rem; }
+        .lede { color: #273c59; font-size: 1.18rem; max-width: 58ch; }
+        .hero-note { border-left: 4px solid var(--amber); padding: 11px 0 11px 17px; color: var(--muted); }
+        .hero-image { border-radius: 28px; box-shadow: var(--shadow); width: 100%; display: block; border: 1px solid rgba(255,255,255,0.7); }
+        .nav { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px 0 36px; }
+        .nav a { text-decoration: none; color: var(--ink); border: 1px solid var(--line); background: rgba(255,255,255,0.65); border-radius: 999px; padding: 8px 13px; font-size: 0.87rem; }
+        section { padding: 58px 0; border-top: 1px solid var(--line); }
+        .intro-grid, .storage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+        .card { background: var(--card); border: 1px solid rgba(255,255,255,0.9); border-radius: 22px; box-shadow: 0 12px 32px rgba(16,35,63,0.07); padding: 27px; }
+        .callout { border-radius: 18px; background: var(--navy); color: #f8fbff; padding: 24px; }
+        .callout strong { color: #ffd58d; }
+        .layer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px; }
+        .layer { border-radius: 20px; padding: 22px; min-height: 185px; color: #fff; }
+        .layer.user { background: #315d93; }
+        .layer.identity { background: #167d87; }
+        .layer.network { background: #258d86; }
+        .layer.application { background: #d16a4d; }
+        .layer.data { background: #c98a35; }
+        .layer.hsm { background: #263f65; }
+        .layer .number { font-size: 0.76rem; font-weight: 800; letter-spacing: 0.09em; opacity: 0.78; }
+        .layer h3 { margin-top: 10px; }
+        .layer p { margin: 0; font-size: 0.95rem; }
+        .figure { margin: 0; }
+        .figure img { width: 100%; border-radius: 22px; display: block; box-shadow: var(--shadow); }
+        figcaption { color: var(--muted); font-size: 0.92rem; padding: 10px 4px 0; }
+        .table-wrap { overflow-x: auto; margin-top: 27px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,0.65); }
+        table { border-collapse: collapse; width: 100%; min-width: 780px; }
+        th, td { text-align: left; vertical-align: top; padding: 17px; border-bottom: 1px solid var(--line); }
+        th { background: rgba(16,43,78,0.94); color: #fff; font-size: 0.86rem; letter-spacing: 0.03em; }
+        tr:last-child td { border-bottom: 0; }
+        td:first-child { font-weight: 800; color: var(--navy); width: 16%; }
+        .good { color: #087567; font-weight: 800; }
+        .limits { color: #a54c3e; font-weight: 800; }
+        .matrix-label { color: var(--muted); max-width: 72ch; }
+        .incident-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 28px; }
+        .incident { background: var(--card); border-radius: 20px; padding: 22px; border-top: 4px solid var(--amber); }
+        .incident h3 { font-size: 1.28rem; }
+        .incident p { margin: 0; color: #3d4d63; }
+        .incident .lesson { margin-top: 14px; color: var(--ink); }
+        .actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 26px; }
+        .action { border: 1px solid var(--line); background: rgba(255,255,255,0.72); border-radius: 18px; padding: 20px; }
+        .action strong { display: block; color: var(--teal); margin-bottom: 8px; }
+        .footer { color: var(--muted); font-size: 0.92rem; border-top: 1px solid var(--line); padding: 30px 0 54px; }
+        @media (max-width: 820px) {
+            .hero, .intro-grid, .storage-grid { grid-template-columns: 1fr; }
+            .hero { padding-top: 36px; }
+            .layer-grid { grid-template-columns: 1fr 1fr; }
+            .incident-list { grid-template-columns: 1fr; }
+            .actions { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 520px) {
+            .shell { width: min(100% - 28px, 1180px); }
+            .layer-grid, .actions { grid-template-columns: 1fr; }
+            section { padding: 42px 0; }
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <header class="hero">
+            <div>
+                <div class="eyebrow">Key custody and resilience</div>
+                <h1>Defense in depth protects more than a key.</h1>
+                <p class="lede">A hardware security module is a powerful control for private-key custody, but it is one layer in a complete security design. The strongest programs reduce risk across people, identity, networks, applications, data, and the cryptographic boundary.</p>
+                <p class="hero-note"><strong>Core principle:</strong> make valuable keys difficult to copy, difficult to misuse, and easy to audit. Do not rely on a PEM file, a source repository, or a single control to carry the entire burden.</p>
+            </div>
+            <img class="hero-image" src="images/defense-in-depth-key-custody-layers.png" alt="Defense in depth layers surrounding a hardware security module">
+        </header>
+
+        <nav class="nav" aria-label="Page sections">
+            <a href="#layers">The layers</a>
+            <a href="#storage">Key storage choices</a>
+            <a href="#matrix">Incident matrix</a>
+            <a href="#actions">Practical next steps</a>
+        </nav>
+
+        <section id="layers">
+            <div class="eyebrow">Six layers, one outcome</div>
+            <h2>Prevent, contain, detect, and recover.</h2>
+            <p class="matrix-label">Defense in depth assumes that one control can fail. Each layer should reduce either the likelihood that an attacker reaches sensitive cryptographic operations or the impact if they do.</p>
+            <div class="layer-grid">
+                <article class="layer user"><div class="number">01 USER</div><h3>People and process</h3><p>Phishing-resistant MFA, role-aware training, secure key ceremonies, and clear incident reporting reduce preventable access mistakes.</p></article>
+                <article class="layer identity"><div class="number">02 IDENTITY</div><h3>Strong authorization</h3><p>Least privilege, short-lived credentials, separation of duties, and privileged access workflows constrain who can use sensitive services.</p></article>
+                <article class="layer network"><div class="number">03 NETWORK</div><h3>Segmentation</h3><p>Private connectivity, segmented management planes, egress controls, and monitored boundaries limit lateral movement to key systems.</p></article>
+                <article class="layer application"><div class="number">04 APPLICATION</div><h3>Secure operations</h3><p>Code review, secret scanning, signed builds, patching, policy enforcement, and approval gates protect the services that request cryptographic operations.</p></article>
+                <article class="layer data"><div class="number">05 DATA</div><h3>Encryption design</h3><p>Envelope encryption, AES-GCM, key versioning, rotation, and minimized plaintext boundaries protect data at rest and in transit.</p></article>
+                <article class="layer hsm"><div class="number">06 HSM</div><h3>Key custody</h3><p>Generate and retain high-value private keys in hardware. Applications request operations through controlled handles instead of copying key material.</p></article>
+            </div>
+        </section>
+
+        <section id="storage">
+            <div class="storage-grid">
+                <div>
+                    <div class="eyebrow">The custody decision</div>
+                    <h2>Where a key lives changes the attack path.</h2>
+                    <p>Files such as PEM, JSON service-account keys, and application configuration are convenient because software can read them directly. That convenience also makes copying possible for any attacker or process that gains sufficient access.</p>
+                    <div class="callout"><strong>An HSM changes the default:</strong> the application receives a provider-backed key reference and requests an operation. The private key is designed to remain in the device rather than being copied into a file, source repository, backup, or application memory.</div>
+                    <p>That does not eliminate the need for authorization controls. An attacker who compromises an authorized application can still try to request a valid operation. The HSM layer should therefore be paired with policy, segmentation, monitoring, and application controls.</p>
+                </div>
+                <figure class="figure">
+                    <img src="images/key-storage-architecture-flat-files-to-hsm.png" alt="Comparison of flat-file, Java keystore, secrets manager, and HSM key storage architectures">
+                    <figcaption>The storage model is a security architecture choice. Progressing toward HSM-backed keys reduces direct exposure of high-value private-key material.</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section id="matrix">
+            <div class="eyebrow">Public incident lessons</div>
+            <h2>Use the right lesson from the right incident.</h2>
+            <p class="matrix-label">An HSM should not be positioned as a guarantee that a breach cannot happen. This matrix identifies where hardware-backed, non-exportable keys can reduce key-copy risk and where additional controls remain necessary.</p>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>Incident</th><th>Publicly documented issue</th><th>How hardware key custody helps</th><th>What it does not solve alone</th></tr></thead>
+                    <tbody>
+                        <tr><td>Microsoft Storm-0558<br><small>2023</small></td><td>A signing key was used to forge authentication tokens. The exact acquisition path remained unresolved in the public review.</td><td><span class="good">Reduce copy risk:</span> non-exportable signing keys and isolated signing operations make key extraction materially harder.</td><td><span class="limits">Not sufficient alone:</span> authorized use, control-plane access, logging, and key lifecycle controls still matter.</td></tr>
+                        <tr><td>LastPass<br><small>2022</small></td><td>Attackers obtained credentials and keys used to access and decrypt cloud-storage volumes; later disclosures described internal scripts containing secrets and certificates.</td><td><span class="good">Reduce key sprawl:</span> keep data-encryption and decryption keys in an HSM instead of scripts, endpoints, or backups.</td><td><span class="limits">Not sufficient alone:</span> endpoint compromise, privileged access, and cloud access policies must also be addressed.</td></tr>
+                        <tr><td>SolarWinds<br><small>2020</small></td><td>The certificate used to sign affected Orion software releases was revoked as part of the response to the supply-chain compromise.</td><td><span class="good">Protect signing keys:</span> an HSM-backed signing service can keep the private key non-exportable and add approval and audit controls.</td><td><span class="limits">Not sufficient alone:</span> compromised build systems can still submit malicious code for valid signing without strong build integrity controls.</td></tr>
+                        <tr><td>Toyota T-Connect<br><small>disclosed 2023</small></td><td>Source code contained an access key for a data server, contributing to a lengthy data exposure.</td><td><span class="good">Related lesson:</span> move high-value cryptographic private keys out of files and repositories.</td><td><span class="limits">Use a different primary control:</span> API and cloud access keys need workload identity, secret scanning, rotation, and short-lived credentials.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="incident-list">
+                <article class="incident"><h3>True</h3><p>An HSM reduces the ability to copy a private key from a host, repository, backup, or application process.</p><p class="lesson"><strong>Why it matters:</strong> non-exportable keys reduce the blast radius of key-material exposure and centralize control around sensitive operations.</p></article>
+                <article class="incident"><h3>False</h3><p>An HSM prevents every breach.</p><p class="lesson"><strong>Why it matters:</strong> HSMs strengthen key custody, but identity, application, network, monitoring, and incident-response controls remain essential.</p></article>
+            </div>
+            <p class="footer">Sources: <a href="https://www.govinfo.gov/content/pkg/CHRG-118hhrg58996/pdf/CHRG-118hhrg58996.pdf">U.S. Cyber Safety Review Board report on Storm-0558</a>, <a href="https://blog.lastpass.com/posts/notice-of-recent-security-incident">LastPass incident notice</a>, <a href="https://www.solarwinds.com/sa-overview/new-digital-certificate">SolarWinds code-signing advisory</a>, and <a href="https://www.securityweek.com/toyota-discloses-data-breach-impacting-source-code-customer-email-addresses/">Toyota incident coverage</a>.</p>
+        </section>
+
+        <section id="actions">
+            <div class="eyebrow">Turn the model into a plan</div>
+            <h2>Four questions for a first assessment.</h2>
+            <div class="actions">
+                <div class="action"><strong>1. Build a CBOM</strong>Create a Cryptographic Bill of Materials (CBOM) that identifies private keys, data-encryption keys, certificates, signing keys, algorithms, dependencies, and locations such as files, source code, CI/CD variables, or backups. See the <a href="https://markbwarner.github.io/warnerscorner/scanner/pqc/pqc-scanner-customer-positioning-handout.html">PQC scanner customer-positioning handout</a> for a discovery starting point.</div>
+                <div class="action"><strong>2. Rank the risk</strong>Which keys protect the highest-value data, the longest-lived data, or the most trusted business-to-business integrations?</div>
+                <div class="action"><strong>3. Define the custody target</strong>Which keys should be generated, retained, and used inside an HSM, and which application identities may request operations?</div>
+                <div class="action"><strong>4. Test the full design</strong>Can the application use the HSM-backed key through approved interfaces while audit logs, rotation, recovery, and incident processes remain operational?</div>
+            </div>
+        </section>
+
+        <footer class="footer">Related material: <a href="https://markbwarner.github.io/warnerscorner/pqc/ml-kem-wrap-blog.html">ML-KEM key-wrap overview</a>, <a href="https://markbwarner.github.io/warnerscorner/pqc/pqc-key-wrapping-project-briefing.html">project-manager briefing</a>, and <a href="https://markbwarner.github.io/warnerscorner/pqc/ml-kem-luna-implementation-guide.html">Luna implementation guide</a>.</footer>
+    </main>
+</body>
+</html>
