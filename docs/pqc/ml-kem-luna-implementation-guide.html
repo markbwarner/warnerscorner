@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luna RSA and ML-KEM Key Wrapping Implementation Guide</title>
+    <style>
+        :root { --ink:#162033; --muted:#617086; --canvas:#eef3f7; --paper:#fff; --navy:#173d68; --rsa:#3167b1; --mlkem:#087c70; --luna:#9b581f; --soft-rsa:#e9f0fb; --soft-mlkem:#e4f4f1; --soft-luna:#fff0e3; --line:#d7dfe7; --code:#182332; --code-text:#e9f0f7; --danger:#a33d34; --shadow:0 16px 42px rgba(22,32,51,.1); }
+        * { box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body { margin:0; background:var(--canvas); color:var(--ink); font-family:"Aptos","Segoe UI",sans-serif; line-height:1.6; }
+        .layout { display:grid; grid-template-columns:250px minmax(0,1fr); min-height:100vh; }
+        aside { position:sticky; top:0; height:100vh; overflow-y:auto; padding:30px 22px; background:#142d4d; color:#eaf0f8; }
+        aside h1 { font:700 1.3rem/1.15 Georgia,serif; margin:10px 0 20px; }
+        aside .eyebrow { color:#a9dcd5; }
+        aside a { display:block; color:#d7e5f5; text-decoration:none; padding:7px 0; font-size:.92rem; }
+        aside a:hover { color:#fff; }
+        .sidebar-note { border-top:1px solid rgba(255,255,255,.18); margin-top:20px; padding-top:18px; color:#b9c8da; font-size:.84rem; }
+        main { width:min(1100px,100%); margin:0 auto; padding:60px 54px 70px; }
+        .eyebrow { font-size:.78rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--mlkem); }
+        h1,h2,h3 { font-family:Georgia,"Times New Roman",serif; line-height:1.08; }
+        h1 { font-size:clamp(2.6rem,5.5vw,4.9rem); letter-spacing:-.055em; margin:12px 0 18px; }
+        h2 { font-size:clamp(1.8rem,3vw,2.6rem); letter-spacing:-.035em; margin:0 0 14px; }
+        h3 { font-size:1.22rem; margin:0 0 7px; }
+        p { margin:0 0 15px; }
+        .lede { max-width:820px; color:#354963; font-size:1.17rem; }
+        section { padding:56px 0; border-top:1px solid var(--line); }
+        .intro { padding-top:0; border-top:0; }
+        .panel { padding:26px; background:var(--paper); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); }
+        .grid-2 { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+        .grid-3 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
+        .mini { padding:18px; border:1px solid var(--line); border-radius:14px; }
+        .rsa { background:var(--soft-rsa); border-color:#c7d8f0; }
+        .mlkem { background:var(--soft-mlkem); border-color:#b9ded8; }
+        .luna { background:var(--soft-luna); border-color:#f0cca8; }
+        .label { display:block; color:var(--muted); font-size:.76rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:6px; }
+        .flow-diagram { margin-top:20px; padding:24px; background:var(--paper); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); }
+        .lanes { display:grid; grid-template-columns:138px 1fr; gap:16px; align-items:stretch; }
+        .lane-title { font-weight:700; padding-top:14px; }
+        .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+        .step { position:relative; min-height:145px; padding:16px; border-radius:14px; border:1px solid var(--line); background:#fff; }
+        .step:not(:last-child)::after { content:"→"; position:absolute; right:-19px; top:50%; transform:translateY(-50%); color:var(--luna); font-size:1.6rem; font-weight:700; z-index:2; }
+        .step strong { display:block; margin-bottom:7px; }
+        .method { border-left:5px solid var(--mlkem); padding:17px 20px; background:#f5fbfa; border-radius:0 14px 14px 0; margin:20px 0; }
+        .rsa-method { border-left-color:var(--rsa); background:#f3f7fd; }
+        .luna-method { border-left-color:var(--luna); background:#fff8f0; }
+        pre { margin:16px 0; overflow-x:auto; padding:18px; border-radius:14px; background:var(--code); color:var(--code-text); font:.86rem/1.55 Consolas,"Courier New",monospace; }
+        code { font-family:Consolas,"Courier New",monospace; }
+        .callout { border-left:5px solid var(--mlkem); background:var(--soft-mlkem); padding:18px 20px; border-radius:0 14px 14px 0; }
+        .caution { border-left-color:var(--danger); background:#fff0ee; }
+        .table-wrap { overflow-x:auto; }
+        table { width:100%; border-collapse:collapse; min-width:680px; }
+        th,td { text-align:left; vertical-align:top; padding:13px; border-bottom:1px solid var(--line); }
+        th { color:var(--muted); font-size:.78rem; letter-spacing:.07em; text-transform:uppercase; }
+        tr:last-child td { border-bottom:0; }
+        ol,ul { padding-left:22px; }
+        li { margin:7px 0; }
+        .key-result { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; }
+        .result-box { padding:18px; border-radius:14px; }
+        .result-box strong { display:block; margin-bottom:6px; }
+        .result-box.key { background:var(--soft-mlkem); border:1px solid #b9ded8; }
+        .result-box.encap { background:var(--soft-luna); border:1px solid #f0cca8; }
+        .source-list a { color:var(--navy); }
+        figure { margin:24px 0 0; }
+        figure img { width:100%; display:block; background:#fff; border:1px solid var(--line); border-radius:16px; }
+        figcaption { color:var(--muted); margin-top:8px; font-size:.9rem; }
+        .footer { padding-top:32px; color:var(--muted); font-size:.9rem; }
+        @media (max-width:900px) { .layout { display:block; } aside { position:static; height:auto; padding:22px; } aside nav { display:flex; gap:12px; flex-wrap:wrap; } aside a { padding:2px 0; } main { padding:42px 22px 58px; } }
+        @media (max-width:680px) { .grid-2,.grid-3,.key-result { grid-template-columns:1fr; } .lanes { grid-template-columns:1fr; gap:4px; } .steps { grid-template-columns:1fr; gap:28px; } .step:not(:last-child)::after { content:"↓"; top:auto; bottom:-25px; right:50%; transform:translateX(50%); } }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside>
+            <div class="eyebrow">Technical guide</div>
+            <h1>Luna RSA and ML-KEM</h1>
+            <nav aria-label="Guide sections">
+                <a href="#mental-model">Mental model</a>
+                <a href="#rsa">Luna-native RSA</a>
+                <a href="#mlkem-sender">Luna ML-KEM encapsulation</a>
+                <a href="#mlkem-receiver">Luna ML-KEM decapsulation</a>
+                <a href="#envelope">Envelope handling</a>
+                <a href="#integration">Integration checklist</a>
+            </nav>
+            <div class="sidebar-note">Source focus: <code>LunaIntegrationSupport</code> and <code>LunaStandaloneApplication</code>.</div>
+        </aside>
+        <main>
+            <section class="intro">
+                <div class="eyebrow">Luna-only implementation model</div>
+                <h1>Two Luna-native ways to protect the AES key.</h1>
+                <p class="lede">This guide explains the Luna-native paths in this project. The first uses a standard, independently created AES key and wraps it with Luna RSA-OAEP. The second uses native Luna ML-KEM, which produces a secret key plus an encapsulation value as one operation. Both approaches use AES-256-GCM for content protection.</p>
+            </section>
+
+            <section id="mental-model">
+                <div class="eyebrow">Mental model</div>
+                <h2>Content encryption stays the same. Key establishment changes.</h2>
+                <div class="grid-2">
+                    <div class="mini rsa"><span class="label">Luna RSA-OAEP</span><h3>Create AES first, then wrap it</h3><p>The application has a standard AES key before RSA begins. Luna performs the public-key wrap and private-key unwrap operations.</p></div>
+                    <div class="mini mlkem"><span class="label">Luna ML-KEM</span><h3>Encapsulate and obtain key material</h3><p>Luna ML-KEM encapsulation returns a secret-key result plus encapsulation bytes. The receiver uses the private key plus encapsulation to obtain the matching result.</p></div>
+                </div>
+                <div class="flow-diagram">
+                    <div class="lanes"><div class="lane-title">RSA-OAEP</div><div class="steps"><div class="step rsa"><strong>1. Create AES key</strong>A standard 32-byte AES key exists independently of the RSA keypair.</div><div class="step rsa"><strong>2. Luna wraps it</strong>The Luna public RSA key encrypts the AES key with RSA-OAEP.</div><div class="step rsa"><strong>3. Luna unwraps it</strong>The Luna private RSA key recovers the AES key for decryption.</div></div></div>
+                    <div class="lanes" style="margin-top:18px;"><div class="lane-title">ML-KEM</div><div class="steps"><div class="step mlkem"><strong>1. Luna encapsulates</strong>The Luna ML-KEM public key is used to run encapsulation.</div><div class="step mlkem"><strong>2. Receive two outputs</strong>A secret-key result is available to the sender and encapsulation bytes are available for transport.</div><div class="step mlkem"><strong>3. Luna decapsulates</strong>The Luna private ML-KEM key plus encapsulation yields the matching secret-key result.</div></div></div>
+                </div>
+                <div class="callout" style="margin-top:22px;"><strong>Key distinction:</strong> RSA protects a key that already exists. Native ML-KEM establishes matching key material during encapsulation and decapsulation. In both cases, only the protected key artifact belongs in the envelope; raw secret key bytes are never a transport field.</div>
+            </section>
+
+            <section id="rsa">
+                <div class="eyebrow">Luna-native RSA</div>
+                <h2>Standard AES key plus Luna RSA-OAEP wrapping.</h2>
+                <p>The current Luna comparison creates a standard AES key for the RSA scenario and then calls Luna-provider RSA-OAEP for both wrap and unwrap. The AES key is not generated by ML-KEM in this path.</p>
+                <div class="method rsa-method"><strong>Current comparison sequence</strong><pre><code>KeyPair rsaKeyPair = session.generateEphemeralRsaKeyPair(3072);
+SecretKey aesKey = generateDemoAesKey(32);
+
+String wrappedAesKey = wrapAesKeyWithLunaPublicKey(
+        aesKey, rsaKeyPair.getPublic());
+
+SecretKey recoveredAesKey = unwrapAesKeyWithLunaPrivateKey(
+        wrappedAesKey, rsaKeyPair.getPrivate());</code></pre></div>
+                <div class="grid-2"><div class="mini rsa"><span class="label">AES creation</span><p><code>generateDemoAesKey(32)</code> creates 32 random bytes and builds a standard <code>SecretKeySpec</code>. It is intentionally separate from RSA.</p><p>For production, decide whether AES keys should instead be generated and retained by Luna as persistent symmetric keys.</p></div><div class="mini rsa"><span class="label">Luna RSA operations</span><p>The native RSA methods obtain <code>RSA/ECB/OAEPWithSHA-256AndMGF1Padding</code> from <code>LunaProvider</code>, then call <code>WRAP_MODE</code> with the Luna public key or <code>UNWRAP_MODE</code> with the Luna private key.</p></div></div>
+                <div class="method rsa-method"><strong>Native provider wrap and unwrap logic</strong><pre><code>Cipher cipher = Cipher.getInstance(
+        "RSA/ECB/OAEPWithSHA-256AndMGF1Padding",
+        LunaIntegrationSupport.LUNA_PROVIDER_NAME
+);
+
+cipher.init(Cipher.WRAP_MODE, lunaPublicKey, new SecureRandom());
+String wrapped = Base64.getEncoder().encodeToString(cipher.wrap(aesKey));
+
+cipher.init(Cipher.UNWRAP_MODE, lunaPrivateKey);
+SecretKey recovered = (SecretKey) cipher.unwrap(
+        Base64.getDecoder().decode(wrapped), "AES", Cipher.SECRET_KEY
+);</code></pre></div>
+                <p>The public key is not secret, but this native flow deliberately routes the wrap operation through Luna. The private-key unwrap is the critical HSM operation: the private RSA key remains Luna-backed while the HSM performs the unwrap.</p>
+            </section>
+
+            <section id="mlkem-sender">
+                <div class="eyebrow">Luna ML-KEM sender path</div>
+                <h2>Encapsulation returns both a key result and a transport value.</h2>
+                <p><code>LunaIntegrationSupport.LunaSession.encapsulateAesKey(...)</code> maps the JDK KEM API result into the project record <code>MlKemEncapsulationResult</code>.</p>
+                <div class="method luna-method"><strong>Project-level method signature</strong><pre><code>public MlKemEncapsulationResult encapsulateAesKey(
+        PublicKey publicKey,
+        int keyLengthBytes
+) throws GeneralSecurityException</code></pre><p>Internally, the method obtains the Luna ML-KEM implementation, creates an encapsulator using the recipient public key, requests an AES result of the required length, and returns both pieces.</p></div>
+                <pre><code>KeyPair mlKemKeyPair = session.generateEphemeralMlKemKeyPair("ML-KEM-768");
+MlKemEncapsulationResult result = session.encapsulateAesKey(
+        mlKemKeyPair.getPublic(), 32);
+
+SecretKey senderSecretKey = result.secretKey();
+byte[] encapsulation = result.encapsulation();</code></pre>
+                <div class="key-result"><div class="result-box key"><strong><code>result.secretKey()</code></strong><p>In this project's Luna-native flow, this is a LunaProvider <code>SecretKey</code> that references the derived AES-256 key object in the HSM. It is not the 32-byte AES value in JVM memory. Pass this key object to a LunaProvider AES cipher; the provider sends its HSM key handle to Luna, which performs the AES operation while retaining the actual key material.</p></div><div class="result-box encap"><strong><code>result.encapsulation()</code></strong><p>The binary ML-KEM encapsulation. Base64-encode this for an envelope field such as <code>wrappedAesKey</code>; this is the transport value for the receiver.</p></div></div>
+                <div class="callout"><strong>What is sent:</strong> Base64 of <code>result.encapsulation()</code>. <strong>What is not sent:</strong> the <code>SecretKey</code> object, a Luna key handle, or raw AES key bytes. The receiver decapsulates the transport value with its Luna-resident private key and receives its own usable <code>SecretKey</code> object.</div>
+                <div class="method luna-method" style="margin-top:22px;"><strong>What encapsulation does, step by step</strong><pre><code>// Inside LunaSession.encapsulateAesKey(publicKey, 32)
+KEM kem = KEM.getInstance("ML-KEM", "LunaProvider");
+KEM.Encapsulator sender = kem.newEncapsulator(recipientMlKemPublicKey);
+KEM.Encapsulated encapsulated = sender.encapsulate(0, 32, "AES");
+
+SecretKey senderSecretKey = encapsulated.key();
+byte[] transportBytes = encapsulated.encapsulation();</code></pre><p><code>newEncapsulator(...)</code> selects the recipient public ML-KEM key. <code>encapsulate(0, 32, "AES")</code> asks Luna to establish an AES key result of 32 bytes, or 256 bits. Luna returns two related outputs: a Luna-backed key object for the sender to use immediately with AES-GCM and 1,088 ML-KEM-768 transport bytes for the receiver. The project uses reflection around this JDK API so the source can still compile in environments where the KEM class is not available at compile time.</p></div>
+                <div class="method luna-method"><strong>Build the sender's outbound envelope</strong><pre><code>MlKemEncapsulationResult result = session.encapsulateAesKey(
+        recipientMlKemPublicKey, 32);
+
+Map&lt;String, ProtectedField&gt; sensitive = encryptFieldsWithLuna(
+        payload.sensitive(), result.secretKey());
+
+ProtectedDocument outbound = new ProtectedDocument(
+        UUID.randomUUID().toString(),
+        "mlkem-key-1",
+        0,
+        new AlgorithmMetadata("ML-KEM-768", "AES-256-GCM"),
+        payload.status(),
+        payload.nonSensitive(),
+        sensitive,
+        Base64.getEncoder().encodeToString(result.encapsulation()),
+        Map.of()
+);</code></pre><p>This is the sender boundary: AES-GCM encrypts the sensitive JSON values using <code>result.secretKey()</code>; the serialized envelope carries the ciphertext, IVs, algorithm metadata, key identity, and Base64 encapsulation. It never carries the sender's AES key object.</p></div>
+            </section>
+
+            <section id="mlkem-receiver">
+                <div class="eyebrow">Luna ML-KEM receiver path</div>
+                <h2>Decapsulation combines the private key with the transported encapsulation.</h2>
+                <div class="method luna-method"><strong>Project-level method signature</strong><pre><code>public SecretKey decapsulateAesKey(
+        PrivateKey privateKey,
+        byte[] encapsulation,
+        int keyLengthBytes
+) throws GeneralSecurityException</code></pre></div>
+                <pre><code>SecretKey receiverSecretKey = session.decapsulateAesKey(
+        mlKemKeyPair.getPrivate(), receivedEncapsulation, 32);</code></pre>
+                <div class="grid-3"><div class="mini mlkem"><span class="label">1. Decode</span><p>The receiving service Base64-decodes the envelope’s encapsulation field to restore the original binary bytes.</p></div><div class="mini mlkem"><span class="label">2. Decapsulate in Luna</span><p>The Luna-backed private ML-KEM key and encapsulation are passed to the native decapsulator.</p></div><div class="mini mlkem"><span class="label">3. Decrypt fields</span><p>The returned Luna <code>SecretKey</code> is supplied to LunaProvider AES-GCM to recover the original application values.</p></div></div>
+                <div class="method luna-method" style="margin-top:22px;"><strong>Complete Luna ML-KEM envelope round trip</strong><pre><code>// Sender: create the Luna AES key object and encrypt the sensitive fields.
+MlKemEncapsulationResult senderResult = session.encapsulateAesKey(
+        recipientMlKemPublicKey, 32);
+Map&lt;String, ProtectedField&gt; protectedFields = encryptFieldsWithLuna(
+        payload.sensitive(), senderResult.secretKey());
+
+// Transport: send only the Base64 encapsulation, IVs, and ciphertexts.
+String wrappedAesKey = Base64.getEncoder()
+        .encodeToString(senderResult.encapsulation());
+
+// Receiver: recreate its Luna AES key object from the private ML-KEM key.
+byte[] receivedEncapsulation = Base64.getDecoder().decode(wrappedAesKey);
+SecretKey receiverSecretKey = session.decapsulateAesKey(
+        recipientMlKemPrivateKey, receivedEncapsulation, 32);
+
+// Use the receiver's Luna key object to recover the original JSON fields.
+Map&lt;String, String&gt; originalSensitiveFields = decryptFieldsWithLuna(
+        protectedFields, receiverSecretKey);
+
+String name = originalSensitiveFields.get("name");
+String cardNumber = originalSensitiveFields.get("creditCardNumber");</code></pre><p>The sender and receiver receive different Java key objects, each backed by Luna, but ML-KEM establishes matching AES key material. The ciphertext therefore decrypts to the original values when the receiver uses its decapsulated Luna key object.</p></div>
+                <div class="method luna-method"><strong>Luna AES-GCM field helpers</strong><pre><code>private static ProtectedField encryptFieldWithLuna(
+        String plaintext, SecretKey lunaAesKey, byte[] iv)
+        throws GeneralSecurityException {
+    Cipher cipher = Cipher.getInstance(
+            "AES/GCM/NoPadding", LunaIntegrationSupport.LUNA_PROVIDER_NAME);
+    cipher.init(Cipher.ENCRYPT_MODE, lunaAesKey,
+            new GCMParameterSpec(128, iv));
+
+    byte[] ciphertext = cipher.doFinal(
+            plaintext.getBytes(StandardCharsets.UTF_8));
+    return new ProtectedField(
+            Base64.getEncoder().encodeToString(ciphertext),
+            Base64.getEncoder().encodeToString(iv));
+}
+
+private static String decryptFieldWithLuna(
+        ProtectedField protectedField, SecretKey lunaAesKey)
+        throws GeneralSecurityException {
+    Cipher cipher = Cipher.getInstance(
+            "AES/GCM/NoPadding", LunaIntegrationSupport.LUNA_PROVIDER_NAME);
+    cipher.init(Cipher.DECRYPT_MODE, lunaAesKey,
+            new GCMParameterSpec(128, Base64.getDecoder()
+                    .decode(protectedField.iv())));
+
+    byte[] plaintext = cipher.doFinal(Base64.getDecoder()
+            .decode(protectedField.ciphertext()));
+    return new String(plaintext, StandardCharsets.UTF_8);
+}</code></pre><p>Call the first helper for every sensitive field with a fresh 12-byte IV. Store each ciphertext and IV in the JSON envelope. On the receiver, call the second helper with the same field values and the <code>receiverSecretKey</code> returned by decapsulation.</p></div>
+            </section>
+
+            <section id="envelope">
+                <div class="eyebrow">Envelope handling</div>
+                <h2>The content envelope stays familiar in both Luna paths.</h2>
+                <p>The envelope format is the same for either Luna RSA or Luna ML-KEM. It stores AES-GCM ciphertext and IV values for sensitive fields, then places either the RSA-wrapped AES key or the ML-KEM encapsulation into the transport field.</p>
+                <div class="table-wrap"><table><thead><tr><th>Envelope element</th><th>Luna RSA-OAEP</th><th>Luna ML-KEM</th></tr></thead><tbody><tr><td><code>fieldCipher</code></td><td colspan="2">AES-256-GCM protects the sensitive fields.</td></tr><tr><td><code>keyWrap</code></td><td><code>RSA-OAEP-256</code></td><td><code>ML-KEM-768</code></td></tr><tr><td><code>wrappedAesKey</code></td><td>Base64 RSA-OAEP output that wraps an already-created AES key.</td><td>Base64 ML-KEM encapsulation used by the receiver to decapsulate matching key material.</td></tr><tr><td>Receiver key operation</td><td>Luna RSA private-key unwrap.</td><td>Luna ML-KEM private-key decapsulation.</td></tr><tr><td>Private-key custody</td><td colspan="2">Private key can remain Luna-provider backed and HSM-resident.</td></tr></tbody></table></div>
+                <figure><img src="../blog/images/aes-key-protection-rsa-vs-mlkem.png" alt="Luna RSA wrapping and ML-KEM encapsulation comparison"><figcaption>Read the RSA side as “existing AES key, then RSA wrap.” Read the ML-KEM side as “encapsulation returns a secret-key result plus transport bytes.”</figcaption></figure>
+            </section>
+
+            <section id="integration">
+                <div class="eyebrow">Luna deployment checklist</div>
+                <h2>Questions to answer before using either path in a service.</h2>
+                <div class="panel"><ol><li>Is the recipient RSA or ML-KEM private key generated and retained as a Luna-backed key object or persistent token object?</li><li>Does the service use <code>LunaProvider</code> for both RSA wrap and unwrap operations when the target architecture requires a fully Luna-native RSA flow?</li><li>For ML-KEM, does the service use <code>LunaProvider</code> for both KEM and AES-GCM operations with the returned Luna <code>SecretKey</code>?</li><li>Does the message format carry algorithm, key ID, key version, Base64 transport value, IV, and ciphertext consistently?</li><li>Are ML-KEM parameter set and requested AES key length the same at the sending and receiving ends?</li><li>Are diagnostics that print private keys, AES key bytes, or encapsulation values disabled outside the learning demo?</li><li>Are performance results labeled as Luna-native RSA or Luna-native ML-KEM rather than compared to a different provider model?</li></ol></div>
+            </section>
+            <footer class="footer source-list">Related project material: <a href="pqc-key-wrapping-project-briefing.html">project-manager briefing</a>, <a href="../keystore/luna-key-persistence-patterns.md">Luna key persistence patterns</a>, and <a href="https://github.com/markbwarner/warnerscorner/blob/master/docs/scanner/pqc/ml-kem-wrap-blog.html">ML-KEM wrap blog</a>.</footer>
+        </main>
+    </div>
+</body>
+</html>
