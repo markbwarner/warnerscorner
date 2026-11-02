@@ -9,6 +9,7 @@ Each document includes a summary, a sales use, and a suggested conversation open
 ## Browse by topic
 
 - [Cloud Key Control and Data Governance](#cckm) (`cckm/`)
+- [CRDP Design, Implementation, and Operations](#crdp) (`crdp/`)
 - [Database, Analytics, and Secure AI](#database) (`database/`)
 - [Client-Side End-to-End Data Protection](#end-to-end) (`end-to-end/`)
 - [Shared Key Protection Diagrams](#images) (`images/`)
@@ -36,6 +37,38 @@ _Business and architecture article · `cckm/protecting-subpoena-in-csp.html`
 **Suggested opener:** “Which sensitive cloud workloads require independent key custody, and have you tested what your provider can still access when an external key operation is denied?”
 
 [https://markbwarner.github.io/warnerscorner/cckm/protecting-subpoena-in-csp.html](https://markbwarner.github.io/warnerscorner/cckm/protecting-subpoena-in-csp.html)
+
+<a id="crdp"></a>
+
+## CRDP Design, Implementation, and Operations
+
+Practical guides for configuring CipherTrust RESTful Data Protection, validating application integration, and operating containerized protection services.
+
+**Suggested conversation path:** Start with the best-practices guide to agree on policy, identity, and ownership, then use the implementation guide to validate deployment, API behavior, performance, and recovery.
+
+### CRDP Best Practices: Design, Deployment, and Operations
+
+_Best-practices guide · `crdp/crdp-best-practices-streamlined.html`_
+
+[CRDP Best Practices: Design, Deployment, and Operations](https://markbwarner.github.io/warnerscorner/crdp/crdp-best-practices-streamlined.html) — Organizes CRDP design and operations around domains, keys, protection policies, UserSets, JWT identity, caching, rotation, monitoring, recovery, and licensing reconciliation. It explains the responsibilities shared by security, application, and platform teams, with deployment workflows and operational examples.
+
+**Sales use:** Align security and platform stakeholders on the controls and operating model needed to take a CRDP deployment into production.
+
+**Suggested opener:** “Who owns protection policy, reveal authorization, rotation, and recovery for your CRDP services, and how are those responsibilities tested?”
+
+[https://markbwarner.github.io/warnerscorner/crdp/crdp-best-practices-streamlined.html](https://markbwarner.github.io/warnerscorner/crdp/crdp-best-practices-streamlined.html)
+
+### CRDP Implementation Guide
+
+_Technical implementation guide · `crdp/crdp-implementation-guide-2026-10-23.html`_
+
+[CRDP Implementation Guide](https://markbwarner.github.io/warnerscorner/crdp/crdp-implementation-guide-2026-10-23.html) — Provides configuration procedures, API requests, workflow diagrams, Docker validation, Kubernetes and Helm deployment templates, and an optional AKS path. It includes JWT authorization tests, bulk-response validation, Prometheus metrics, load-testing examples, autoscaling guidance, and upgrade and recovery procedures.
+
+**Sales use:** Support a hands-on workshop with application engineers and DevOps teams to validate deployment, access controls, service capacity, and acceptance evidence.
+
+**Suggested opener:** “Can we validate one protect-and-reveal workload with your real identity provider, deployment platform, and expected concurrency before production?”
+
+[https://markbwarner.github.io/warnerscorner/crdp/crdp-implementation-guide-2026-10-23.html](https://markbwarner.github.io/warnerscorner/crdp/crdp-implementation-guide-2026-10-23.html)
 
 <a id="database"></a>
 
@@ -212,6 +245,55 @@ _Diagram · `database/snowflake/assets/secure-rag-cortex-search-thales.png`
 **Suggested opener:** “What sensitive content should remain protected even when a document is searchable?”
 
 [https://markbwarner.github.io/warnerscorner/database/snowflake/assets/secure-rag-cortex-search-thales.png](https://markbwarner.github.io/warnerscorner/database/snowflake/assets/secure-rag-cortex-search-thales.png)
+
+
+### Cloud Database Column Protection Options
+
+_Architecture decision guide · `database/snowflake/thales-cloud-database-column-protection-options.html`_
+
+[Cloud Database Column Protection Options](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-cloud-database-column-protection-options.html) — Compares server-side Snowpark Container Services integration with client-side Snowflake JDBC protection and hybrid approaches. It covers consumer coverage, bypass paths, identity, workload performance, schema and metadata impacts, operational ownership, and managed-database extensibility limits.
+
+**Sales use:** Help architects, DBAs, and delivery leads choose the protection pattern that covers their actual producers, consumers, and operating constraints.
+
+**Suggested opener:** “Which workloads can use a governed server-side path, which require JDBC controls, and how will you govern access that bypasses either path?”
+
+[https://markbwarner.github.io/warnerscorner/database/snowflake/thales-cloud-database-column-protection-options.html](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-cloud-database-column-protection-options.html)
+
+### JDBC Protection for Snowflake: Database Resource
+
+_Business brochure · `database/snowflake/thales-jdbc-snowflake-brochure.html`_
+
+[JDBC Protection for Snowflake: Database Resource](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-jdbc-snowflake-brochure.html) — Presents the Snowflake JDBC wrapper as a policy-aware access layer for familiar SQL tools, BI clients, and applications. It explains configured protected fields, connected-user identity, CRDP or CADP Centralized reveal, policy and metadata choices, datasource overrides, and userset-based allowlist controls.
+
+**Sales use:** Introduce governed read-time access to Snowflake teams evaluating how existing JDBC consumers should handle protected fields.
+
+**Suggested opener:** “Which Snowflake JDBC tools need ciphertext, masked, or revealed results based on the connected user and centrally managed policy?”
+
+[https://markbwarner.github.io/warnerscorner/database/snowflake/thales-jdbc-snowflake-brochure.html](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-jdbc-snowflake-brochure.html)
+
+### Snowflake JDBC Technical Overview: Database Resource
+
+_Technical overview · `database/snowflake/thales-jdbc-snowflake-technical-overview.html`_
+
+[Snowflake JDBC Technical Overview: Database Resource](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-jdbc-snowflake-technical-overview.html) — Details the wrapper and vendor-driver flow, object-scoped field mappings, identity normalization, bulk reveal, per-row metadata headers, allowlist checks, and credential sources. It also covers DbVisualizer dependency deployment, validation and in-place transformation utilities, and CSV loader modes.
+
+**Sales use:** Plan a technical validation of real queries, external-policy metadata, driver dependencies, datasource configuration, and controlled data conversion.
+
+**Suggested opener:** “Can we test your Snowflake queries, per-row metadata headers, and user identities with the wrapper before rolling it out to analyst tools?”
+
+[https://markbwarner.github.io/warnerscorner/database/snowflake/thales-jdbc-snowflake-technical-overview.html](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-jdbc-snowflake-technical-overview.html)
+
+### Thales Snowflake Sales Benefits Summary
+
+_Sales positioning guide · `database/snowflake/thales-snowflake-sales-benefits-summary.html`_
+
+[Thales Snowflake Sales Benefits Summary](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-sales-benefits-summary.html) — Connects Snowflake customer priorities to Thales key management, BYOK and HYOK, field protection, Snowpark Container Services, secrets management, and data-security visibility. It provides buyer triggers, qualification questions, objection handling, talk tracks, and next-step workshop ideas.
+
+**Sales use:** Prepare a customer conversation that starts with control, sovereignty, auditability, or AI adoption and maps that need to a focused Thales capability.
+
+**Suggested opener:** “As Snowflake becomes more strategic, where do you need stronger proof of control over keys, secrets, and sensitive-data access?”
+
+[https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-sales-benefits-summary.html](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-sales-benefits-summary.html)
 
 <a id="end-to-end"></a>
 

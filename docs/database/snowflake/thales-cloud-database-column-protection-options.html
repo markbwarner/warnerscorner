@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNFXWJ8GVZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-PNFXWJ8GVZ');
+</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cloud Database Column Protection Options</title>
+  <style>
+    :root { --ink:#17313b; --muted:#566b73; --line:#c9d7d9; --paper:#fffdf8; --aqua:#087e8b; --teal:#07545c; --sand:#f2eadc; --mint:#dff1e9; --amber:#f4d58d; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#e9efef; color:var(--ink); font:15px/1.55 Georgia, "Times New Roman", serif; }
+    .page { width:8.5in; min-height:11in; margin:18px auto; padding:.63in .68in .55in; background:var(--paper); box-shadow:0 3px 14px #29434a33; position:relative; page-break-after:always; }
+    h1,h2,h3,.kicker,.label,th { font-family:"Trebuchet MS", Verdana, sans-serif; }
+    h1 { font-size:32px; line-height:1.05; letter-spacing:-.7px; margin:13px 0 16px; max-width:6.6in; }
+    h2 { color:var(--teal); font-size:21px; line-height:1.15; margin:4px 0 12px; }
+    h3 { color:var(--teal); font-size:15px; margin:16px 0 5px; }
+    p { margin:7px 0; }
+    .kicker { color:var(--aqua); font-size:11px; font-weight:bold; letter-spacing:1.7px; text-transform:uppercase; }
+    .lead { font-size:18px; line-height:1.42; max-width:6.6in; }
+    .rule { border:0; border-top:4px solid var(--amber); margin:22px 0 18px; width:1.35in; }
+    .callout { background:var(--sand); border-left:5px solid var(--aqua); padding:12px 15px; margin:14px 0; }
+    .decision { background:var(--mint); border:1px solid #a9d8c8; padding:12px 15px; margin:13px 0; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:13px; }
+    .card { border:1px solid var(--line); padding:12px 14px; background:#fff; }
+    .card h3 { margin-top:0; }
+    table { width:100%; border-collapse:collapse; font-size:13px; margin:9px 0; }
+    th { background:var(--teal); color:#fff; font-size:11px; letter-spacing:.25px; text-align:left; }
+    th,td { border:1px solid var(--line); padding:8px; vertical-align:top; }
+    td:first-child { font-weight:bold; color:var(--teal); width:20%; }
+    ul { padding-left:20px; margin:6px 0; }
+    li { margin:3px 0; }
+    .summary { font-family:"Trebuchet MS", Verdana, sans-serif; font-size:14px; font-weight:bold; color:var(--teal); margin:12px 0 3px; }
+    .foot { position:absolute; bottom:.27in; right:.68in; color:var(--muted); font:10px "Trebuchet MS", Verdana, sans-serif; }
+    .cover-foot { position:absolute; bottom:.55in; left:.68in; color:var(--muted); font:12px "Trebuchet MS", Verdana, sans-serif; }
+    a { color:var(--aqua); }
+    @media print { body { background:#fff; } .page { margin:0; box-shadow:none; } }
+    @media screen and (max-width:760px) { .page { width:100%; min-height:0; margin:0; padding:30px 24px 48px; } .grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <section class="page">
+    <div class="kicker">Decision guide</div>
+    <h1>Technical Options for Implementing Column-Level Protection in Cloud Databases</h1>
+    <p class="lead">A practical framework for selecting server-side, client-side, or hybrid Thales protection patterns while keeping the experience as frictionless as possible for database users.</p>
+    <hr class="rule">
+    <div class="callout"><strong>Scope.</strong> This guide compares a Snowflake server-side pattern using a Thales service deployed with Snowpark Container Services (SPCS) and a client-side pattern using the Thales Snowflake JDBC wrapper. The same decision questions apply to AWS, Google Cloud, Azure, and other managed database services, though the available server extensibility must be verified for each engine and service tier.</div>
+    <h2>The decision in one page</h2>
+    <div class="grid">
+      <div class="card"><h3>Prefer server-side when</h3><p>Most consumers are Snowflake SQL users, server-side functions and private services are permitted, and analytics-scale reveal needs to stay close to the warehouse.</p></div>
+      <div class="card"><h3>Prefer client-side when</h3><p>Managed database limits prevent a server integration, a defined set of JDBC applications or tools needs transparent reveal, or a phased rollout is needed without changing database objects.</p></div>
+    </div>
+    <div class="decision"><strong>Most organizations will use a hybrid.</strong> Protect initial loads with bulk tooling, use server-side functions or views for governed warehouse access, and use the JDBC wrapper where a client or a PaaS database cannot participate in the server-side pattern.</div>
+    <h3>Decision factors</h3>
+    <p>Evaluate user experience, workload performance, security trust boundaries, delivery complexity for security, development, DBA, and DevOps teams, data-model impact, operating cost, resilience, observability, portability, and audit evidence. The best solution is the one that covers every producer and consumer of sensitive data, not simply the one with the fewest initial changes.</p>
+    <div class="cover-foot">Prepared for architecture and delivery planning | Thales cloud database protection patterns</div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Architecture comparison</div>
+    <h2>Where transformation occurs changes the operating model</h2>
+    <table>
+      <tr><th>Factor</th><th>Server-side: SPCS service pattern</th><th>Client-side: Snowflake JDBC wrapper</th></tr>
+      <tr><td>Primary flow</td><td>Snowflake SQL invokes a private service / UDF path. The service batches protect or reveal work and calls CipherTrust CRDP as needed.</td><td>The application or tool issues normal JDBC SQL. The wrapper intercepts configured result-set fields and performs protect or reveal before values are handed to the caller.</td></tr>
+      <tr><td>User experience</td><td>Strong fit for many SQL consumers because governed views or functions can present a consistent interface. Users remain in familiar SQL and BI workflows.</td><td>Strong fit for JDBC-capable applications and tools such as DbVisualizer. The user keeps normal SQL, but the driver must be installed and configured wherever that path is used.</td></tr>
+      <tr><td>Coverage boundary</td><td>Centralized for workloads routed through the server-side objects. Direct table access must be governed so it cannot bypass the intended path.</td><td>Limited to connections using the wrapper. Native, BI, Python, ETL, or other clients need equivalent controls or a separate pattern.</td></tr>
+      <tr><td>Performance shape</td><td>Uses warehouse-adjacent batching and can reduce client round trips. Capacity, concurrency, egress, and CRDP service limits still require load testing.</td><td>Adds client-side work and network calls on the read path. Usually appropriate for smaller result sets and targeted users; large analytical extracts need careful batch and capacity testing.</td></tr>
+      <tr><td>Operational ownership</td><td>Platform team owns images, compute pools, private networking, service roles, secrets, telemetry, and release lifecycle.</td><td>Endpoint or application owners manage the driver artifacts and connection properties; the protection service, identity, policy, and monitoring remain shared responsibilities.</td></tr>
+    </table>
+    <p class="summary">Summary: centralize in the server when the governed database path is the common path; use the JDBC wrapper where client transparency or PaaS constraints make that impractical.</p>
+    <h3>Important PaaS qualification</h3>
+    <p>A managed database can support SQL functions, triggers, and stored procedures yet still restrict custom containers, external service functions, privileged extensions, or outbound networking. Do not assume that an AWS RDS, Cloud SQL, or Azure managed database can host the Snowflake server-side pattern unchanged. Validate supported engine versions, private connectivity, egress, identity propagation, and the provider's operational limits before committing.</p>
+    <div class="callout"><strong>Control the bypass paths.</strong> Regardless of architecture, grant direct table access only where ciphertext is acceptable. Give reveal-capable users access to the approved view, function, or JDBC configuration and ensure the authorization model carries the identity needed for Thales policy evaluation.</div>
+    <div class="foot">2</div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Data model and application impact</div>
+    <h2>Schema changes are workload-dependent, not automatically disruptive</h2>
+    <p>Protected output can be longer than the original value. An external policy can also require a companion header or metadata value. Plan column widths from representative protected values and include the required metadata design before the migration, rather than discovering a truncation risk in production.</p>
+    <table>
+      <tr><th>Situation</th><th>Recommended approach</th><th>Change impact</th></tr>
+      <tr><td>New application or new table</td><td>Model protected fields and any companion external-policy header columns from the start. Establish governed views and least-privilege roles before data is loaded.</td><td>Low to moderate. No existing contracts need to be preserved, but sizing and data semantics still need review.</td></tr>
+      <tr><td>Existing backend-only system</td><td>Use a controlled schema migration, bulk protection for initial data, then protect new writes through the existing service boundary, a trigger/stream pattern where supported, or a governed load pipeline.</td><td>Moderate. Coordinate deployment and rollback with the application release.</td></tr>
+      <tr><td>Shared analytics table or many consumers</td><td>Keep a clear contract for raw protected columns and expose approved reveal views/functions. Inventory BI, notebooks, exports, and downstream tables before changing the published schema.</td><td>Moderate to high. Compatibility and reporting impacts generally outweigh the physical column change.</td></tr>
+      <tr><td>External policy metadata</td><td>Store the per-row header in a sibling column when headers vary by record. With the JDBC wrapper, include that sibling header in the result set so the driver can pass it to CRDP; static metadata remains available for static-header cases.</td><td>Moderate. Adds schema and query-contract coordination, but avoids hiding dynamic policy context in application configuration.</td></tr>
+    </table>
+    <h2>How to minimize code change</h2>
+    <div class="grid">
+      <div class="card"><h3>Protect at ingestion</h3><p>For initial migration and recurring bulk loads, use BDT or a bulk/ETL pipeline. For ongoing transactional writes, identify the capture point: a backend service, database trigger or stream if supported, or the data ingestion pipeline. Avoid modifying every front end when one shared service owns writes.</p></div>
+      <div class="card"><h3>Reveal at consumption</h3><p>Server-side views and UDF/service functions can give consumers a stable SQL interface. The JDBC wrapper can reveal result values without changing existing JDBC SQL. Non-database systems, files, and key-value stores generally need explicit application or pipeline integration.</p></div>
+    </div>
+    <p class="summary">Summary: the physical schema change is often manageable; the real planning effort is preserving data contracts across writers, readers, reports, exports, and downstream copies.</p>
+    <div class="foot">3</div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Experience and performance</div>
+    <h2>Design for the query shape, not an average response time</h2>
+    <table>
+      <tr><th>Workload</th><th>End-user experience</th><th>Performance guidance</th></tr>
+      <tr><td>OLTP / case management</td><td>When a request reveals a small number of fields or rows, protection can usually feel like a normal request if service latency and retries are designed appropriately.</td><td>Measure p95/p99 latency, connection reuse, CRDP throughput, and failure behavior. Keep protection calls batched where possible and avoid per-cell remote calls.</td></tr>
+      <tr><td>Analytical SQL</td><td>Users should continue using familiar SQL and BI tools. Most aggregations do not need clear PII; detailed reports should be explicitly approved rather than accidentally revealing every row.</td><td>Push filtering and aggregation before reveal. Return only fields and rows needed by the report. Test concurrent analyst activity and warehouse/service capacity with realistic result sizes.</td></tr>
+      <tr><td>Migration and batch</td><td>Users experience a scheduled maintenance or a governed load, not individual UI delays.</td><td>Use bulk protection, partitioning, parallel ETL, database COPY/load facilities, and a controlled batch window. Prove restartability and idempotency before large migrations.</td></tr>
+    </table>
+    <h3>Practical performance guardrails</h3>
+    <ul>
+      <li>Separate aggregation users from reveal users. Ciphertext may be sufficient for many data-science and operational metrics workflows.</li>
+      <li>Apply row filters and role-based access before transformation. Do not reveal data only to discard it later in the query or report.</li>
+      <li>Benchmark both the protection service and the consumer path. A fast database query can still be slow if the client must reveal a very large result set.</li>
+      <li>Define a clear behavior for policy-service timeouts: fail closed for sensitive data, present an actionable error, and retain diagnostic correlation IDs.</li>
+    </ul>
+    <div class="decision"><strong>End-user experience summary.</strong> A well-designed pattern is nearly invisible for targeted transactional use and narrow reports. Broad clear-text extracts are intentionally the exception: they should require an explicit business reason, least-privilege role, and capacity-tested path.</div>
+    <div class="foot">4</div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Security, delivery, and cloud controls</div>
+    <h2>Security posture: protect the data and the path</h2>
+    <p>Column-level Thales policy determines who can protect or reveal a value. Cloud controls complement it with network isolation, identity, key management, logging, and platform configuration. They do not replace policy-based protection for a database user, report export, or application that is legitimately connected to the database.</p>
+    <div class="grid">
+      <div class="card"><h3>Server-side trust boundary</h3><p>Clear or transformed values are processed in the cloud service path, protected with TLS and private networking where available. Secure service identities, egress to CipherTrust, image provenance, secrets, runtime roles, and service telemetry. Treat the service as a production security component.</p></div>
+      <div class="card"><h3>Client-side trust boundary</h3><p>Ciphertext can travel from the database to the client before the wrapper requests reveal. Clear or masked values then exist in the authorized client process, so endpoint hardening, driver distribution, tool export controls, and user authorization are central to the risk model.</p></div>
+    </div>
+    <h3>Delivery responsibilities</h3>
+    <table>
+      <tr><th>Team</th><th>Primary responsibilities</th></tr>
+      <tr><td>Security</td><td>Classify fields; define CipherTrust policies, usersets and authorization; approve data residency and egress; review audit events, break-glass process, and fail-closed behavior.</td></tr>
+      <tr><td>Developers</td><td>Identify the shared write and read paths; integrate bulk/ingestion or JDBC/server objects; preserve data contracts; add realistic performance and failure tests.</td></tr>
+      <tr><td>DBA / data engineering</td><td>Size columns; add header columns where required; create roles, views, functions, grants, migration plans, load jobs, and reconciliation checks.</td></tr>
+      <tr><td>DevOps / platform</td><td>Deploy and upgrade services or drivers; manage secrets and certificates; provide private DNS/networking, observability, capacity, runbooks, release controls, and rollback.</td></tr>
+    </table>
+    <h3>Cloud control context</h3>
+    <p>Amazon RDS supports encryption at rest, TLS, security-group based network controls, and selected IAM database authentication options. Cloud SQL supports private IP and IAM database authentication for supported engines, plus customer-managed encryption keys. Azure SQL supports Transparent Data Encryption with customer-managed keys and Microsoft Entra authentication. Availability and configuration vary by service and engine, so these are validation inputs, not a substitute for an architecture review.</p>
+    <p class="summary">Summary: put the Thales policy decision close to the sensitive value, then use cloud identity, key, network, and audit controls to reduce exposure around every path that reaches it.</p>
+    <div class="foot">5</div>
+  </section>
+
+  <section class="page">
+    <div class="kicker">Selection checklist</div>
+    <h2>Choose deliberately and prove the result</h2>
+    <table>
+      <tr><th>If this is true</th><th>Start with</th></tr>
+      <tr><td>Snowflake analysts need governed, repeatable clear-text views at meaningful scale.</td><td>SPCS server-side functions/views, with direct raw-table access restricted and realistic concurrent-load testing.</td></tr>
+      <tr><td>A limited set of Java/JDBC tools and applications must keep existing SQL with minimal read-path code change.</td><td>The Thales Snowflake JDBC wrapper, packaged consistently with its dependencies and governed through connection properties and Thales policy.</td></tr>
+      <tr><td>Managed database restrictions prevent a server container/service pattern.</td><td>A client-side integration or an application/ETL protection service; verify native feature limits before promising server-side transparency.</td></tr>
+      <tr><td>Data enters through files, events, or non-database stores.</td><td>A protection step at the application, streaming, or ETL boundary. Neither database views nor a JDBC wrapper cover values that never use that database path.</td></tr>
+      <tr><td>Different consumers need different paths.</td><td>A hybrid architecture with one policy model, centralized audit expectations, and explicit ownership for each producer and consumer.</td></tr>
+    </table>
+    <h3>Before production</h3>
+    <ul>
+      <li>Inventory every writer, reader, BI tool, export, downstream data set, and emergency-access path.</li>
+      <li>Test data sizing, static versus per-row external metadata headers, null handling, role changes, denied users, and policy service failures.</li>
+      <li>Benchmark peak concurrency and large result sets using production-like policies, networks, and CipherTrust capacity.</li>
+      <li>Document ownership, monitoring, alerting, rollback, incident response, and evidence required by audit or privacy teams.</li>
+    </ul>
+    <div class="callout"><strong>Recommended next step.</strong> Run a short discovery for one representative OLTP flow, one analytical report, and one bulk load. Use the results to choose the primary pattern, identify the hybrid exceptions, and turn the checklist into a funded delivery plan.</div>
+    <h3>Provider references</h3>
+    <p><a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.html">AWS: Security in Amazon RDS</a> &nbsp;|&nbsp; <a href="https://docs.cloud.google.com/sql/docs/mysql/private-ip">Google Cloud: Cloud SQL private IP</a> &nbsp;|&nbsp; <a href="https://docs.cloud.google.com/sql/docs/mysql/iam-authentication">Google Cloud: IAM database authentication</a> &nbsp;|&nbsp; <a href="https://learn.microsoft.com/en-us/azure/sql-database/transparent-data-encryption-byok-azure-sql">Microsoft: Azure SQL TDE with customer-managed keys</a> &nbsp;|&nbsp; <a href="https://learn.microsoft.com/en-us/azure/azure-sql/database/authentication-microsoft-entra-connect-to-azure-sql">Microsoft: Entra authentication for Azure SQL</a></p>
+    <div class="foot">6</div>
+  </section>
+</body>
+</html>
