@@ -1,0 +1,123 @@
+### 2. `index.html`
+
+Save this file as `index.html` inside your `docs/` directory (`docs/index.html`):
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warnerscorner Directory Index</title>
+    <style>
+        :root {
+            --primary: #0056b3;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #212529;
+            --text-muted: #6c757d;
+            --border: #e9ecef;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin: 0 0 0.5rem 0;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.25rem;
+        }
+
+        .card h2 a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .card h2 a:hover {
+            text-decoration: underline;
+        }
+
+        .card p {
+            margin: 0.5rem 0 0 0;
+            color: var(--text-muted);
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Warnerscorner Subdirectory Navigation</h1>
+        <p class="subtitle">Browse project assets, documentation, and live demonstrations located within the <code>docs/</code> subdirectories.</p>
+    </header>
+
+    <main class="grid">
+        <article class="card">
+            <h2><a href="./assets/">/assets</a></h2>
+            <p>Shared static dependencies including core stylesheets, JavaScript libraries, brand images, icons, and UI assets used across project applications.</p>
+        </article>
+
+        <article class="card">
+            <h2><a href="./projects/">/projects</a></h2>
+            <p>Comprehensive technical documentation, architecture specifications, deployment guides, and project write-ups.</p>
+        </article>
+
+        <article class="card">
+            <h2><a href="./demos/">/demos</a></h2>
+            <p>Interactive web demonstrations, feature prototypes, and sandbox testing utilities.</p>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; Warnerscorner Repository Navigation</p>
+    </footer>
+</div>
+
+</body>
+</html>
