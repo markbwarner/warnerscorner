@@ -283,17 +283,17 @@ _Technical overview · `database/snowflake/thales-jdbc-snowflake-technical-overv
 
 [https://markbwarner.github.io/warnerscorner/database/snowflake/thales-jdbc-snowflake-technical-overview.html](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-jdbc-snowflake-technical-overview.html)
 
-### Thales Snowflake Sales Benefits Summary
+### Thales Snowflake Customer Security Overview
 
-_Sales positioning guide · `database/snowflake/thales-snowflake-sales-benefits-summary.html`_
+_Customer overview · `database/snowflake/thales-snowflake-customer-security-overview.html`_
 
-[Thales Snowflake Sales Benefits Summary](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-sales-benefits-summary.html) — Connects Snowflake customer priorities to Thales key management, BYOK and HYOK, field protection, Snowpark Container Services, secrets management, and data-security visibility. It provides buyer triggers, qualification questions, objection handling, talk tracks, and next-step workshop ideas.
+[Thales Snowflake Customer Security Overview](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-customer-security-overview.html) — A customer-facing overview for discussing Thales security and data protection in Snowflake environments.
 
-**Sales use:** Prepare a customer conversation that starts with control, sovereignty, auditability, or AI adoption and maps that need to a focused Thales capability.
+**Sales use:** Use in an initial discussion with Snowflake platform and security teams to identify their data protection priorities.
 
-**Suggested opener:** “As Snowflake becomes more strategic, where do you need stronger proof of control over keys, secrets, and sensitive-data access?”
+**Suggested opener:** “What are your top security priorities for the sensitive data you use in Snowflake?”
 
-[https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-sales-benefits-summary.html](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-sales-benefits-summary.html)
+[https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-customer-security-overview.html](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-customer-security-overview.html)
 
 <a id="end-to-end"></a>
 
