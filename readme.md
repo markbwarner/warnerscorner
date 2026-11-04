@@ -4,7 +4,7 @@
 
 Business briefings, technical guides, assessment resources, and supporting media for Thales data protection, key management, analytics, and post-quantum migration.
 
-Each document includes a summary, a sales use, and a suggested conversation opener. Supporting diagrams and media include context for using them in the same discussion.
+Each document includes a summary, a sales use, and a suggested conversation opener.
 
 ## Browse by topic
 
@@ -12,7 +12,6 @@ Each document includes a summary, a sales use, and a suggested conversation open
 - [CRDP Design, Implementation, and Operations](#crdp) (`crdp/`)
 - [Database, Analytics, and Secure AI](#database) (`database/`)
 - [Client-Side End-to-End Data Protection](#end-to-end) (`end-to-end/`)
-- [Shared Key Protection Diagrams](#images) (`images/`)
 - [JDBC Protection for Cloud Data Access](#jdbc) (`jdbc/`)
 - [CipherTrust Integration Operations](#misc) (`misc/`)
 - [Luna & PQC Key Wrapping Basics and Value](#pqc) (`pqc/`)
@@ -162,42 +161,6 @@ _Technical overview · `database/snowflake/THALES_SPCS_TECHNICAL_OVERVIEW.html`
 
 [https://markbwarner.github.io/warnerscorner/database/snowflake/THALES_SPCS_TECHNICAL_OVERVIEW.html](https://markbwarner.github.io/warnerscorner/database/snowflake/THALES_SPCS_TECHNICAL_OVERVIEW.html)
 
-### Databricks Execution Model Matrix
-
-_Diagram · `database/databricks/execution-model-matrix.png`
-
-[Databricks Execution Model Matrix](https://markbwarner.github.io/warnerscorner/database/databricks/execution-model-matrix.png) — Compares Java Spark UDFs, the Python Helper API, the Pandas API, and Unity Catalog Python UDFs by runtime and best-fit workload.
-
-**Sales use:** Help a data engineering team choose the appropriate SQL or Spark integration path.
-
-**Suggested opener:** “Is this workload primarily governed SQL access or high-throughput Spark processing?”
-
-[https://markbwarner.github.io/warnerscorner/database/databricks/execution-model-matrix.png](https://markbwarner.github.io/warnerscorner/database/databricks/execution-model-matrix.png)
-
-### Databricks and Thales CRDP Architecture
-
-_Diagram · `database/databricks/CUSTOMER_ARCHITECTURE.png`
-
-[Databricks and Thales CRDP Architecture](https://markbwarner.github.io/warnerscorner/database/databricks/CUSTOMER_ARCHITECTURE.png) — Shows Databricks users and tools reaching SQL Warehouse or compute-cluster functions, which call CRDP backed by CipherTrust Manager.
-
-**Sales use:** Establish the service boundaries and policy flow before detailed design.
-
-**Suggested opener:** “Where should the CRDP service sit relative to your Databricks access layers?”
-
-[https://markbwarner.github.io/warnerscorner/database/databricks/CUSTOMER_ARCHITECTURE.png](https://markbwarner.github.io/warnerscorner/database/databricks/CUSTOMER_ARCHITECTURE.png)
-
-### Databricks Solution Integration Map
-
-_Diagram · `database/databricks/Databrickssolutions.png`
-
-[Databricks Solution Integration Map](https://markbwarner.github.io/warnerscorner/database/databricks/Databrickssolutions.png) — Maps compute clusters, SQL Warehouses, Lakeflow and streaming, JDBC clients, and Thales integration components across cloud and customer domains.
-
-**Sales use:** Explain the available integration choices to a mixed platform and security audience.
-
-**Suggested opener:** “Which Databricks execution paths and client tools need protection in your environment?”
-
-[https://markbwarner.github.io/warnerscorner/database/databricks/Databrickssolutions.png](https://markbwarner.github.io/warnerscorner/database/databricks/Databrickssolutions.png)
-
 ### Thales Databricks Integration Story Video
 
 _Video (WMV) · `database/databricks/thales-databricks-integration-story.wmv`
@@ -209,43 +172,6 @@ _Video (WMV) · `database/databricks/thales-databricks-integration-story.wmv`
 **Suggested opener:** “Would a video follow-up help your team prepare for the Databricks integration discussion?”
 
 [https://markbwarner.github.io/warnerscorner/database/databricks/thales-databricks-integration-story.wmv](https://markbwarner.github.io/warnerscorner/database/databricks/thales-databricks-integration-story.wmv)
-
-### Cortex and Thales Protection Workflow
-
-_Diagram · `database/snowflake/assets/cortex-thales-protection-workflow.png`
-
-[Cortex and Thales Protection Workflow](https://markbwarner.github.io/warnerscorner/database/snowflake/assets/cortex-thales-protection-workflow.png) — Illustrates discovery, column-level PII tags, a review step, Snowpark Container Services, CRDP protection, and governed reveal backed by CipherTrust Manager.
-
-**Sales use:** Walk stakeholders from discovery to enforcement using a single visual.
-
-**Suggested opener:** “Where is the approval step between identifying sensitive columns and transforming their values?”
-
-[https://markbwarner.github.io/warnerscorner/database/snowflake/assets/cortex-thales-protection-workflow.png](https://markbwarner.github.io/warnerscorner/database/snowflake/assets/cortex-thales-protection-workflow.png)
-
-### Protected Data, Governed Access
-
-_Diagram · `database/snowflake/assets/governed-data-access.png`
-
-[Protected Data, Governed Access](https://markbwarner.github.io/warnerscorner/database/snowflake/assets/governed-data-access.png) — Contrasts protected or masked query results with authorized cleartext access through a governed view or JDBC driver and Thales policy.
-
-**Sales use:** Explain why the same protected dataset can support different access outcomes.
-
-**Suggested opener:** “Which users should see protected values, and which should be allowed to reveal them?”
-
-[https://markbwarner.github.io/warnerscorner/database/snowflake/assets/governed-data-access.png](https://markbwarner.github.io/warnerscorner/database/snowflake/assets/governed-data-access.png)
-
-### Secure RAG for Sensitive Knowledge Diagram
-
-_Diagram · `database/snowflake/assets/secure-rag-cortex-search-thales.png`
-
-[Secure RAG for Sensitive Knowledge Diagram](https://markbwarner.github.io/warnerscorner/database/snowflake/assets/secure-rag-cortex-search-thales.png) — Shows sensitive source documents becoming sanitized Cortex Search content, with Thales policy and key controls supporting protected and authorized answer outcomes.
-
-**Sales use:** Explain the secure RAG story to AI and business stakeholders.
-
-**Suggested opener:** “What sensitive content should remain protected even when a document is searchable?”
-
-[https://markbwarner.github.io/warnerscorner/database/snowflake/assets/secure-rag-cortex-search-thales.png](https://markbwarner.github.io/warnerscorner/database/snowflake/assets/secure-rag-cortex-search-thales.png)
-
 
 ### Cloud Database Column Protection Options
 
@@ -339,69 +265,13 @@ _PDF companion · `end-to-end/thales-client-side-end-to-end.pdf`
 
 [https://markbwarner.github.io/warnerscorner/end-to-end/thales-client-side-end-to-end.pdf](https://markbwarner.github.io/warnerscorner/end-to-end/thales-client-side-end-to-end.pdf)
 
-### Transit-to-Storage Re-Wrapping Architecture
-
-_Diagram · `end-to-end/thales-end-to-end.png`
-
-[Transit-to-Storage Re-Wrapping Architecture](https://markbwarner.github.io/warnerscorner/end-to-end/thales-end-to-end.png) — Maps browser encryption, cached public keys, wrapped AES transport, Spring Boot processing, Thales private-key operations, CRDP re-protection, and protected storage.
-
-**Sales use:** Use a single diagram to discuss capture, transport, backend processing, and storage boundaries.
-
-**Suggested opener:** “Where should the trusted transition from transit encryption to storage protection occur?”
-
-[https://markbwarner.github.io/warnerscorner/end-to-end/thales-end-to-end.png](https://markbwarner.github.io/warnerscorner/end-to-end/thales-end-to-end.png)
-
-<a id="images"></a>
-
-## Shared Key Protection Diagrams
-
-Reusable visuals for envelope encryption, key custody, and Java keystore discussions.
-
-**Suggested conversation path:** Use the AES diagram to explain the encryption model, the storage diagram to discuss custody, and the RSA diagram to explore Java implementation choices.
-
-### Protecting an AES-256 Key: RSA vs ML-KEM
-
-_Diagram · `images/aes-key-protection-rsa-vs-mlkem.png`
-
-[Protecting an AES-256 Key: RSA vs ML-KEM](https://markbwarner.github.io/warnerscorner/images/aes-key-protection-rsa-vs-mlkem.png) — Compares generating and wrapping an AES key with RSA against ML-KEM encapsulation and shared-secret-based key establishment. Both paths use AES-GCM for content encryption.
-
-**Sales use:** Make the PQC transition understandable while keeping content encryption and key establishment distinct.
-
-**Suggested opener:** “How are AES content keys protected when they cross your service or partner boundaries?”
-
-[https://markbwarner.github.io/warnerscorner/images/aes-key-protection-rsa-vs-mlkem.png](https://markbwarner.github.io/warnerscorner/images/aes-key-protection-rsa-vs-mlkem.png)
-
-### Key Storage Architecture: Flat Files to HSM
-
-_Diagram · `images/key-storage-architecture-flat-files-to-hsm.png`
-
-[Key Storage Architecture: Flat Files to HSM](https://markbwarner.github.io/warnerscorner/images/key-storage-architecture-flat-files-to-hsm.png) — Compares flat files and PEM, Java software keystores, managed KMS or secrets services, and customer-controlled HSMs by custody and control boundary.
-
-**Sales use:** Structure a discovery discussion around where private keys live and who can use or copy them.
-
-**Suggested opener:** “Which high-value private keys are still stored in files, software keystores, or application configuration?”
-
-[https://markbwarner.github.io/warnerscorner/images/key-storage-architecture-flat-files-to-hsm.png](https://markbwarner.github.io/warnerscorner/images/key-storage-architecture-flat-files-to-hsm.png)
-
-### RSA Keystore Models: Raw Bytes vs PrivateKeyEntry
-
-_Diagram · `images/rsa-keystore-models-comparison.png`
-
-[RSA Keystore Models: Raw Bytes vs PrivateKeyEntry](https://markbwarner.github.io/warnerscorner/images/rsa-keystore-models-comparison.png) — Contrasts a software demo that exports and reconstructs RSA key bytes with a certificate-backed Java PrivateKeyEntry and provider-backed key references.
-
-**Sales use:** Help Java and HSM teams distinguish a teaching demo from an HSM-aligned persistence design.
-
-**Suggested opener:** “Does your application retrieve a provider-backed private key, or reconstruct one from exported bytes?”
-
-[https://markbwarner.github.io/warnerscorner/images/rsa-keystore-models-comparison.png](https://markbwarner.github.io/warnerscorner/images/rsa-keystore-models-comparison.png)
-
 <a id="jdbc"></a>
 
 ## JDBC Protection for Cloud Data Access
 
 Business and technical resources for applying Thales policy through JDBC wrappers and drivers used by SQL tools, BI clients, and applications.
 
-**Suggested conversation path:** Start with the database-specific brochure, move to the technical overview, then use the process and architecture diagrams to scope configuration, identity, and validation.
+**Suggested conversation path:** Start with the database-specific brochure, then use the technical overview to scope configuration, identity, and validation.
 
 ### JDBC Protection for Cloud Databases
 
@@ -462,42 +332,6 @@ _Technical overview · `jdbc/thales-jdbc-snowflake-technical-overview.html`
 **Suggested opener:** “Which queries, identity rules, and protected-column predicates should we include in a Snowflake JDBC validation?”
 
 [https://markbwarner.github.io/warnerscorner/jdbc/thales-jdbc-snowflake-technical-overview.html](https://markbwarner.github.io/warnerscorner/jdbc/thales-jdbc-snowflake-technical-overview.html)
-
-### Thales JDBC Wrapper Architecture
-
-_Diagram · `jdbc/architecture.png`
-
-[Thales JDBC Wrapper Architecture](https://markbwarner.github.io/warnerscorner/jdbc/architecture.png) — Shows an AWS Advanced JDBC Wrapper plugin with SQL parsing, metadata interception, protected-predicate rewriting, and result-field reveal through Thales services, using PostgreSQL as the illustrated database.
-
-**Sales use:** Clarify the division of work between client, wrapper, vendor driver, database, and protection service.
-
-**Suggested opener:** “Which controls belong in the JDBC wrapper, and which remain with the database and vendor driver?”
-
-[https://markbwarner.github.io/warnerscorner/jdbc/architecture.png](https://markbwarner.github.io/warnerscorner/jdbc/architecture.png)
-
-### Customer JDBC Protection Process
-
-_Diagram · `jdbc/overall-process.png`
-
-[Customer JDBC Protection Process](https://markbwarner.github.io/warnerscorner/jdbc/overall-process.png) — Maps discovery, protection policy, usersets, data transformation, driver setup, field mappings, and runtime policy-based query results.
-
-**Sales use:** Turn a JDBC demo into a scoped onboarding and rollout discussion.
-
-**Suggested opener:** “Have you assigned owners for protected tables, field mappings, user policy, and driver deployment?”
-
-[https://markbwarner.github.io/warnerscorner/jdbc/overall-process.png](https://markbwarner.github.io/warnerscorner/jdbc/overall-process.png)
-
-### JDBC Runtime Swimlane
-
-_Diagram · `jdbc/swimlane.png`
-
-[JDBC Runtime Swimlane](https://markbwarner.github.io/warnerscorner/jdbc/swimlane.png) — Breaks down connection setup, SQL interception, protected predicates, query execution, result metadata, batching, reveal calls, and returned values across the client, wrapper, database, and Thales service.
-
-**Sales use:** Trace an actual query with technical stakeholders and identify integration checkpoints.
-
-**Suggested opener:** “Can we walk one protected query through the driver and identify where each policy decision occurs?”
-
-[https://markbwarner.github.io/warnerscorner/jdbc/swimlane.png](https://markbwarner.github.io/warnerscorner/jdbc/swimlane.png)
 
 <a id="misc"></a>
 
@@ -587,53 +421,29 @@ _Security architecture guide · `pqc/defense-in-depth-key-custody.html`
 
 [https://markbwarner.github.io/warnerscorner/pqc/defense-in-depth-key-custody.html](https://markbwarner.github.io/warnerscorner/pqc/defense-in-depth-key-custody.html)
 
-### Protecting an AES-256 Key: RSA vs ML-KEM
+### PQC Guide for Thales CipherTrust Manager
 
-_Diagram · `pqc/images/aes-key-protection-rsa-vs-mlkem.png`
+_Migration planning guide · `pqc/ciphertrust-pqc-cm-guide.html`_
 
-[Protecting an AES-256 Key: RSA vs ML-KEM](https://markbwarner.github.io/warnerscorner/pqc/images/aes-key-protection-rsa-vs-mlkem.png) — Compares generating and wrapping an AES key with RSA against ML-KEM encapsulation and shared-secret-based key establishment. Both paths use AES-GCM for content encryption.
+[PQC Guide for Thales CipherTrust Manager](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-guide.html) — Explains how quantum risk affects confidentiality and long-term trust. It covers CipherTrust Manager capabilities and limits, signing in a Zero Trust design, and using a cryptographic bill of materials (CBOM) to prioritize migration work.
 
-**Sales use:** Make the PQC transition understandable while keeping content encryption and key establishment distinct.
+**Sales use:** Use in an initial workshop to prioritize long-lived data and signing workflows and identify candidates for a pilot.
 
-**Suggested opener:** “How are AES content keys protected when they cross your service or partner boundaries?”
+**Suggested opener:** “Which data and signed artifacts need to remain trustworthy for years, and where would you start a PQC pilot?”
 
-[https://markbwarner.github.io/warnerscorner/pqc/images/aes-key-protection-rsa-vs-mlkem.png](https://markbwarner.github.io/warnerscorner/pqc/images/aes-key-protection-rsa-vs-mlkem.png)
+[https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-guide.html](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-guide.html)
 
-### Key Storage Architecture: Flat Files to HSM
+### PQC Implementation Guide for Thales CipherTrust Manager
 
-_Diagram · `pqc/images/key-storage-architecture-flat-files-to-hsm.png`
+_Technical implementation guide · `pqc/ciphertrust-pqc-cm-implementation-guide.html`_
 
-[Key Storage Architecture: Flat Files to HSM](https://markbwarner.github.io/warnerscorner/pqc/images/key-storage-architecture-flat-files-to-hsm.png) — Compares flat files and PEM, Java software keystores, managed KMS or secrets services, and customer-controlled HSMs by custody and control boundary.
+[PQC Implementation Guide for Thales CipherTrust Manager](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-implementation-guide.html) — Walks through ML-DSA artifact signing, signing mode selection, external mu, and a GitHub Actions pipeline. It compares CipherTrust Manager and Luna HSM roles and includes inventory examples and acceptance tests.
 
-**Sales use:** Structure a discovery discussion around where private keys live and who can use or copy them.
+**Sales use:** Use with platform and application security teams to scope a signing pilot, including verification and rejection tests.
 
-**Suggested opener:** “Which high-value private keys are still stored in files, software keystores, or application configuration?”
+**Suggested opener:** “Which artifact pipeline could you use to test post-quantum signing, verification, and rejection of tampered artifacts?”
 
-[https://markbwarner.github.io/warnerscorner/pqc/images/key-storage-architecture-flat-files-to-hsm.png](https://markbwarner.github.io/warnerscorner/pqc/images/key-storage-architecture-flat-files-to-hsm.png)
-
-### RSA Keystore Models: Raw Bytes vs PrivateKeyEntry
-
-_Diagram · `pqc/images/rsa-keystore-models-comparison.png`
-
-[RSA Keystore Models: Raw Bytes vs PrivateKeyEntry](https://markbwarner.github.io/warnerscorner/pqc/images/rsa-keystore-models-comparison.png) — Contrasts a software demo that exports and reconstructs RSA key bytes with a certificate-backed Java PrivateKeyEntry and provider-backed key references.
-
-**Sales use:** Help Java and HSM teams distinguish a teaching demo from an HSM-aligned persistence design.
-
-**Suggested opener:** “Does your application retrieve a provider-backed private key, or reconstruct one from exported bytes?”
-
-[https://markbwarner.github.io/warnerscorner/pqc/images/rsa-keystore-models-comparison.png](https://markbwarner.github.io/warnerscorner/pqc/images/rsa-keystore-models-comparison.png)
-
-### Defense-in-Depth Key Custody Layers
-
-_Diagram · `pqc/images/defense-in-depth-key-custody-layers.png`
-
-[Defense-in-Depth Key Custody Layers](https://markbwarner.github.io/warnerscorner/pqc/images/defense-in-depth-key-custody-layers.png) — An illustration of concentric protective layers around a central key and hardware custody boundary, accompanying the defense-in-depth guide.
-
-**Sales use:** Introduce layered protection before discussing individual security controls.
-
-**Suggested opener:** “Which surrounding controls protect access to your most valuable cryptographic keys?”
-
-[https://markbwarner.github.io/warnerscorner/pqc/images/defense-in-depth-key-custody-layers.png](https://markbwarner.github.io/warnerscorner/pqc/images/defense-in-depth-key-custody-layers.png)
+[https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-implementation-guide.html](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-implementation-guide.html)
 
 <a id="scanner"></a>
 
@@ -690,18 +500,6 @@ _PII architecture matrix · `scanner/pii/application-protection-decision-matrix.
 **Suggested opener:** “Does this application have a reusable service layer, or does its client already own the enterprise integration?”
 
 [https://markbwarner.github.io/warnerscorner/scanner/pii/application-protection-decision-matrix.html](https://markbwarner.github.io/warnerscorner/scanner/pii/application-protection-decision-matrix.html)
-
-### PII Likely Change Targets Report Snapshot
-
-_Report screenshot · `scanner/pii/assets/change_candidates.PNG`
-
-[PII Likely Change Targets Report Snapshot](https://markbwarner.github.io/warnerscorner/scanner/pii/assets/change_candidates.PNG) — A report screenshot with likely change targets, recommended actions, ownership indicators, JDBC candidates, and complexity fields.
-
-**Sales use:** Show how scan results can become a filtered implementation review list.
-
-**Suggested opener:** “Which report columns would your delivery team need to assign and prioritize migration work?”
-
-[https://markbwarner.github.io/warnerscorner/scanner/pii/assets/change_candidates.PNG](https://markbwarner.github.io/warnerscorner/scanner/pii/assets/change_candidates.PNG)
 
 ### Application PQC Readiness Scanner
 
@@ -763,38 +561,3 @@ _PQC business article · `scanner/pqc/ml-kem-wrap-blog.html`
 
 [https://markbwarner.github.io/warnerscorner/scanner/pqc/ml-kem-wrap-blog.html](https://markbwarner.github.io/warnerscorner/scanner/pqc/ml-kem-wrap-blog.html)
 
-### Protecting an AES-256 Key: RSA vs ML-KEM
-
-_Diagram · `scanner/pqc/images/aes-key-protection-rsa-vs-mlkem.png`
-
-[Protecting an AES-256 Key: RSA vs ML-KEM](https://markbwarner.github.io/warnerscorner/scanner/pqc/images/aes-key-protection-rsa-vs-mlkem.png) — Compares generating and wrapping an AES key with RSA against ML-KEM encapsulation and shared-secret-based key establishment. Both paths use AES-GCM for content encryption.
-
-**Sales use:** Make the PQC transition understandable while keeping content encryption and key establishment distinct.
-
-**Suggested opener:** “How are AES content keys protected when they cross your service or partner boundaries?”
-
-[https://markbwarner.github.io/warnerscorner/scanner/pqc/images/aes-key-protection-rsa-vs-mlkem.png](https://markbwarner.github.io/warnerscorner/scanner/pqc/images/aes-key-protection-rsa-vs-mlkem.png)
-
-### Key Storage Architecture: Flat Files to HSM
-
-_Diagram · `scanner/pqc/images/key-storage-architecture-flat-files-to-hsm.png`
-
-[Key Storage Architecture: Flat Files to HSM](https://markbwarner.github.io/warnerscorner/scanner/pqc/images/key-storage-architecture-flat-files-to-hsm.png) — Compares flat files and PEM, Java software keystores, managed KMS or secrets services, and customer-controlled HSMs by custody and control boundary.
-
-**Sales use:** Structure a discovery discussion around where private keys live and who can use or copy them.
-
-**Suggested opener:** “Which high-value private keys are still stored in files, software keystores, or application configuration?”
-
-[https://markbwarner.github.io/warnerscorner/scanner/pqc/images/key-storage-architecture-flat-files-to-hsm.png](https://markbwarner.github.io/warnerscorner/scanner/pqc/images/key-storage-architecture-flat-files-to-hsm.png)
-
-### RSA Keystore Models: Raw Bytes vs PrivateKeyEntry
-
-_Diagram · `scanner/pqc/images/rsa-keystore-models-comparison.png`
-
-[RSA Keystore Models: Raw Bytes vs PrivateKeyEntry](https://markbwarner.github.io/warnerscorner/scanner/pqc/images/rsa-keystore-models-comparison.png) — Contrasts a software demo that exports and reconstructs RSA key bytes with a certificate-backed Java PrivateKeyEntry and provider-backed key references.
-
-**Sales use:** Help Java and HSM teams distinguish a teaching demo from an HSM-aligned persistence design.
-
-**Suggested opener:** “Does your application retrieve a provider-backed private key, or reconstruct one from exported bytes?”
-
-[https://markbwarner.github.io/warnerscorner/scanner/pqc/images/rsa-keystore-models-comparison.png](https://markbwarner.github.io/warnerscorner/scanner/pqc/images/rsa-keystore-models-comparison.png)
