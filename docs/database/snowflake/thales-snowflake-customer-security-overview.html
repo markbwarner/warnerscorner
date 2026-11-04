@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Google tag (gtag.js) -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNFXWJ8GVZ"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'G-PNFXWJ8GVZ');
+	</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strengthening Data Protection for Snowflake with Thales</title>
+  <style>
+    :root { --ink:#14263a; --muted:#5a6b80; --brand:#0c5ea8; --brand-dark:#083c70; --accent:#f06a2b; --accent-soft:#fff4ee; --surface:#f4f8fc; --line:#d7e1ec; --deep:#11243a; --page-width:8.5in; }
+    * { box-sizing:border-box; }
+    @page { size:letter; margin:0; }
+    body { margin:0; background:#dce6f1; color:var(--ink); font-family:"Segoe UI", Arial, sans-serif; }
+    .page { width:var(--page-width); min-height:11in; margin:0 auto 18px; padding:.72in; position:relative; overflow:hidden; background:#fff; box-shadow:0 8px 28px rgba(20,38,58,.14); page-break-after:always; }
+    .page:last-child { page-break-after:auto; }
+    .hero { background:radial-gradient(circle at top right,rgba(240,106,43,.11),transparent 28%),radial-gradient(circle at left 12% top 10%,rgba(12,94,168,.12),transparent 22%),linear-gradient(180deg,#fbfdff 0%,#eff5fb 100%); }
+    .eyebrow { display:inline-block; padding:7px 12px; border-radius:999px; margin-bottom:16px; background:rgba(12,94,168,.1); color:var(--brand-dark); font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    h1,h2,h3,h4 { margin:0; line-height:1.12; }
+    h1 { font-size:30px; max-width:6.8in; margin-bottom:14px; }
+    h2 { font-size:22px; margin-bottom:12px; }
+    h3 { font-size:15px; margin-bottom:8px; }
+    h4 { font-size:13px; margin-bottom:6px; color:var(--brand-dark); text-transform:uppercase; letter-spacing:.05em; }
+    p { margin:0 0 12px; color:var(--muted); font-size:13.1px; line-height:1.56; }
+    .lede { font-size:15px; color:#304156; max-width:6.9in; margin-bottom:22px; }
+    .grid-2 { display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,.9fr); gap:18px; align-items:start; }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .grid-4 { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+    .panel,.card,.stack,.quote,.play { border:1px solid var(--line); border-radius:18px; background:#fff; }
+    .panel { padding:16px 18px; background:linear-gradient(180deg,#fff 0%,#f9fbfd 100%); }
+    .card { padding:16px; background:linear-gradient(180deg,#fff 0%,#f8fbfe 100%); min-height:150px; }
+    .stack { overflow:hidden; }
+    .stack .row { padding:14px 16px; border-bottom:1px solid var(--line); }
+    .stack .row:last-child { border-bottom:0; }
+    .row-title { margin-bottom:6px; color:var(--brand-dark); font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+    ul { margin:10px 0 0 18px; padding:0; color:var(--muted); font-size:13px; line-height:1.55; }
+    li { margin-bottom:7px; }
+    .metric-band { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0 10px; }
+    .metric { padding:13px 12px; border-radius:15px; background:var(--deep); color:#fff; }
+    .metric .num { display:block; margin-bottom:4px; font-size:24px; font-weight:800; }
+    .metric .cap { display:block; font-size:11px; line-height:1.35; color:rgba(255,255,255,.8); text-transform:uppercase; letter-spacing:.05em; }
+    .callout { margin-top:18px; padding:14px 16px; border-left:4px solid var(--accent); border-radius:0 14px 14px 0; background:var(--accent-soft); color:#3b4a5d; }
+    .journey { margin-top:12px; padding:16px; border:1px solid var(--line); border-radius:20px; background:linear-gradient(180deg,#f8fbfe 0%,#eef4fa 100%); }
+    .journey-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; align-items:stretch; }
+    .journey-step { padding:15px 14px 14px; border-radius:16px; background:#fff; border:1px solid var(--line); }
+    .journey-step .stepnum { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; margin-bottom:10px; background:linear-gradient(135deg,var(--accent) 0%,var(--brand) 100%); color:#fff; font-weight:800; font-size:13px; }
+    .quote { padding:16px; background:linear-gradient(135deg,#0f2340 0%,#13406d 100%); color:#fff; }
+    .quote p,.quote h3 { color:#fff; }
+    .quote .small { color:rgba(255,255,255,.8); font-size:11.5px; }
+    .table { width:100%; border-collapse:collapse; margin-top:10px; font-size:12.5px; }
+    .table th,.table td { padding:10px; border:1px solid var(--line); text-align:left; vertical-align:top; color:var(--muted); }
+    .table th { background:#eef4fa; color:var(--ink); font-size:11px; text-transform:uppercase; letter-spacing:.05em; }
+    .pill-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .pill { padding:7px 10px; border-radius:999px; background:#edf4fb; color:var(--brand-dark); font-size:11px; font-weight:700; letter-spacing:.03em; }
+    .footer { position:absolute; left:.72in; right:.72in; bottom:.48in; display:flex; justify-content:space-between; gap:12px; font-size:10.5px; color:#73839a; }
+    .small { font-size:11.5px; color:var(--muted); }
+    .tight p:last-child,.card p:last-child,.panel p:last-child,.stack .row p:last-child { margin-bottom:0; }
+    a { color:var(--brand); }
+    @media print { body { background:#fff; } .page { margin:0; box-shadow:none; } }
+  </style>
+</head>
+<body>
+  <section class="page hero">
+    <div class="eyebrow">Customer overview</div>
+    <h1>Strengthen Data Protection for Snowflake with Thales</h1>
+    <p class="lede">Use Snowflake for analytics, AI, and collaboration while adding data-centric controls that support your security, privacy, sovereignty, and operational requirements.</p>
+
+    <div class="grid-2">
+      <div class="panel tight">
+        <h2>Security that complements Snowflake</h2>
+        <p>Snowflake provides important native security capabilities. Thales can add defense in depth when your organization needs externalized key control, customer-controlled protection for sensitive fields, secrets automation, or consistent controls across a broader data estate.</p>
+        <ul>
+          <li><strong>Protect sensitive data while enabling its use.</strong> Support governed analytics, AI, application development, and data sharing with controls aligned to the sensitivity of the data.</li>
+          <li><strong>Maintain meaningful control.</strong> Manage encryption keys, policies, and secrets through controls that align with your organization’s security operating model.</li>
+          <li><strong>Support compliance and sovereignty objectives.</strong> Build evidence of how sensitive data, keys, and access are governed.</li>
+          <li><strong>Extend consistent practices.</strong> Apply common patterns across Snowflake, hybrid cloud, multi-cloud, and containerized workloads.</li>
+        </ul>
+      </div>
+      <div class="stack">
+        <div class="row"><div class="row-title">Security and privacy teams</div><p>Define control objectives, key custody requirements, data protection policies, and audit evidence.</p></div>
+        <div class="row"><div class="row-title">Data and platform teams</div><p>Enable governed use of sensitive data while preserving practical SQL, analytics, and data-engineering workflows.</p></div>
+        <div class="row"><div class="row-title">Application and DevOps teams</div><p>Reduce secrets sprawl and integrate protection into automated, API-driven, and containerized processes.</p></div>
+        <div class="row"><div class="row-title">Compliance and risk leaders</div><p>Improve visibility into high-value data and demonstrate how technical controls support policy obligations.</p></div>
+      </div>
+    </div>
+
+    <div class="metric-band">
+      <div class="metric"><span class="num">1</span><span class="cap">Layered security architecture</span></div>
+      <div class="metric"><span class="num">3</span><span class="cap">Core objectives: control, protection, and agility</span></div>
+      <div class="metric"><span class="num">5+</span><span class="cap">Connected capability areas</span></div>
+      <div class="metric"><span class="num">0</span><span class="cap">Need to trade innovation for security</span></div>
+    </div>
+    <div class="callout"><strong>The goal:</strong> create a practical security foundation for expanding Snowflake use, without treating native platform security and customer-controlled protection as competing approaches.</div>
+    <div class="footer"><span>Thales Snowflake Customer Security Overview</span><span>1</span></div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">Value drivers</div>
+    <h2>When additional data protection controls can help</h2>
+    <p>Organizations often add controls beyond a single platform boundary when sensitive data use expands, control requirements become more formal, or their operating environment becomes more distributed.</p>
+    <div class="grid-3">
+      <div class="card"><h3>Encryption key control</h3><p>Retain governance over encryption keys in a way that supports separation of duties and your own security policies.</p></div>
+      <div class="card"><h3>Data sovereignty and privacy</h3><p>Address cross-border, industry, and internal governance expectations through well-defined control ownership and auditability.</p></div>
+      <div class="card"><h3>High-value data protection</h3><p>Apply targeted protection to payment data, identity information, personal data, and other regulated or proprietary fields.</p></div>
+      <div class="card"><h3>Hybrid and multi-cloud consistency</h3><p>Use common governance patterns across the environments where your organization stores, processes, and shares data.</p></div>
+      <div class="card"><h3>DevSecOps automation</h3><p>Help developers and data engineers use credentials, certificates, API keys, and tokens without embedding secrets in code or pipelines.</p></div>
+      <div class="card"><h3>Visibility and assurance</h3><p>Discover, classify, monitor, and report on sensitive data so control decisions are based on the evolving data estate.</p></div>
+    </div>
+    <div class="journey">
+      <h3>A practical planning path</h3>
+      <div class="journey-grid">
+        <div class="journey-step"><div class="stepnum">1</div><h3>Identify data</h3><p>Classify the sensitive data entering Snowflake and understand where it is shared, copied, or used.</p></div>
+        <div class="journey-step"><div class="stepnum">2</div><h3>Define objectives</h3><p>Clarify requirements for key custody, privacy, access, residency, and evidence.</p></div>
+        <div class="journey-step"><div class="stepnum">3</div><h3>Select controls</h3><p>Align protection, key management, secrets management, and monitoring capabilities to the specific requirement.</p></div>
+        <div class="journey-step"><div class="stepnum">4</div><h3>Operationalize</h3><p>Build the controls into roles, pipelines, runbooks, and engineering workflows.</p></div>
+      </div>
+    </div>
+    <div class="footer"><span>Thales Snowflake Customer Security Overview</span><span>2</span></div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">Capabilities</div>
+    <h2>Capabilities that can support your Snowflake strategy</h2>
+    <p>Thales capabilities can be adopted individually or as part of a broader data protection and governance architecture. The appropriate combination depends on your data types, deployment model, and control objectives.</p>
+    <table class="table">
+      <thead><tr><th>Capability</th><th>How it can help</th><th>Typical outcome</th></tr></thead>
+      <tbody>
+        <tr><td><strong>CipherTrust Manager</strong><br />Central key management and policy control</td><td>Centralize encryption key and policy administration for a defined security operating model.</td><td>Stronger root-of-trust governance and separation of duties.</td></tr>
+        <tr><td><strong>CipherTrust Cloud Key Manager</strong><br />BYOK or HYOK for Snowflake</td><td>Support customer-managed key strategies for Snowflake environments, including relevant Tri-Secret Secure designs.</td><td>Key control aligned to sovereignty, compliance, and enterprise policy requirements.</td></tr>
+        <tr><td><strong>Bring Your Own Encryption</strong><br />Encryption, masking, tokenization</td><td>Protect selected sensitive fields before unauthorized use can occur and apply controls appropriate to the data and workflow.</td><td>Data-centric protection for regulated and high-value information.</td></tr>
+        <tr><td><strong>Snowpark Container Services integration</strong></td><td>Support data protection operations close to containerized Snowflake workloads.</td><td>Governed processing with less unnecessary data movement.</td></tr>
+        <tr><td><strong>CipherTrust Secrets Management</strong></td><td>Manage credentials, certificates, API keys, and tokens used by Snowflake-connected services and automation.</td><td>Reduced secrets sprawl and more consistent DevSecOps practices.</td></tr>
+        <tr><td><strong>Data Security Fabric</strong></td><td>Provide discovery, classification, monitoring, and reporting across a broader data estate.</td><td>Better risk prioritization and visibility for data governance stakeholders.</td></tr>
+      </tbody>
+    </table>
+    <div class="grid-4" style="margin-top:18px;">
+      <div class="panel"><h3>Architecture considerations</h3><ul><li>Key ownership and separation of duties</li><li>Data classification and protection policy</li><li>Private connectivity and service identity</li><li>Audit, monitoring, and incident response</li></ul></div>
+      <div class="panel"><h3>Deployment considerations</h3><ul><li>Existing Snowflake roles and data access paths</li><li>Hybrid and multi-cloud control consistency</li><li>Container and API integration points</li><li>Recovery, rotation, and operational runbooks</li></ul></div>
+    </div>
+    <div class="pill-row"><span class="pill">BYOK / HYOK</span><span class="pill">Tri-Secret Secure</span><span class="pill">Encryption and Tokenization</span><span class="pill">Secrets Automation</span><span class="pill">Data Discovery and Monitoring</span><span class="pill">Hybrid Multi-Cloud</span></div>
+    <div class="footer"><span>Thales Snowflake Customer Security Overview</span><span>3</span></div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">Use cases</div>
+    <h2>Support data use without losing control</h2>
+    <div class="grid-2">
+      <div class="panel">
+        <h3>Common use cases</h3>
+        <ul>
+          <li><strong>Financial services:</strong> protect payment, account, and customer information while expanding analytics and governed data sharing.</li>
+          <li><strong>Healthcare and public sector:</strong> support privacy, residency, and audit requirements for highly regulated data.</li>
+          <li><strong>Global enterprises:</strong> apply common governance patterns as data moves across cloud regions, business units, and jurisdictions.</li>
+          <li><strong>AI and data-product programs:</strong> prepare sensitive data for approved use while protecting fields and controlling the credentials used by models and services.</li>
+          <li><strong>Modern platform engineering:</strong> bring policy and secrets controls into containerized, API-driven data services.</li>
+        </ul>
+      </div>
+      <div class="stack">
+        <div class="row"><div class="row-title">Key custody</div><p>Who owns the policy, administration, rotation, and recovery processes for the keys protecting your strategic data?</p></div>
+        <div class="row"><div class="row-title">Data protection scope</div><p>Which data elements require encryption, tokenization, masking, or a different governed access path?</p></div>
+        <div class="row"><div class="row-title">Authorized use</div><p>Which people, applications, services, and pipelines need clear data, and which can operate safely on protected values?</p></div>
+        <div class="row"><div class="row-title">Operational evidence</div><p>What evidence do your auditors, privacy teams, and leadership need to verify that controls are effective?</p></div>
+      </div>
+    </div>
+    <div class="grid-4" style="margin-top:18px;">
+      <div class="play"><h4>For data sharing</h4><h3>Protect the data product</h3><p>Apply protection and policy controls before sensitive information is broadly distributed to internal teams, partners, or approved consumers.</p></div>
+      <div class="play"><h4>For AI initiatives</h4><h3>Govern data and credentials</h3><p>Reduce unintended exposure while allowing approved teams and models to use data through well-defined controls.</p></div>
+      <div class="play"><h4>For cloud migration</h4><h3>Preserve control patterns</h3><p>Carry key, policy, and monitoring practices into a Snowflake-based architecture rather than creating isolated processes.</p></div>
+      <div class="play"><h4>For compliance</h4><h3>Make controls demonstrable</h3><p>Combine policy, key, secrets, and monitoring capabilities to support clear, repeatable evidence of governance.</p></div>
+    </div>
+    <div class="callout"><strong>Design principle:</strong> start with a defined data use case and control objective. The most sustainable architecture is one that security, data, and engineering teams can operate together.</div>
+    <div class="footer"><span>Thales Snowflake Customer Security Overview</span><span>4</span></div>
+  </section>
+
+  <section class="page">
+    <div class="eyebrow">Next steps</div>
+    <h2>Build a practical protection roadmap</h2>
+    <div class="grid-2">
+      <div class="panel"><h3>Start with one priority workflow</h3><p>Choose a representative analytic report, application workflow, data-sharing scenario, or AI use case. Identify the sensitive fields, the authorized users, the data paths, and the controls that must be demonstrated.</p><p>Use the result to define a reusable architecture pattern for additional Snowflake workloads.</p></div>
+      <div class="quote"><h3>Outcome-oriented approach</h3><p>Use Snowflake’s scale and collaborative data platform capabilities while establishing the data protection, key management, secrets, and visibility controls appropriate to your organization.</p></div>
+    </div>
+    <div class="grid-3" style="margin-top:18px;">
+      <div class="card"><h3>Assess</h3><ul><li>Inventory sensitive data and critical workflows</li><li>Document key and policy ownership</li><li>Identify compliance and residency requirements</li><li>Review existing data-access paths</li></ul></div>
+      <div class="card"><h3>Design</h3><ul><li>Select key-management and protection patterns</li><li>Define roles, identities, and secrets handling</li><li>Plan integration and operational ownership</li><li>Establish performance and resilience criteria</li></ul></div>
+      <div class="card"><h3>Operationalize</h3><ul><li>Validate controls with representative workloads</li><li>Monitor use and maintain audit evidence</li><li>Test rotation, recovery, and incident procedures</li><li>Expand the pattern across data products</li></ul></div>
+    </div>
+    <div class="panel" style="margin-top:18px;"><h3>Reference</h3><p class="small">This overview is informed by the Thales solution brief <a href="https://cpl.thalesgroup.com/sites/default/files/content/solution_briefs/snowflake-ai-data-cloud-ciphertrust-manager-sb.pdf">Snowflake Data Protection Solutions with Thales CipherTrust Manager</a>. Confirm product availability, architecture suitability, and regulatory alignment for your specific environment with your Thales and Snowflake teams.</p></div>
+    <div class="footer"><span>Thales Snowflake Customer Security Overview</span><span>5</span></div>
+  </section>
+</body>
+</html>
