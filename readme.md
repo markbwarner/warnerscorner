@@ -8,6 +8,7 @@ Each document includes a summary, a sales use, and a suggested conversation open
 
 ## Browse by topic
 
+- [Crypto Agility](#agility) (`agility/`)
 - [Cloud Key Control and Data Governance](#cckm) (`cckm/`)
 - [CRDP Design, Implementation, and Operations](#crdp) (`crdp/`)
 - [Database, Analytics, and Secure AI](#database) (`database/`)
@@ -16,6 +17,26 @@ Each document includes a summary, a sales use, and a suggested conversation open
 - [CipherTrust Integration Operations](#misc) (`misc/`)
 - [Luna & PQC Key Wrapping Basics and Value](#pqc) (`pqc/`)
 - [Application Assessment: PII and PQC Migration](#scanner) (`scanner/`)
+
+<a id="agility"></a>
+
+## Crypto Agility
+
+Planning and testing changes to cryptographic algorithms, keys, and policies.
+
+**Suggested conversation path:** Start by mapping cryptographic dependencies, then choose a key rotation or algorithm change to rehearse with the teams that own the affected workloads.
+
+### Crypto Agility in Practice
+
+_Practical guide · `agility/crypto_agility.html`_
+
+[Crypto Agility in Practice](https://markbwarner.github.io/warnerscorner/agility/crypto_agility.html) — Explains the three pillars of crypto agility: key generation, algorithm support, and key lifecycle management. It shows how to inventory dependencies, rehearse a cutover, and use CipherTrust RESTful Data Protection (CRDP) to manage supported field protection changes through policy.
+
+**Sales use:** Use with application, security, and operations teams to scope a pilot and identify dependencies that could slow a rotation or migration.
+
+**Suggested opener:** “If you had to rotate a key or replace an algorithm next month, which applications and retained records would you need to test?”
+
+[https://markbwarner.github.io/warnerscorner/agility/crypto_agility.html](https://markbwarner.github.io/warnerscorner/agility/crypto_agility.html)
 
 <a id="cckm"></a>
 
