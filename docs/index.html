@@ -57,8 +57,9 @@
 <body id="top">
 <a class="skip" href="#content">Skip to content</a>
 <header><div class="wrap"><p class="eyebrow">Warnerscorner · Content library</p><h1>Protection patterns.<br>Practical conversations.</h1>
-<p>Business briefings, technical guides, assessment resources, and supporting media for Thales data protection, key management, analytics, and post-quantum migration.</p><p>Explore nine topics with resource summaries, sales uses, and suggested openers.</p></div></header>
+<p>Business briefings, technical guides, assessment resources, and supporting media for Thales data protection, key management, analytics, and post-quantum migration.</p><p>Explore ten topics with resource summaries, sales uses, and suggested openers.</p></div></header>
 <div class="wrap"><nav aria-label="Content topics"><h2>Browse by topic</h2><div class="topics"><a href="#agility">Crypto Agility</a>
+<a href="#ai">AI and RAG Data Protection</a>
 <a href="#cckm">Cloud Key Control and Data Governance</a>
 <a href="#crdp">CRDP Design, Implementation, and Operations</a>
 <a href="#database">Database, Analytics, and Secure AI</a>
@@ -78,6 +79,27 @@
   <p><strong>Sales use:</strong> Use with application, security, and operations teams to scope a pilot and identify dependencies that could slow a rotation or migration.</p>
   <p><strong>Suggested opener:</strong> <q>If you had to rotate a key or replace an algorithm next month, which applications and retained records would you need to test?</q></p>
   <p class="resource-url"><a href="https://markbwarner.github.io/warnerscorner/agility/crypto_agility.html">https://markbwarner.github.io/warnerscorner/agility/crypto_agility.html</a></p>
+</article></div>
+  <p class="back"><a href="#top">Back to topics ↑</a></p>
+</section>
+<section id="ai" aria-labelledby="ai-heading">
+  <div class="section-heading"><p class="eyebrow">ai/ · 2 resources</p>
+  <h2 id="ai-heading">AI and RAG Data Protection</h2><p>Solution and implementation guidance for protecting sensitive values during document preparation and generative AI requests.</p></div>
+  <p class="journey"><strong>Suggested conversation path:</strong> Start with the solution overview to define protection boundaries and user outcomes, then use the implementation guide to scope configuration, integration, and validation for a bounded pilot.</p>
+  <div class="resources"><article class="resource">
+  <p class="kind">Solution overview</p>
+  <h3><a href="https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection.html">Protecting RAG Data with Thales</a></h3>
+  <p>Explains protection across document preparation and application requests for retrieval-augmented generation (RAG). It maps discovery, sensitive-field inspection, CipherTrust protection, secrets management, and authorized reveal to a reference architecture. It identifies the loader and response-processing work needed to complete the examples.</p>
+  <p><strong>Sales use:</strong> Start a discussion with AI, data, and security owners about protecting sensitive values before document indexing and model requests while preserving retrieval and answer quality.</p>
+  <p><strong>Suggested opener:</strong> <q>Which sensitive values enter your document pipeline or model context, and who should be allowed to reveal them?</q></p>
+  <p class="resource-url"><a href="https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection.html">https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection.html</a></p>
+</article><article class="resource">
+  <p class="kind">Technical implementation guide</p>
+  <h3><a href="https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection-implementation-guide.html">Implementing Thales RAG Protection</a></h3>
+  <p>Maps the reference design to React and Spring Boot components, DDC report extraction, document conversion, DLP inspection, and CRDP or CADP protection. It covers policy tags, CSM configuration, request identity, pipeline execution, and validation. It distinguishes the active prompt-protection path and output simulator from retrieval and full-response integrations.</p>
+  <p><strong>Sales use:</strong> Use with application engineers and platform teams to scope the services, identity checks, protection policies, and downstream integrations for a RAG pilot.</p>
+  <p><strong>Suggested opener:</strong> <q>Can we trace one document and one user request through detection, protection, retrieval, and authorized reveal, then test the failure paths?</q></p>
+  <p class="resource-url"><a href="https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection-implementation-guide.html">https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection-implementation-guide.html</a></p>
 </article></div>
   <p class="back"><a href="#top">Back to topics ↑</a></p>
 </section>
