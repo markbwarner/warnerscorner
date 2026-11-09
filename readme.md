@@ -9,6 +9,7 @@ Each document includes a summary, a sales use, and a suggested conversation open
 ## Browse by topic
 
 - [Crypto Agility](#agility) (`agility/`)
+- [AI and RAG Data Protection](#ai) (`ai/`)
 - [Cloud Key Control and Data Governance](#cckm) (`cckm/`)
 - [CRDP Design, Implementation, and Operations](#crdp) (`crdp/`)
 - [Database, Analytics, and Secure AI](#database) (`database/`)
@@ -37,6 +38,38 @@ _Practical guide · `agility/crypto_agility.html`_
 **Suggested opener:** “If you had to rotate a key or replace an algorithm next month, which applications and retained records would you need to test?”
 
 [https://markbwarner.github.io/warnerscorner/agility/crypto_agility.html](https://markbwarner.github.io/warnerscorner/agility/crypto_agility.html)
+
+<a id="ai"></a>
+
+## AI and RAG Data Protection
+
+Solution and implementation guidance for protecting sensitive values during document preparation and generative AI requests.
+
+**Suggested conversation path:** Start with the solution overview to define protection boundaries and user outcomes, then use the implementation guide to scope configuration, integration, and validation for a bounded pilot.
+
+### Protecting RAG Data with Thales
+
+_Solution overview · `ai/thales-rag-protection.html`_
+
+[Protecting RAG Data with Thales](https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection.html) — Explains protection across document preparation and application requests for retrieval-augmented generation (RAG). It maps discovery, sensitive-field inspection, CipherTrust protection, secrets management, and authorized reveal to a reference architecture. It identifies the loader and response-processing work needed to complete the examples.
+
+**Sales use:** Start a discussion with AI, data, and security owners about protecting sensitive values before document indexing and model requests while preserving retrieval and answer quality.
+
+**Suggested opener:** “Which sensitive values enter your document pipeline or model context, and who should be allowed to reveal them?”
+
+[https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection.html](https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection.html)
+
+### Implementing Thales RAG Protection
+
+_Technical implementation guide · `ai/thales-rag-protection-implementation-guide.html`_
+
+[Implementing Thales RAG Protection](https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection-implementation-guide.html) — Maps the reference design to React and Spring Boot components, DDC report extraction, document conversion, DLP inspection, and CRDP or CADP protection. It covers policy tags, CSM configuration, request identity, pipeline execution, and validation. It distinguishes the active prompt-protection path and output simulator from retrieval and full-response integrations.
+
+**Sales use:** Use with application engineers and platform teams to scope the services, identity checks, protection policies, and downstream integrations for a RAG pilot.
+
+**Suggested opener:** “Can we trace one document and one user request through detection, protection, retrieval, and authorized reveal, then test the failure paths?”
+
+[https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection-implementation-guide.html](https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection-implementation-guide.html)
 
 <a id="cckm"></a>
 
