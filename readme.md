@@ -347,19 +347,19 @@ _Security architecture guide · `pqc/defense-in-depth-key-custody.html`
 
 ### PQC Guide for Thales CipherTrust Manager
 
-_Migration planning guide · `pqc/ciphertrust-pqc-cm-guide.html`_
+_Migration planning guide · `pqc/ciphertrust-pqc-cm-guide-public.html`_
 
-[PQC Guide for Thales CipherTrust Manager](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-guide.html) — Explains how quantum risk affects confidentiality and long-term trust. It covers CipherTrust Manager capabilities and limits, signing in a Zero Trust design, and using a cryptographic bill of materials (CBOM) to prioritize migration work.
+[PQC Guide for Thales CipherTrust Manager](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-guide-public.html) — Explains how quantum risk affects confidentiality and long-term trust. It covers CipherTrust Manager capabilities and limits, signing in a Zero Trust design, and using a cryptographic bill of materials (CBOM) to prioritize migration work.
 
-[https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-guide.html](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-guide.html)
+[https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-guide-public.html](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-guide-public.html)
 
 ### PQC Implementation Guide for Thales CipherTrust Manager
 
-_Technical implementation guide · `pqc/ciphertrust-pqc-cm-implementation-guide.html`_
+_Technical implementation guide · `pqc/ciphertrust-pqc-cm-implementation-guide-public.html`_
 
-[PQC Implementation Guide for Thales CipherTrust Manager](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-implementation-guide.html) — Walks through ML-DSA artifact signing, signing mode selection, external mu, and a GitHub Actions pipeline. It compares CipherTrust Manager and Luna HSM roles and includes inventory examples and acceptance tests.
+[PQC Implementation Guide for Thales CipherTrust Manager](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-implementation-guide-public.html) — Walks through ML-DSA artifact signing, a GitHub Actions pipeline, and signing without hashAlgo. It compares CipherTrust Manager and Luna HSM roles and includes multi-tier workflows, cryptographic inventory examples, and acceptance tests.
 
-[https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-implementation-guide.html](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-implementation-guide.html)
+[https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-implementation-guide-public.html](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-implementation-guide-public.html)
 
 <a id="scanner"></a>
 
