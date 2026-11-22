@@ -55,6 +55,46 @@ _Technical implementation guide · `ai/thales-rag-protection-implementation-guid
 
 [https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection-implementation-guide.html](https://markbwarner.github.io/warnerscorner/ai/thales-rag-protection-implementation-guide.html)
 
+### Protecting Agentic AI with Thales CipherTrust
+
+_Solution briefing · `ai/agenticai/thales-agentic-ai-protection.html`_
+
+[Protecting Agentic AI with Thales CipherTrust](https://markbwarner.github.io/warnerscorner/ai/agenticai/thales-agentic-ai-protection.html) — Introduces a shared protection layer for agentic workflows, including A2A discovery, Agent Cards, registry admission, gateway enforcement, and CipherTrust protect and reveal. It connects framework integration choices to policy control and customer evaluation.
+
+[https://markbwarner.github.io/warnerscorner/ai/agenticai/thales-agentic-ai-protection.html](https://markbwarner.github.io/warnerscorner/ai/agenticai/thales-agentic-ai-protection.html)
+
+### Protect A2A Solution Overview
+
+_Reference architecture · `ai/agenticai/a2a-solution-overview.html`_
+
+[Protect A2A Solution Overview](https://markbwarner.github.io/warnerscorner/ai/agenticai/a2a-solution-overview.html) — Explains the Python reference design for agent admission, destination-based data handling, and audit review. Travel and insurance examples illustrate protected handoffs, with implementation limits and evaluation checks.
+
+[https://markbwarner.github.io/warnerscorner/ai/agenticai/a2a-solution-overview.html](https://markbwarner.github.io/warnerscorner/ai/agenticai/a2a-solution-overview.html)
+
+### How Protect A2A Works
+
+_Workflow walkthrough · `ai/agenticai/how-protect-a2a-works.html`_
+
+[How Protect A2A Works](https://markbwarner.github.io/warnerscorner/ai/agenticai/how-protect-a2a-works.html) — Follows registration, discovery, caller checks, rate limits, protection, delivery, and audit reporting. A fax-reference example traces a value through protect and reveal operations and highlights runtime failure handling.
+
+[https://markbwarner.github.io/warnerscorner/ai/agenticai/how-protect-a2a-works.html](https://markbwarner.github.io/warnerscorner/ai/agenticai/how-protect-a2a-works.html)
+
+### Protect A2A Technical Implementation Guide
+
+_Technical guide · `ai/agenticai/a2a-technical-implementation.html`_
+
+[Protect A2A Technical Implementation Guide](https://markbwarner.github.io/warnerscorner/ai/agenticai/a2a-technical-implementation.html) — Extends the solution overview with services, interfaces, startup, verified agent registration, request processing, configuration, and log correlation. It traces travel and insurance workflows and supplies checks for a customer evaluation.
+
+[https://markbwarner.github.io/warnerscorner/ai/agenticai/a2a-technical-implementation.html](https://markbwarner.github.io/warnerscorner/ai/agenticai/a2a-technical-implementation.html)
+
+### A2A Security Operations Dashboard
+
+_Interactive report · `ai/reports/a2a-dashboard.html`_
+
+[A2A Security Operations Dashboard](https://markbwarner.github.io/warnerscorner/ai/reports/a2a-dashboard.html) — An offline dashboard for saved insurance and travel security events. Environment, category, status, and text filters support review of identity violations, runtime outcomes, latency, protection activity, and event details.
+
+[https://markbwarner.github.io/warnerscorner/ai/reports/a2a-dashboard.html](https://markbwarner.github.io/warnerscorner/ai/reports/a2a-dashboard.html)
+
 <a id="cckm"></a>
 
 ## Cloud Key Control and Data Governance
@@ -360,6 +400,14 @@ _Technical implementation guide · `pqc/ciphertrust-pqc-cm-implementation-guide-
 [PQC Implementation Guide for Thales CipherTrust Manager](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-implementation-guide-public.html) — Walks through ML-DSA artifact signing, a GitHub Actions pipeline, and signing without hashAlgo. It compares CipherTrust Manager and Luna HSM roles and includes multi-tier workflows, cryptographic inventory examples, and acceptance tests.
 
 [https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-implementation-guide-public.html](https://markbwarner.github.io/warnerscorner/pqc/ciphertrust-pqc-cm-implementation-guide-public.html)
+
+### How the PQC Scanner Works: PQC Resource
+
+_Technical explainer · `pqc/how-the-pqc-scanner-works.html`_
+
+[How the PQC Scanner Works: PQC Resource](https://markbwarner.github.io/warnerscorner/pqc/how-the-pqc-scanner-works.html) — Explains source-file classification, direct cryptographic rules, dependency enrichment, finding correlation, migration complexity, and reporting. It describes CBOM-style inventory and how file context influences interpretation of potential migration owners.
+
+[https://markbwarner.github.io/warnerscorner/pqc/how-the-pqc-scanner-works.html](https://markbwarner.github.io/warnerscorner/pqc/how-the-pqc-scanner-works.html)
 
 <a id="scanner"></a>
 
