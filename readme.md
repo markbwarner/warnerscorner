@@ -249,13 +249,13 @@ _Customer overview · `database/snowflake/thales-snowflake-customer-security-ove
 
 [https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-customer-security-overview.html](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-customer-security-overview.html)
 
-### Snowflake and Thales CRDP: Cloud Run Sidecar Architecture
+### Snowflake and Thales CRDP: Deployment Architecture Options
 
-_Technical architecture · `database/snowflake/cloud-run-sidecar-architecture.html`_
+_Technical architecture · `database/snowflake/deployment-architecture-options.html`_
 
-[Snowflake and Thales CRDP: Cloud Run Sidecar Architecture](https://markbwarner.github.io/warnerscorner/database/snowflake/cloud-run-sidecar-architecture.html) — Describes a Google Cloud Run deployment with a Java ingress adapter and CRDP sidecar in each service instance. It traces Snowflake external-function calls through API Gateway, local bulk protect and reveal operations, and CipherTrust Manager connectivity. It compares Cloud Run and Snowpark Container Services across identity, scaling, operational ownership, data locality, and cost considerations.
+[Snowflake and Thales CRDP: Deployment Architecture Options](https://markbwarner.github.io/warnerscorner/database/snowflake/deployment-architecture-options.html) — Compares Google Cloud Run with a CRDP sidecar and Snowpark Container Services as deployment options for Snowflake data protection. It covers SQL integration, identity, scaling, operational ownership, data locality, and cost considerations, with links to both detailed architecture pages.
 
-[https://markbwarner.github.io/warnerscorner/database/snowflake/cloud-run-sidecar-architecture.html](https://markbwarner.github.io/warnerscorner/database/snowflake/cloud-run-sidecar-architecture.html)
+[https://markbwarner.github.io/warnerscorner/database/snowflake/deployment-architecture-options.html](https://markbwarner.github.io/warnerscorner/database/snowflake/deployment-architecture-options.html)
 
 <a id="end-to-end"></a>
 
