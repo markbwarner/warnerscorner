@@ -249,6 +249,14 @@ _Customer overview · `database/snowflake/thales-snowflake-customer-security-ove
 
 [https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-customer-security-overview.html](https://markbwarner.github.io/warnerscorner/database/snowflake/thales-snowflake-customer-security-overview.html)
 
+### Snowflake and Thales CRDP: Cloud Run Sidecar Architecture
+
+_Technical architecture · `database/snowflake/cloud-run-sidecar-architecture.html`_
+
+[Snowflake and Thales CRDP: Cloud Run Sidecar Architecture](https://markbwarner.github.io/warnerscorner/database/snowflake/cloud-run-sidecar-architecture.html) — Describes a Google Cloud Run deployment with a Java ingress adapter and CRDP sidecar in each service instance. It traces Snowflake external-function calls through API Gateway, local bulk protect and reveal operations, and CipherTrust Manager connectivity. It compares Cloud Run and Snowpark Container Services across identity, scaling, operational ownership, data locality, and cost considerations.
+
+[https://markbwarner.github.io/warnerscorner/database/snowflake/cloud-run-sidecar-architecture.html](https://markbwarner.github.io/warnerscorner/database/snowflake/cloud-run-sidecar-architecture.html)
+
 <a id="end-to-end"></a>
 
 ## Client-Side End-to-End Data Protection
