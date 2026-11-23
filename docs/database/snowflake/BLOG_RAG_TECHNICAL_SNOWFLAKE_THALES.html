@@ -1,15 +1,6 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PNFXWJ8GVZ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-PNFXWJ8GVZ');
-</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A technical design for protecting sensitive document values before they enter Snowflake Cortex Search RAG context with Thales CRDP.">
@@ -26,7 +17,7 @@
   <p>Retrieval Augmented Generation (RAG) lets an LLM answer from enterprise knowledge rather than from general training data alone. A user question retrieves relevant document passages, which are supplied to the LLM as grounded context. Internal documents can contain personal information, compensation data, contact information, and confidential business facts.</p>
   <p>This defense-in-depth pattern uses Snowflake Cortex Search, Snowflake document processing, Snowpark Container Services, and Thales CipherTrust REST Data Protection (CRDP). Its central control is simple: protect sensitive values before the document becomes searchable RAG context, then reveal values only through a separately authorized path.</p>
   <ol><li>Parse staged documents in Snowflake.</li><li>Identify candidate sensitive entities.</li><li>Protect values through Thales CRDP.</li><li>Persist and index only sanitized text.</li><li>Return protected answers by default and reveal only when policy permits.</li></ol>
-  <figure><img src="assets/secure-rag-cortex-search-thales.png" alt="Secure RAG flow from sensitive documents through sanitized search and policy-controlled response access."><figcaption>Figure 1. The protection boundary is placed before the searchable RAG corpus, not after an LLM has already received raw document content.</figcaption></figure>
+  <figure><img src="assets/secure-rag-protect-retrieve-reveal.png" alt="Secure RAG lifecycle: prepare content, protect sensitive values with Thales before indexing, retrieve protected context with Snowflake Cortex Search, generate a protected answer, and optionally reveal permitted values through a separately authorized workflow."><figcaption>Figure 1. Protect sensitive values before indexing, retrieve protected context, and generate protected answers. Step 5 is optional: reveal occurs only through a separately authorized workflow. The token [EMAIL_01] is illustrative; actual protected values depend on the configured Thales policy.</figcaption></figure>
   <h2>Architecture and trust boundaries</h2>
   <ul><li><strong>Snowflake internal stage and parsing.</strong> An internal stage with directory metadata holds documents; <code>PARSE_DOCUMENT</code> extracts text inside Snowflake.</li><li><strong>Sensitive-data identification.</strong> A Cortex LLM extraction prompt, deterministic detector, or both produces candidate entities. Validate LLM output before it drives an irreversible transformation.</li><li><strong>Thales protection service.</strong> A Snowpark Container Services endpoint calls CRDP bulk protection and reveal policies. The container does not contain data-protection keys.</li><li><strong>Sanitized RAG corpus.</strong> The Cortex Search source contains document metadata and sanitized text, not a convenience <code>RAW_TEXT</code> column.</li></ul>
   <p>Snowflake roles control access to stages, tables, search services, and functions. Thales adds policy enforcement around the data values, including which caller or use case may request a reveal. These controls complement rather than replace one another.</p>
